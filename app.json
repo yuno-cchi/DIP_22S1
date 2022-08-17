@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "DIP_22S1",
+    "slug": "DIP_22S1",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "DIP_22S1"
+}
