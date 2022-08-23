@@ -8,10 +8,8 @@ export default function App() {
     <View style={styles.container}>
       <Text style={styles.innerText}>Hello!</Text>
       <StatusBar style="auto" />
-      <View style={styles.container}>
-
-      </View>
-      <MapView style={mapStyle.map}
+      <MapView
+        style={styles.map}
         //specify our coordinates, ask for user location
         initialRegion={{
           latitude: 1.3483,
@@ -20,30 +18,22 @@ export default function App() {
           longitudeDelta: 0.1,
         }}
       />
-
     </View>
-
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'red',
+    backgroundColor: '#1d1f21',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   innerText: {
     color: 'white',
     fontSize: 80
   },
-
-});
-
-const mapStyle = StyleSheet.create({
   map: {
-    height: 700,//To insert variable for adjustable
-    width: 430,
-    ...StyleSheet.absoluteFill
+    ...StyleSheet.absoluteFillObject
   }
-})
+});
