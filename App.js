@@ -25,7 +25,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1d1f21',
+    backgroundColor: 'pink',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -34,6 +34,8 @@ const styles = StyleSheet.create({
     fontSize: 80
   },
   map: {
+    width: 500,
+    height: 800,
     ...StyleSheet.absoluteFillObject
   }
 });
