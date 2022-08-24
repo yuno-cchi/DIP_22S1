@@ -1,41 +1,24 @@
+/* ~/App.js
+ *
+ * The main application launchpad.
+ * 
+ * 
+ * Last updated 24/8 by Cris.
+ * 
+ * Changelog:
+ * 24/8 - added functional(?) log-in screen - Cris
+ * 17/8 - file created
+ */
+
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import MapView from "react-native-maps";
+import style from './assets/styles/styles.js';
+import Login from './src/login.js';
 
 export default function App() {
+  
   return (
-    <View style={styles.container}>
-      <Text style={styles.innerText}>Hello!</Text>
-      <StatusBar style="auto" />
-      <MapView
-        style={styles.map}
-        //specify our coordinates, ask for user location
-        initialRegion={{
-          latitude: 1.3483,
-          longitude: 103.6831,
-          latitudeDelta: 0.1,
-          longitudeDelta: 0.1,
-        }}
-      />
-    </View>
+      <Login/>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'pink',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  innerText: {
-    color: 'white',
-    fontSize: 80
-  },
-  map: {
-    width: 500,
-    height: 800,
-    ...StyleSheet.absoluteFillObject
-  }
-});
