@@ -30,7 +30,6 @@ export default StyleSheet.create({
         width: "70%",
         height: 45,
         marginBottom: 20,
-
         alignItems: 'center'
     },
 
@@ -43,5 +42,15 @@ export default StyleSheet.create({
         width:200,
         height:300,
         marginBottom: 10,
+    },
+
+    textLinks: {
+        fontSize: 15,
+        marginBottom:5,
+    },
+    
+    loginButton: {
+        width: "80%",
+        background: "fcf8u8",
     }
 })
