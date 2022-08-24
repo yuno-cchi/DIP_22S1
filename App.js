@@ -1,25 +1,24 @@
+/* ~/App.js
+ *
+ * The main application launchpad.
+ * 
+ * 
+ * Last updated 24/8 by Cris.
+ * 
+ * Changelog:
+ * 24/8 - added functional(?) log-in screen - Cris
+ * 17/8 - file created
+ */
+
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import style from './assets/styles/styles.js';
+import Login from './src/login.js';
 
 export default function App() {
+  
   return (
-    <View style={styles.container}>
-      <Text style={styles.innerText}>Hi mom!</Text>
-      <StatusBar style="auto" />
-    </View>
+      <Login/>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#1d1f21',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  innerText: {
-    color: 'white',
-    fontSize: 80
-  }
-});
