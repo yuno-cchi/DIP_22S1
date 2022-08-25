@@ -8,8 +8,10 @@
  * 
  *  in the beginning of your file
  * 
- *  Last Updated 24/8 by Cris
+ *  Last Updated 25/8 by Cris
  *  Changelog:
+ * 
+ *  25/8 - added button styling, changed some colors around to fit closer to Figma - Cris
  *  24/8 - Created file, added basic component styling based on current Figma - Cris
 */
 
