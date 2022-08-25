@@ -19,14 +19,19 @@ export default StyleSheet.create({
 
     container: {
         flex: 1,
-        backgroundColor: "#fcf8e8",
+        backgroundColor: "#f5f5f5",
         justifyContent: "center",
         alignItems: "center"
     },
 
     inputView: {
-        backgroundColor: "#e76850",
-        borderRadius: 30,
+        // TODO:
+        // fade out placeholder text
+        // white background
+        // 
+
+        backgroundColor: "#ffcccc",
+        borderRadius: 5,
         width: "70%",
         height: 45,
         marginBottom: 20,
@@ -36,6 +41,7 @@ export default StyleSheet.create({
     TextInput: {
         height: 50,
         flex: 1,
+        padding: 10,
     },
 
     logoView: {
@@ -49,8 +55,19 @@ export default StyleSheet.create({
         marginBottom:5,
     },
     
-    loginButton: {
-        width: "80%",
-        background: "fcf8u8",
+    buttonNormal: {
+        backgroundColor: "#e76850",
+        borderRadius: 30,
+        width: "70%",
+        height: 45,
+        marginBottom: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    buttonText: {
+        marginTop:30,
+        height:50,
+        color:"#f5f5f5",
     }
 })

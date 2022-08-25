@@ -64,10 +64,14 @@ export default function Login() {
                 </TouchableOpacity>
 
                 <TouchableOpacity>
-                    <Text style={styles.textLinks} onPress={(event) => showToast("Work in Progress!")}>New user?</Text>
+                    <Text style={styles.textLinks} onPress={(event) => showToast("Work in Progress! - Account Creation")}>New user?</Text>
                 </TouchableOpacity>
 
+                <TouchableOpacity style={styles.buttonNormal} onPress={(event) => showToast("WIP - LogIn: entered user: " + user + "; entered pass: " + pass)}>
+                        <Text style={styles.buttonText}>Log in</Text>
+                </TouchableOpacity>
         </View>
+
     )
 }
 
