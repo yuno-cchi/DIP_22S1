@@ -10,8 +10,8 @@
  * 17/8 - file created
  */
 
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
+import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import style from './assets/styles/styles.js';
 import Login from './src/login.js';
