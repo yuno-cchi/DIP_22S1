@@ -5,8 +5,7 @@
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ],
-    "orientaion": "portrait"
+    ]
   },
   "name": "DIP_22S1"
 }
