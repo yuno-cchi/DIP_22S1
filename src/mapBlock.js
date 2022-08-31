@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from 'expo-location';
 import MapViewDirections from 'react-native-maps-directions';
@@ -24,15 +24,6 @@ const checkPermission = async () => {
         return permission;
     }
     return true;
-};
-
-export function changeRoute() {
-    let wp3;
-    if (wp3 == wp1) {
-        wp3 = wp2;
-    } else {
-        wp3 = wp1;
-    }
 };
 
 const askPermission = async () => {
@@ -83,7 +74,6 @@ export default class Map extends React.Component {
                         coordinate={cord3}
                     />
                     <Marker
-                        draggable={true}
                         description="marker4"
                         coordinate={cord4}
                     />
@@ -102,10 +92,9 @@ export default class Map extends React.Component {
                         strokeWidth={3}
                         strokeColor="red"
                         waypoints={wp2}
-                        optimizeWaypoints={true}
+                        optimizeWaypoints='true'
                     />
                 </MapView>
-
             </View>
         );
     }
