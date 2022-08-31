@@ -38,6 +38,8 @@ async function callUsers(username, password){
     userdata = resp.data;
     console.log(userdata);
     var message;
+
+    //AUTHENTICATION STARTS HERE:
     //start matching username
     for (var x = 0; x < userdata.length; x++){
         //if username matches
@@ -57,6 +59,11 @@ async function callUsers(username, password){
                     } else { // we're only making an iOS and Android app idt we need alerts for web or windows
                         alert(message);
                     }
+
+                    sessionStorage.setItem("isLoggedIn", true); //setlogin state to true
+                    sessionStorage.setItem("usernameStorage", username); //store username in sessionStorage
+                    var s = sessionStorage.getItem("isLoggedIn");
+                    console.log(s);
                     return;
                 }
                 else if(i == userdata.length-1 && userdata[i].password != password){
