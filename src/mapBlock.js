@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Button } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from 'expo-location';
 import MapViewDirections from 'react-native-maps-directions';
@@ -45,59 +45,78 @@ function pinMarker(props) {
 
 
 export default class Map extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.wp = { wp1 };
+    }
+
     render() {
         return (
-            <View style={styles.map}>
-                <MapView
-                    style={{ ...StyleSheet.absoluteFillObject }}
-                    showsMyLocationButton={true}
-                    showsUserLocation={true}
-                    region={{
-                        latitude: 1.3521,
-                        longitude: 103.8198,
-                        latitudeDelta: 0.3,
-                        longitudeDelta: 0.3,
-                    }}
-                    animateToRegion
-                    onPress={e => pinMarker(e)}
-                >
-                    <Marker
-                        description="marker1"
-                        coordinate={cord1}
-                    />
-                    <Marker
-                        description="marker2"
-                        coordinate={cord2}
-                    />
-                    <Marker
-                        description="marker3"
-                        coordinate={cord3}
-                    />
-                    <Marker
-                        description="marker4"
-                        coordinate={cord4}
-                    />
-                    <Marker
-                        description="marker5"
-                        coordinate={cord5}
-                    />
-                    <Marker
-                        description="marker6"
-                        coordinate={cord6}
-                    />
-                    <MapViewDirections
-                        origin={cord3}
-                        destination={cord6}
-                        apikey={GOOGLE_MAPS_APIKEY}
-                        strokeWidth={3}
-                        strokeColor="red"
-                        waypoints={wp2}
-                        optimizeWaypoints='true'
-                    />
-                </MapView>
+            <View style={styles.container}>
+                <View style={styles.map}>
+                    <MapView
+                        style={{ ...StyleSheet.absoluteFillObject }}
+                        region={{
+                            latitude: 1.3521,
+                            longitude: 103.8198,
+                            latitudeDelta: 0.3,
+                            longitudeDelta: 0.3,
+                        }}
+                        onPress={e => pinMarker(e)}
+                    >
+                        <Marker
+                            description="marker1"
+                            coordinate={cord1}
+                        />
+                        <Marker
+                            description="marker2"
+                            coordinate={cord2}
+                        />
+                        <Marker
+                            description="marker3"
+                            coordinate={cord3}
+                        />
+                        <Marker
+                            description="marker4"
+                            coordinate={cord4}
+                        />
+                        <Marker
+                            description="marker5"
+                            coordinate={cord5}
+                        />
+                        <Marker
+                            description="marker6"
+                            coordinate={cord6}
+                        />
+                        <MapViewDirections
+                            origin={cord3}
+                            destination={cord6}
+                            apikey={GOOGLE_MAPS_APIKEY}
+                            strokeWidth={3}
+                            strokeColor="red"
+                            waypoints={wp1}
+                        />
+                    </MapView>
+                </View>
+                <View style={{
+                    backgroundColor: 'pink',
+                    color: 'blue',
+                    width: 100,
+                    height: 100,
+                    marginTop: 30,
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignContent: 'center',
+                }}>
+                    <Button title='Change' onPress={this.setState(wp2)}>
+
+                    </Button>
+                </View>
             </View>
         );
     }
+
 
 }
 
@@ -107,7 +126,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
+        width: '100%',
+        height: '100%'
     },
     map: {
         height: '80%',

@@ -13,25 +13,8 @@ function getUserCurrentLocation() {
 export default function App() {
   return (
     <View style={styles.container}>
-      <StatusBar style="auto" />
       <Map />
-      <View style={{
-        backgroundColor: 'pink',
-        color: 'blue',
-        width: 100,
-        height: 100,
-        marginTop: 30,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignContent: 'center',
-      }}>
-        <Button title='Location' onPress={getUserCurrentLocation}
-          style={{
 
-          }}>
-
-        </Button>
-      </View>
 
 
     </View>
