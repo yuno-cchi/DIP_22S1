@@ -44,11 +44,14 @@ function pinMarker(props) {
 }
 
 
-export default class Map extends React.Component {
+class Map extends React.Component {
 
     constructor(props) {
         super(props);
-        this.wp = { wp1 };
+        this.state = {
+            firstWp: wp1,
+            secondWp: wp2
+        };
     }
 
     render() {
@@ -95,7 +98,8 @@ export default class Map extends React.Component {
                             apikey={GOOGLE_MAPS_APIKEY}
                             strokeWidth={3}
                             strokeColor="red"
-                            waypoints={wp1}
+                            optimizeWaypoints={true}
+                            waypoints={this.state.isWp ? wp1 : wp2}
                         />
                     </MapView>
                 </View>
@@ -109,7 +113,11 @@ export default class Map extends React.Component {
                     justifyContent: 'center',
                     alignContent: 'center',
                 }}>
-                    <Button title='Change' onPress={this.setState(wp2)}>
+                    <Button title={
+                        this.state.isWp ? 'ONE' : "TWO"
+                    } onPress={() => {
+                        this.setState({ isWp: !this.state.isWp });
+                    }}>
 
                     </Button>
                 </View>
@@ -135,3 +143,5 @@ const styles = StyleSheet.create({
         width: '100%'
     },
 });
+
+export default Map;

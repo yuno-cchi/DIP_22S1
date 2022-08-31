@@ -4,19 +4,13 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 
 import MapView from 'react-native-maps';
 import Map from './src/mapBlock';
+import AppExample from './src/AppExample';
 
-function getUserCurrentLocation() {
-  let currentLocation
-  console.log(currentLocation)
-}
 
 export default function App() {
   return (
     <View style={styles.container}>
       <Map />
-
-
-
     </View>
   );
 }
