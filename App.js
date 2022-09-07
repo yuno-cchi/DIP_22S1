@@ -22,7 +22,7 @@ export default function App() {
   return (
     //Use FlatList for a bunch of cards
     <View style={styles.container}>
-      <SearchBar />
+      <ListingDetailScreen />
     </View>
   );
 }
