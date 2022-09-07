@@ -34,7 +34,7 @@ async function callUsers(username, password){
     console.log("input username:" + username);
     console.log("input password:" + password)
 
-    const resp = await axios.get('http://localhost:5000/user');
+    const resp = await axios.get('http://secret-caverns-21869.herokuapp.com/user');
     userdata = resp.data;
     console.log(userdata);
     var message;
