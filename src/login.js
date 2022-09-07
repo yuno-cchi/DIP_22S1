@@ -3,9 +3,10 @@
 
     Login screen component
 
-    Last updated 25/8 by Cris
+    Last updated 7/9 by Chee Hean
 
     Changelog:
+    7/9 - swapped the axios localhost api link with the heroku hosted api link
     25/8 - added basic string validation to username field, implemented a loginEvent function, added iOS alert functionality, remvoved unneeded dependencies, minor refactoring- Cris 
     24/8 - Created component - Cris
 

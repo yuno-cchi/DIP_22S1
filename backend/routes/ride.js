@@ -22,7 +22,7 @@ router.route('/add').post((req, res) => {
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
-
+//TODO: edit this to match with the current ride attributes (can refer to the add ride details)
 router.route('/update/:id').post((req, res) => {
     Ride.findById(req.params.id)
       .then(driver => {
