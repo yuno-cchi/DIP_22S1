@@ -11,18 +11,17 @@ import ListingDetailScreen from './Screen/ListingDetailScreen';
 import { color } from './Config/Color';
 import SearchBar from './Components/SearchBar';
 import RiderMapScreen from './Screen/RiderMapScreen';
+import CircularButton from './Components/CircularButton';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-
-
 
 
 export default function App() {
   return (
     //Use FlatList for a bunch of cards
     <View style={styles.container}>
-      <ListingDetailScreen />
+      <RiderMapScreen />
     </View>
   );
 }
@@ -33,7 +32,7 @@ const styles = StyleSheet.create({
     backgroundColor: color.primary,
     flexDirection: 'column',
     alignItems: 'center',
-    paddingTop: 30
+    justifyContent: 'center'
   }
 
 });
