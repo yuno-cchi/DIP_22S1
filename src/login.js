@@ -55,13 +55,12 @@ async function callUsers(username, password){
 
                     message = "Welcome Back!";
                     if(Platform.OS == 'android') {
-                        ToastAndroid.show(message, ToastAndroid.LONG);
                     } else { // we're only making an iOS and Android app idt we need alerts for web or windows
                         alert(message);
                     }
 
-                    sessionStorage.setItem("isLoggedIn", true); //setlogin state to true
-                    sessionStorage.setItem("usernameStorage", username); //store username in sessionStorage
+                    sessionStorage.setItem("isLoggedIn", true); //setlogin state to true, set to false once logged out
+                    sessionStorage.setItem("usernameStorage", username); //store username in sessionStorage,
                     var s = sessionStorage.getItem("isLoggedIn");
                     console.log(s);
                     return;
