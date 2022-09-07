@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
         height: '100%'
     },
     map: {
-        height: '80%',
+        height: '70%',
         width: '100%'
     },
 });
