@@ -4,26 +4,52 @@ const Schema = mongoose.Schema;
 
 //for users db
 const rideSchema = new Schema({
-    username:{
+    routename:{
         type: String,
         required: true,
         unique: true,
         trim: true,
         minlength: 3
     },
-    from:{
-        type: String,
+    start:{
+        type: Object,
         required: true,
         unique: false,
         trim: true,
-        minlength: 3
+        latitude: {
+            type: String,
+            required: true,
+            unique: false,
+            trim: true,
+            minlength: 3
+        },
+        longitude: {
+            type: String,
+            required: true,
+            unique: false,
+            trim: true,
+            minlength: 3
+        },
     },
     destination:{
-        type: String,
+        type: Object,
         required: true,
         unique: false,
         trim: true,
-        minlength: 3
+        latitude: {
+            type: String,
+            required: true,
+            unique: false,
+            trim: true,
+            minlength: 3
+        },
+        longitude: {
+            type: String,
+            required: true,
+            unique: false,
+            trim: true,
+            minlength: 3
+        },
     },
     numpassengers:{
         type: String,
@@ -37,7 +63,26 @@ const rideSchema = new Schema({
         required: true,
         unique: false,
         trim: true,
-        minlength: 3
+    },
+    stopPoint:{
+        type: Object,
+        required: true,
+        unique: false,
+        trim: true,
+        latitude: {
+            type: String,
+            required: true,
+            unique: false,
+            trim: true,
+            minlength: 3
+        },
+        longitude: {
+            type: String,
+            required: true,
+            unique: false,
+            trim: true,
+            minlength: 3
+        },
     },
 }, {
     timestamps: true,

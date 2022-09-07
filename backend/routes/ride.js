@@ -1,5 +1,5 @@
 const router = require('express').Router();
-let Ride = require('../models/driverdetails.model');
+let Ride = require('../models/ride.model');
 
 router.route('/').get((req, res) => {
     Ride.find()
@@ -8,13 +8,14 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/add').post((req, res) => {
-    const username = req.body.username;
-    const from = req.body.from;
+    const routename = req.body.routename;
+    const start = req.body.start;
     const destination = req.body.destination;
     const numpassengers = req.body.numpassengers;
     const price = req.body.price;
+    const stopPoint = req.body.stopPoint;
 
-    const newRide = new Ride({username: username, from: from, destination: destination, numpassengers: numpassengers, price: price});
+    const newRide = new Ride({routename: routename, start: start, destination: destination, numpassengers: numpassengers, price: price, stopPoint: stopPoint});
 
     newRide.save()
         .then(() => res.json('ride added!'))
