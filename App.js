@@ -12,13 +12,49 @@
 
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import style from './assets/styles/styles.js';
+import {
+  Text,
+  View, 
+  Image,
+  TextInput,
+  TouchableOpacity,
+  ToastAndroid,
+  Alert,
+  Platform, 
+} from "react-native";
+import styles from './assets/styles/styles.js';
 import Login from './src/login.js';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import NewUser from './src/newUser.js';
+
+const Stack = createNativeStackNavigator();
+
+function LoginScreen({navigation}) {
+  return (
+    <View style={styles.container}>
+      <Login />
+      <TouchableOpacity>
+        <Text style={styles.textLinks} onPress={() => navigation.navigate("NewUser")}>New user?</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+function CreateAccountScreen({navigation}) {
+  return (
+    <NewUser />
+  );
+}
 
 export default function App() {
   
   return (
-      <Login/>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName='Login'>
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="NewUser" component={CreateAccountScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }

@@ -3,9 +3,10 @@
 
     Login screen component
 
-    Last updated 25/8 by Cris
+    Last updated 31/8 by Chee Hean
 
     Changelog:
+    31/8 - connected login screen to database - Chee Hean
     25/8 - added basic string validation to username field, implemented a loginEvent function, added iOS alert functionality, remvoved unneeded dependencies, minor refactoring- Cris 
     24/8 - Created component - Cris
 
@@ -14,6 +15,8 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import axios from 'axios';
+import { NavigationContaner } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import {
     Text,
@@ -59,7 +62,7 @@ async function callUsers(username, password){
                     }
                     return;
                 }
-                else if(i == userdata.length-1 && userdata[i].password != password){
+                else if (i == userdata.length-1 && userdata[i].password != password){
                     
                     message = '(Password) Username invalid / User does not exist!'
                     if(Platform.OS == 'android') {
@@ -158,15 +161,12 @@ export default function Login() {
                 <Text style={styles.textLinks} onPress={(event) => showToast("we're probably not gonna implement this any time soon hehe >:)")}>Forgot Password?</Text> 
             </TouchableOpacity>
 
-            <TouchableOpacity>
-                <Text style={styles.textLinks} onPress={(event) => showToast("Work in Progress! - Account Creation")}>New user?</Text>
-            </TouchableOpacity>
-
             <TouchableOpacity style={styles.buttonNormal} onPress={(event) => loginEvent(user,pass)}>
-                    <Text style={styles.buttonText}>Log in</Text>
+                <Text style={styles.buttonText}>Log in</Text>
             </TouchableOpacity>
 
         </View>
+
 
     )
 }
