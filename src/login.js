@@ -3,10 +3,9 @@
 
     Login screen component
 
-    Last updated 31/8 by Chee Hean
+    Last updated 7/9 by Chee Hean
 
     Changelog:
-    31/8 - connected login screen to database - Chee Hean
     25/8 - added basic string validation to username field, implemented a loginEvent function, added iOS alert functionality, remvoved unneeded dependencies, minor refactoring- Cris 
     24/8 - Created component - Cris
 
@@ -35,7 +34,7 @@ async function callUsers(username, password){
     console.log("input username:" + username);
     console.log("input password:" + password)
 
-    const resp = await axios.get('http://localhost:5000/user');
+    const resp = await axios.get('http://secret-caverns-21869.herokuapp.com/user');
     userdata = resp.data;
     console.log(userdata);
     var message;
@@ -56,13 +55,12 @@ async function callUsers(username, password){
 
                     message = "Welcome Back!";
                     if(Platform.OS == 'android') {
-                        ToastAndroid.show(message, ToastAndroid.LONG);
                     } else { // we're only making an iOS and Android app idt we need alerts for web or windows
                         alert(message);
                     }
 
-                    sessionStorage.setItem("isLoggedIn", true); //setlogin state to true
-                    sessionStorage.setItem("usernameStorage", username); //store username in sessionStorage
+                    sessionStorage.setItem("isLoggedIn", true); //setlogin state to true, set to false once logged out
+                    sessionStorage.setItem("usernameStorage", username); //store username in sessionStorage,
                     var s = sessionStorage.getItem("isLoggedIn");
                     console.log(s);
                     return;
