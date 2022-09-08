@@ -9,7 +9,11 @@ import Card from './Components/Card';
 import { Dimensions } from 'react-native';
 import ListingDetailScreen from './Screen/ListingDetailScreen';
 import { color } from './Config/Color';
-import SearchBar from './Components/SearchBar';
+//import SearchBar from './Components/SearchBar';
+import LocationBar from './Components/LocationBar';
+import DestinationBar from './Components/DestinationBar';
+import FindDriverButton from './Components/FindDriverButton';
+import BackButton from './Components/BackButton';
 import RiderMapScreen from './Screen/RiderMapScreen';
 
 const windowWidth = Dimensions.get('window').width;
@@ -22,7 +26,10 @@ export default function App() {
   return (
     //Use FlatList for a bunch of cards
     <View style={styles.container}>
-      <SearchBar />
+      <BackButton />
+      <LocationBar />
+      <DestinationBar />
+      <FindDriverButton />
     </View>
   );
 }
