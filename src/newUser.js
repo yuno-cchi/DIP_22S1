@@ -37,48 +37,60 @@ export default function NewUser() {
     const [arePasswordsMatched, togglePasswordsMatched] = useState(false);
     const [passwordConfirmErrorMessage, setPasswordConfirmErrorMessage] = useState("");
 
+    const generateUsernameError = (enteredUser) => {
 
+        var usernameError = "";
+        
+        // string length check failed
+        if (!(/^.{5,25}$/.test(enteredUser))) {
+            usernameError += "Username must have 5-25 characters\n";
+        }
+
+        // alphanumeric or fullstop check failed
+        if (!(/^[\.a-zA-Z0-9]+$/.test(enteredUser))){
+            usernameError += "Username must only contain A-Z, 0-9 or fullstops\n";
+        }
+
+        // whitespace in username
+        if (/^.*\s.*$/.test(enteredUser)) {
+            usernameError += "Username must not contain spaces or tabs\n";
+        }
+
+        //fullstop termination check failed
+        if (/^.*\.$/.test(enteredUser)) {
+            usernameError += "Username cannot end with a fullstop\n";
+        }
+
+        //fullstop start check failed
+        if (/^\..*$/.test(enteredUser)) {
+            usernameError += "Username cannot start with a fullstop\n";
+        }
+
+        //consecutive fullstops
+        if (/\b.*\.\..*/.test(enteredUser)) {
+            usernameError += "Username cannot have consecutive fullstops\n";
+        }
+        setUsernameErrorMessage(usernameError);
+    }
 
     const onChangeUser = (enteredUser) => {
         setUsername(enteredUser);
         toggleIsValidUsername(IsValidString(username));
-        var usernameError = "";
+        generateUsernameError(enteredUser);
+        validateInputs(username, password, passwordConfirm);
+    }
 
-        if (!(isValidUsername)) {
-            // string length check failed
-            if (!(/^.{5,25}$/.test(enteredUser))) {
-                usernameError += "\nUsername must have 5-25 characters";
-            }
-
-            // alphanumeric or fullstop check failed
-            if (!(/^[\.a-zA-Z0-9]+$/.test(enteredUser))){
-                usernameError += "\nUsername must only contain A-Z, 0-9 or fullstops";
-            }
-
-            if (/^.*\s.*$/.test(enteredUser)) {
-                usernameError += "\nUsername must not contain spaces";
-            }
-
-            //fullstop termination check failed
-            if (/^.*\.$/.test(enteredUser)) {
-                usernameError += "\nUsername cannot end with a fullstop";
-            }
-
-            //fullstop start check failed
-            if (/^\..*$/.test(enteredUser)) {
-                usernameError += "\nUsername cannot start with a fullstop"
-            }
-
-            //consecutive fullstops
-            if (/\b.*\.\..*/.test(enteredUser)) {
-                usernameError += "\nUsername cannot have consecutive fullstops";
-            }
-        } else {
-            //clear error message (no error)
-            usernameError = "";
+    const generatePasswordError = (enteredPass) => {
+        var passwordError = ""
+        if (!(/^.{6,25}$/.test(enteredPass))) {
+            passwordError += "\nPasswords must be 6-25 characters long";
         }
-        setUsernameErrorMessage(usernameError);
-        //setTimeout(function(){setUsernameErrorMessage(usernameError)}, 300);
+
+        if (!(/^[a-zA-Z0-9\.!?#@$%^&*()\-\+=,<>]+$/.test(enteredPass))) {
+            passwordError += "\nEntered password contains an illegal character"
+        }
+
+        setPasswordErrorMessage(passwordError);
     }
 
     const onChangePass = (enteredPass) => {
@@ -86,22 +98,7 @@ export default function NewUser() {
         //usernames must have 6-25 characters and no spaces
         //some special characters are allowed
         toggleIsValidPassword(/^[a-zA-Z0-9\.!?#@$%^&*()\-\+=,<>]{6,25}$/.test(enteredPass));
-
-        if(!(isValidPassword)) {
-            var passwordError = ""
-            if (!(/^.{6,25}$/.test(enteredPass))) {
-                passwordError += "\nPasswords must be 6-25 characters long";
-            }
-
-            if (!(/^[a-zA-Z0-9\.!?#@$%^&*()\-\+=,<>]+$/.test(enteredPass))) {
-                passwordError += "\nEntered password contains an illegal character"
-            }
-
-        } else {
-            passwordError = ""
-        }
-
-        setPasswordErrorMessage(passwordError);
+        generatePasswordError(enteredPass);
     }
 
     const onChangeConfirmPass = (enteredConfirm) => {
@@ -125,6 +122,8 @@ export default function NewUser() {
 
     const validateInputs = (username, password, passwordConfirm) => {
         var valid = false;
+
+
 
         if (isValidUsername && isValidPassword && (password === passwordConfirm)) {
             //do something here
