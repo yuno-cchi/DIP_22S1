@@ -1,28 +1,39 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View, Button, FlatList, SafeAreaView } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  FlatList,
+  SafeAreaView,
+} from "react-native";
 
-import MapView from 'react-native-maps';
-import Map from './src/mapBlock';
-import AppExample from './src/AppExample';
-import Card from './Components/Card';
-import { Dimensions } from 'react-native';
-import ListingDetailScreen from './Screen/ListingDetailScreen';
-import { color } from './Config/Color';
-import SearchBar from './Components/SearchBar';
-import RiderMapScreen from './Screen/RiderMapScreen';
+import ContactFooter from "./Components/ContactFooter";
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+import MapView from "react-native-maps";
+import Map from "./src/mapBlock";
+import AppExample from "./src/AppExample";
+import Card from "./Components/Card";
+import { Dimensions } from "react-native";
+//import ListingDetailScreen from './Screen/ListingDetailScreen';
+import { color } from "./Config/Color";
+import SearchBar from "./Components/SearchBar";
+import RiderMapScreen from "./Screen/RiderMapScreen";
+import MySlider from "./Components/MySlider";
+import MyModal from "./Components/MyModal.js";
 
-
-
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 export default function App() {
   return (
     //Use FlatList for a bunch of cards
     <View style={styles.container}>
-      <SearchBar />
+      {/* <SearchBar /> */}
+      {/* <MySlider /> */}
+      {/* <MyModal /> */}
+      <ContactFooter />
     </View>
   );
 }
@@ -31,9 +42,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: color.primary,
-    flexDirection: 'column',
-    alignItems: 'center',
-    paddingTop: 30
-  }
-
+    flexDirection: "column",
+    alignItems: "center",
+    paddingTop: 30,
+  },
 });
