@@ -14,11 +14,11 @@
 */
 
 export default function IsValidString(input) {
-    const re = /^[A-Za-z0-9](\.?[a-zA-Z0-9]){5,25}$/;
+    const re = /^[A-Za-z0-9](\.?[a-zA-Z0-9]){4,24}$/;
     // username rules:
     // Username must be 5-25 characters long,
     // and can only contain alphanumerical characters and fullstops.
-    // The username cannot end in a fullstop, and a fullstop cannot be preceeded by another fullstop.
+    // The username cannot start or end in a fullstop, and a fullstop cannot be preceeded by another fullstop.
 
     return re.test(input);
 }

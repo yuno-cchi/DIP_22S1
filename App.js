@@ -13,6 +13,7 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import {
+  StyleSheet,
   Text,
   View, 
   Image,
@@ -33,9 +34,9 @@ const Stack = createNativeStackNavigator();
 function LoginScreen({navigation}) {
   return (
     <View style={styles.container}>
-      <Login />
-      <TouchableOpacity>
-        <Text style={styles.textLinks} onPress={() => navigation.navigate("NewUser")}>New user?</Text>
+      <Login style={{width:"100%"}}/>
+      <TouchableOpacity style={styles.buttonNormal}>
+        <Text style={styles.buttonText} onPress={() => navigation.navigate("Account Creation")}>New user?</Text>
       </TouchableOpacity>
     </View>
   );
@@ -43,18 +44,21 @@ function LoginScreen({navigation}) {
 
 function CreateAccountScreen({navigation}) {
   return (
-    <NewUser />
+    <View style={styles.container}>
+      <NewUser style={{width:"100%"}}/>
+    </View>
   );
 }
 
 export default function App() {
   
   return (
-    <NavigationContainer>
+    <NavigationContainer style={styles}>
       <Stack.Navigator initialRouteName='Login'>
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="NewUser" component={CreateAccountScreen} />
+        <Stack.Screen name="Login" component={LoginScreen}/>
+        <Stack.Screen name="Account Creation" component={CreateAccountScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
+

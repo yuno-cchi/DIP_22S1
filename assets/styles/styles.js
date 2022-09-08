@@ -20,18 +20,15 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
 
     container: {
-        flex: 1,
-        backgroundColor: "#f5f5f5",
+        marginTop: "10%",
+        //backgroundColor: "#f5f5f5",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        width:"100%",
     },
 
     inputView: {
-        // TODO:
-        // fade out placeholder text
-        // white background
-        // 
-
+        marginTop:10,
         backgroundColor: "#ffcccc",
         borderRadius: 5,
         width: "70%",
@@ -55,6 +52,8 @@ export default StyleSheet.create({
     textLinks: {
         fontSize: 15,
         marginBottom:5,
+        alignContent: "center",
+        justifyContent: "center",
     },
     
     buttonNormal: {
@@ -71,5 +70,12 @@ export default StyleSheet.create({
         marginTop:30,
         height:50,
         color:"#f5f5f5",
+        alignContent: "center",
+        justifyContent: "center",
+    },
+
+    errorText: {
+        color:"#ff0000",
+        fontStyle:'italic',
     }
 })

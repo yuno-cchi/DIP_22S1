@@ -15,8 +15,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import axios from 'axios';
-import { NavigationContaner } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import {
     Text,
@@ -141,7 +139,6 @@ export default function Login() {
     return (
         // login stuff goes HERE
         <View style={styles.container}>
-
             <Image style={styles.logoView} source={require("../assets/img/placeholder.png")}/>
             <StatusBar style="auto" />
 
@@ -171,6 +168,8 @@ export default function Login() {
             <TouchableOpacity style={styles.buttonNormal} onPress={(event) => loginEvent(user,pass)}>
                 <Text style={styles.buttonText}>Log in</Text>
             </TouchableOpacity>
+
+            
 
         </View>
 
