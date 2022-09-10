@@ -3,23 +3,23 @@ import { TextInput, StyleSheet } from "react-native";
 import { color } from "../Config/Color";
 
 
-export default function SearchBar({ style }) {
+export default function DestinationBar() {
 
     return (
 
         <TextInput
-            style={[styles.searchBar, style]}
-            placeholder="Where to?..."
+            style={styles.destinationBar}
+            placeholder="Destination"
             keyboardType="default"
         />
     );
 }
 
 const styles = StyleSheet.create({
-    searchBar: {
-        height: '5%',
+    destinationBar: {
+        height: '6%',
         width: '60%',
-        borderRadius: 20,
+        borderRadius: 90,
         backgroundColor: color.lightGray,
         borderColor: color.black,
         borderWidth: 2,

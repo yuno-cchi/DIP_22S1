@@ -1,12 +1,14 @@
 import React from "react";
 import { View, StyleSheet, Text, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
 import { color } from '../Config/Color';
+import Icon from "./Icon";
 
 
-export default function AppButton({ title, onPress, thisColor = 'primary' }) {
+export default function AppButton({ title, onPress, thisColor = 'primary', style, iconName }) {
     return (
-        <TouchableOpacity style={[style.button, { backgroundColor: color[thisColor] }]} onPress={onPress}>
-            <Text style={style.title}>
+        <TouchableOpacity style={[[styles.button, style], { backgroundColor: color[thisColor] }]} onPress={onPress}>
+            {iconName && <Icon name={iconName} />}
+            <Text style={styles.title}>
                 {title}
             </Text>
         </TouchableOpacity>
@@ -14,7 +16,7 @@ export default function AppButton({ title, onPress, thisColor = 'primary' }) {
     );
 }
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
     button: {
         backgroundColor: color.primary,
         borderRadius: 25,

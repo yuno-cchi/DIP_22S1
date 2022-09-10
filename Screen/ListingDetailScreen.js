@@ -3,11 +3,12 @@ import { View, StyleSheet, Image, FlatList, Dimensions } from 'react-native';
 import AppText from "../Components/AppText";
 
 import { color } from '../Config/Color';
-
+import axios from 'axios';
 import Card from "../Components/Card";
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+
 
 const dummyRoute = [
     {
