@@ -4,24 +4,23 @@
 
     last updated 31/8 by Cris
 
+    13/9 - Input validation finally done - Cris
     31/8 - component created - Cris
 
 */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import axios from 'axios';
 import {
     Text,
     View,
-    Image,
     TextInput,
     TouchableOpacity,
-    Alert,
-    Platform,
 } from 'react-native';
 import styles from '../assets/styles/styles.js'
 import IsValidString from './IsValidString';
+import showToast from './showToast.js';
 
 export default function NewUser() {
     const [username, setUsername] = useState("");
@@ -37,38 +36,47 @@ export default function NewUser() {
     const [arePasswordsMatched, togglePasswordsMatched] = useState(false);
     const [passwordConfirmErrorMessage, setPasswordConfirmErrorMessage] = useState("");
 
+    const [readyToSubmit, setReadyToSubmt] = useState(false);
+
     const generateUsernameError = (enteredUser) => {
 
         var usernameError = "";
+        toggleIsValidUsername(true);
         
         // string length check failed
         if (!(/^.{5,25}$/.test(enteredUser))) {
             usernameError += "Username must have 5-25 characters\n";
+            toggleIsValidUsername(false);
         }
 
         // alphanumeric or fullstop check failed
         if (!(/^[\.a-zA-Z0-9]+$/.test(enteredUser))){
             usernameError += "Username must only contain A-Z, 0-9 or fullstops\n";
+            toggleIsValidUsername(false);
         }
 
         // whitespace in username
         if (/^.*\s.*$/.test(enteredUser)) {
             usernameError += "Username must not contain spaces or tabs\n";
+            toggleIsValidUsername(false);
         }
 
         //fullstop termination check failed
         if (/^.*\.$/.test(enteredUser)) {
             usernameError += "Username cannot end with a fullstop\n";
+            toggleIsValidUsername(false);
         }
 
         //fullstop start check failed
         if (/^\..*$/.test(enteredUser)) {
             usernameError += "Username cannot start with a fullstop\n";
+            toggleIsValidUsername(false);
         }
 
         //consecutive fullstops
         if (/\b.*\.\..*/.test(enteredUser)) {
             usernameError += "Username cannot have consecutive fullstops\n";
+            toggleIsValidUsername(false);
         }
         setUsernameErrorMessage(usernameError);
     }
@@ -77,7 +85,6 @@ export default function NewUser() {
         setUsername(enteredUser);
         toggleIsValidUsername(IsValidString(username));
         generateUsernameError(enteredUser);
-        validateInputs(username, password, passwordConfirm);
     }
 
     const generatePasswordError = (enteredPass) => {
@@ -99,37 +106,63 @@ export default function NewUser() {
         //some special characters are allowed
         toggleIsValidPassword(/^[a-zA-Z0-9\.!?#@$%^&*()\-\+=,<>]{6,25}$/.test(enteredPass));
         generatePasswordError(enteredPass);
+        if (enteredPass != passwordConfirm) {
+            generateConfirmPassError(enteredPass);
+        } else {
+            setPasswordConfirmErrorMessage("");
+        }
+    }
+
+    const generateConfirmPassError = (enteredConfirm) => {
+    
+        var passwordConfirmError = ""
+
+        if (!(enteredConfirm == password)) {
+            passwordConfirmError += "Entered Passwords do not match"
+        }
+        setPasswordConfirmErrorMessage(passwordConfirmError);
     }
 
     const onChangeConfirmPass = (enteredConfirm) => {
         setPasswordConfirm(enteredConfirm);
-        togglePasswordsMatched((enteredConfirm == password));
-
-
-        if (!(arePasswordsMatched)) {
-            var passwordConfirmError = ""
-
-            if (!(enteredConfirm == password)) {
-                passwordConfirmError += "Entered Passwords do not match"
-            }
-        } else {
-            passwordConfirmError = ""
-        }
-
-            setPasswordConfirmErrorMessage(passwordConfirmError);
+        togglePasswordsMatched(enteredConfirm == password);
+        generateConfirmPassError(enteredConfirm);
     }
 
+    const sendIt = () => {
+        var toastmessage = "";
+        if (isValidPassword && isValidUsername && arePasswordsMatched) {
+            setUsernameErrorMessage("");
+            setPasswordErrorMessage("");
+            setPasswordConfirmErrorMessage("");
 
-    const validateInputs = (username, password, passwordConfirm) => {
-        var valid = false;
+            // TODO: account creation
+            // placeholder for actual login
+            toastmessage += "Valid -- user: " 
+            toastmessage += username;
+            toastmessage += " pass: "
+            toastmessage += password;
+            showToast(toastmessage);
+            toastmessage = "";
+        } else {
+            onChangeUser(username);
+            onChangePass(password);
+            onChangeConfirmPass(passwordConfirm);
+            
+            //debug
+            if (!(isValidUsername)) {
+                toastmessage += "Username error. "
+            }
+            if (!(isValidPassword)) {
+                toastmessage += "Password error. "
+            }
 
-
-
-        if (isValidUsername && isValidPassword && (password === passwordConfirm)) {
-            //do something here
+            if (!(arePasswordsMatched)) {
+                toastmessage += "Entered passwords do not match."
+            }
+            showToast(toastmessage);
+            toastmessage = "";
         }
-
-        return valid;
     }
 
     return (
@@ -154,7 +187,7 @@ export default function NewUser() {
                     secureTextEntry={true}
                 />
             </View>
-            <Text>{password}</Text>
+            <Text>DEBUG -- Entered: {password}</Text>
             <Text style={styles.errorText}>{passwordErrorMessage}</Text>
             <Text>Confirm Password:</Text>
             <View style={styles.inputView}>
@@ -167,10 +200,10 @@ export default function NewUser() {
                 />
             </View>
             <Text style={styles.errorText}>{passwordConfirmErrorMessage}</Text>
-            <Text>{passwordConfirm}</Text>
-            <View style={styles.buttonNormal}>
+            <Text>DEBUG -- Entered :{passwordConfirm}</Text>
+            <TouchableOpacity style={styles.buttonNormal} onPress={(event) => sendIt()}>
                     <Text style={styles.buttonText}>Create Account</Text>
-            </View>
+            </TouchableOpacity>
         </View>
     );
 }

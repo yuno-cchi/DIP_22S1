@@ -66,6 +66,17 @@ export default StyleSheet.create({
         justifyContent: 'center',
     },
 
+    buttonDisabled: {
+        backgroundColor: "#e76850",
+        borderRadius: 30,
+        width: "70%",
+        height: 45,
+        marginBottom: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+        opacity: 0.5,
+    },
+
     buttonText: {
         marginTop:30,
         height:50,
