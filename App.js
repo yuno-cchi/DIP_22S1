@@ -10,7 +10,7 @@
  * 17/8 - file created
  */
 
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   View, 
@@ -21,6 +21,9 @@ import Login from './src/login.js';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import NewUser from './src/newUser.js';
+import showToast from './src/showToast.js';
+
+
 
 const BeginStack = createNativeStackNavigator();
 
@@ -30,6 +33,10 @@ function LoginScreen({navigation}) {
       <Login style={{width:"100%"}}/>
       <TouchableOpacity style={styles.buttonNormal}>
         <Text style={styles.buttonText} onPress={() => navigation.navigate("Account Creation")}>New user?</Text>
+      </TouchableOpacity>
+  
+      <TouchableOpacity style={styles.buttonNormal}>
+        <Text style={styles.buttonText} onPress={() => showToast("test")}>Debug Stack crosser</Text>
       </TouchableOpacity>
     </View>
   );
