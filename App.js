@@ -11,17 +11,10 @@
  */
 
 import React from 'react';
-import { StatusBar } from 'expo-status-bar';
 import {
-  StyleSheet,
   Text,
   View, 
-  Image,
-  TextInput,
   TouchableOpacity,
-  ToastAndroid,
-  Alert,
-  Platform, 
 } from "react-native";
 import styles from './assets/styles/styles.js';
 import Login from './src/login.js';
@@ -29,7 +22,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import NewUser from './src/newUser.js';
 
-const Stack = createNativeStackNavigator();
+const BeginStack = createNativeStackNavigator();
 
 function LoginScreen({navigation}) {
   return (
@@ -54,10 +47,10 @@ export default function App() {
   
   return (
     <NavigationContainer style={styles}>
-      <Stack.Navigator initialRouteName='Login'>
-        <Stack.Screen name="Login" component={LoginScreen}/>
-        <Stack.Screen name="Account Creation" component={CreateAccountScreen} />
-      </Stack.Navigator>
+      <BeginStack.Navigator initialRouteName='Login'>
+        <BeginStack.Screen name="Login" component={LoginScreen}/>
+        <BeginStack.Screen name="Account Creation" component={CreateAccountScreen} />
+      </BeginStack.Navigator>
     </NavigationContainer>
   );
 }
