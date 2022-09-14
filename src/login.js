@@ -6,6 +6,7 @@
     Last updated 7/9 by Chee Hean
 
     Changelog:
+    7/9 - link to database
     25/8 - added basic string validation to username field, implemented a loginEvent function, added iOS alert functionality, remvoved unneeded dependencies, minor refactoring- Cris 
     24/8 - Created component - Cris
 
@@ -170,7 +171,6 @@ export default function Login() {
             
 
         </View>
-
 
     )
 }
