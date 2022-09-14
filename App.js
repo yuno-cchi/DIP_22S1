@@ -11,6 +11,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import RiderMapScreen from './Screen/RiderMapScreen';
 import ListingDetailScreen from './Screen/ListingDetailScreen';
 import DriverMapScreen from './Screen/DriverMapScreen';
+import CheeHeanDomain from './Screen/CheeHeanDomain';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -45,7 +46,8 @@ const ScreenB = ({ navigation }) => (
 export default function App() {
   return (
     //Use FlatList for a bunch of cards
-    <DriverMapScreen />
+    //<DriverMapScreen />
+    <CheeHeanDomain />
   );
 }
 
