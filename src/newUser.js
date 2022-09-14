@@ -174,6 +174,7 @@ export default function NewUser() {
                     placeholder="username"
                     placeholderTextColor="#fef2f0"
                     onChangeText={(username) => (onChangeUser(username))}
+                    autoCorrect={false}
                 />
             </View>
             <Text style={styles.errorText}>{usernameErrorMessage}</Text>
