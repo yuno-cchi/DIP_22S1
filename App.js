@@ -45,7 +45,7 @@ const ScreenB = ({ navigation }) => (
 export default function App() {
   return (
     //Use FlatList for a bunch of cards
-    <RiderMapScreen />
+    <DriverMapScreen />
   );
 }
 

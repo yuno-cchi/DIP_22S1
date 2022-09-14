@@ -29,6 +29,8 @@ const dummyRoute = [
     }
 ]
 
+const cheeHeanData = [];
+
 const setMarkerColor = (markerArray, key, color1, color2) => {
     for (let index = 0; index < markerArray.length; index++) {
         if (markerArray[index].key === key) {
