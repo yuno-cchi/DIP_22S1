@@ -8,6 +8,9 @@ import { color } from './Config/Color';
 
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
+import RiderMapScreen from './Screen/RiderMapScreen';
+import ListingDetailScreen from './Screen/ListingDetailScreen';
+import DriverMapScreen from './Screen/DriverMapScreen';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -18,23 +21,23 @@ const windowHeight = Dimensions.get('window').height;
 
 const Stack = createStackNavigator();
 const StackNavigator = () => (
-  <Stack.Navigator initialRouteName='TweetDetail'>
-    <Stack.Screen name="Tweets" component={Tweets} />
-    <Stack.Screen name="TweetDetail" component={TweetDetail} />
+  <Stack.Navigator initialRouteName='ScreenA'>
+    <Stack.Screen name="ScreenA" component={Tweets} />
+    <Stack.Screen name="ScreenB" component={TweetDetail} />
 
   </Stack.Navigator>
 )
-const Tweets = ({ navigation }) => (
+const ScrrenA = ({ navigation }) => (
   < View style={{ backgroundColor: 'blue', flex: 1 }}>
-    <Text >Tweets</Text>
-    <Button title="Change Screen" onPress={() => navigation.navigate("TweetDetail")} />
+    <Text >ScreenA</Text>
+    <Button title="Change Screen" onPress={() => navigation.navigate("ScreenB")} />
   </View >
 )
 
-const TweetDetail = ({ navigation }) => (
+const ScreenB = ({ navigation }) => (
   <View style={{ backgroundColor: 'pink', flex: 1 }}>
-    <Text>TweetDetail</Text>
-    <Button title="Change Screen" onPress={() => navigation.navigate("Tweets")} />
+    <Text>ScreenB</Text>
+    <Button title="Change Screen" onPress={() => navigation.navigate("ScreenA")} />
 
   </View>
 )
@@ -42,9 +45,7 @@ const TweetDetail = ({ navigation }) => (
 export default function App() {
   return (
     //Use FlatList for a bunch of cards
-    <NavigationContainer>
-      <StackNavigator />
-    </NavigationContainer>
+    <RiderMapScreen />
   );
 }
 

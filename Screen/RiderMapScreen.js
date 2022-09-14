@@ -11,11 +11,11 @@ import CircularButton from "../Components/CircularButton";
 
 
 // userLocation = Geolocation.getCurrentPosition
-
+let markerKey = 0;
 export default function RiderMapScreen() {
 
     const [coordinate, updateMarker] = useState([]);
-    let markerKey = 0;
+
     const putMarker = (props) => {
         console.log(coordinate)
 
@@ -24,7 +24,8 @@ export default function RiderMapScreen() {
             key: markerKey,
             latitude: props.coordinate.latitude,
             longitude: props.coordinate.longitude
-        })
+        });
+        //มิวมานี่แล้ว
         //markerArray.push(<Marker key={markerKey} coordinate={{ 'latitude': props.nativeEvent.lat, 'longitude': props.nativeEvent.long }} />);
         console.log(markerArray);
         console.log(markerKey);
