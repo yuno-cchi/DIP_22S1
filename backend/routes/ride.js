@@ -26,11 +26,12 @@ router.route('/add').post((req, res) => {
 router.route('/update/:id').post((req, res) => {
     Ride.findById(req.params.id)
       .then(driver => {
-        driver.username = req.body.username;
-        driver.from = req.body.from;
+        driver.routename = req.body.routename;
+        driver.start = req.body.start;
         driver.destination = req.body.destination;
         driver.numpassengers = req.body.numpassengers;
         driver.price = req.body.price;
+        driver.stopPoint = req.body.stopPoint;
         
   
         driver.save()
