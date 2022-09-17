@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Text, View, StyleSheet } from 'react-native';
 import { Marker } from 'react-native-maps';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
@@ -13,52 +13,102 @@ Logs.enableExpoCliLogging();
 //TODO: insert data and userid for its args
 
 var cheeHeanData = [];
+const loadedRoute = [];
 
-async function callRideDetails(){
+async function test(){
 
-    console.log("loading");
+    // console.log("loading");
 
 
-    const resp = await axios.get('http://secret-caverns-21869.herokuapp.com/ride');
-    ridedata = resp.data;
-    console.log(ridedata);
+    // //const resp = axios.get('http://secret-caverns-21869.herokuapp.com/ride');
 
-    console.log(ridedata[0]._id);
+    // var dataSon = [];
 
-    //TODO: do a for loop to compare userid and data 
-    console.log(ridedata[0].start);
+    //  axios.get('http://secret-caverns-21869.herokuapp.com/ride').then(response => response.data).then(data => {
+    //     dataSon = await data;
+    //     //console.log(data);
 
-    //TODO: replace '0' with the id
-    const start = ridedata[0].start;
-    const destination = ridedata[0].destination;
+    //     return dataSon;
+    // });
 
-    const waypoints = ridedata[0].stopPoint;
+    // ridedata = resp.data;
+    // console.log(ridedata);
 
-    var xArray = []
+    // console.log(ridedata[0]._id);
 
-    console.log(waypoints);
+    // //TODO: do a for loop to compare userid and data 
+    // console.log(ridedata[0].start);
 
-    console.log("start point lat: " + start.latitude);
-    console.log("start point long: " + start.longitude);
+    // //TODO: replace '0' with the id
+    // const start = ridedata[0].start;
+    // const destination = ridedata[0].destination;
 
-    for(var x = 0; x < waypoints.latitude.length; x++){
-        console.log("\n");
-        console.log(x + ": " + waypoints.longitude[x]);
-        console.log(x + ": " + waypoints.latitude[x]);
+    // const waypoints = ridedata[0].stopPoint;
+
+    // var xArray = []
+
+    // console.log(waypoints);
+
+    // console.log("start point lat: " + start.latitude);
+    // console.log("start point long: " + start.longitude);
+
+    // for(var x = 0; x < waypoints.latitude.length; x++){
+    //     console.log("\n");
+    //     console.log(x + ": " + waypoints.longitude[x]);
+    //     console.log(x + ": " + waypoints.latitude[x]);
 
         
-        xArray.push({key: x, userID: ridedata[0]._id, latitude: parseFloat(waypoints.latitude[x]), longitude: parseFloat(waypoints.longitude[x]), markerColor: color.red, travelDate: "2022-09-14"})
+    //     loadedRoute.push({key: x, userID: ridedata[0]._id, latitude: parseFloat(waypoints.latitude[x]), longitude: parseFloat(waypoints.longitude[x]), markerColor: color.red, travelDate: "2022-09-14"})
 
-    }
+    // }
 
-    console.log("\n");
-    console.log("end point lat: " + destination.latitude);
-    console.log("end point long: " + destination.longitude);
+    // console.log("\n");
+    // console.log("end point lat: " + destination.latitude);
+    // console.log("end point long: " + destination.longitude);
 
-    return await xArray;
+    // return await xArray;
 }
 
-cheeHeanData = callRideDetails();
+// function getCoordinates(test){
+//     ridedata = test;
+//     console.log(ridedata);
+
+//     console.log(ridedata[0]._id);
+
+//     //TODO: do a for loop to compare userid and data 
+//     console.log(ridedata[0].start);
+
+//     //TODO: replace '0' with the id
+//     const start = ridedata[0].start;
+//     const destination = ridedata[0].destination;
+
+//     const waypoints = ridedata[0].stopPoint;
+
+//     var xArray = []
+
+//     console.log(waypoints);
+
+//     console.log("start point lat: " + start.latitude);
+//     console.log("start point long: " + start.longitude);
+
+//     for(var x = 0; x < waypoints.latitude.length; x++){
+//         console.log("\n");
+//         console.log(x + ": " + waypoints.longitude[x]);
+//         console.log(x + ": " + waypoints.latitude[x]);
+
+        
+//         loadedRoute.push({key: x, userID: ridedata[0]._id, latitude: parseFloat(waypoints.latitude[x]), longitude: parseFloat(waypoints.longitude[x]), markerColor: color.red, travelDate: "2022-09-14"})
+
+//     }
+
+//     console.log("\n");
+//     console.log("end point lat: " + destination.latitude);
+//     console.log("end point long: " + destination.longitude);
+
+//     return xArray;
+// }
+
+cheeHeanData = [];
 
 const dummyRoute = [
     {
@@ -102,19 +152,94 @@ const setMarkerColor = (markerArray, key, color1, color2) => {
 const GOOGLE_MAPS_APIKEY = 'AIzaSyBYDEKY12RzWyP0ACQEpgsr4up2w3CjH88';
 const dummyDesti = { latitude: 1.3295337383405326, longitude: 103.86303846371023 }
 
+
 export default function CheeHeanDomain() {
     const [routeVisible, setRouteVisible] = useState(false);
     const [desti, setDesti] = useState();
-    (async () => {
-        console.log("hi");
-        await callRideDetails();
-        console.log(await cheeHeanData);
-        const [loadedRoute, setMarker] = useState(cheeHeanData);
-    })()
-    // console.log("hu");
-    // console.log(cheeHeanData);
-    // const [loadedRoute, setMarker] = useState(cheeHeanData);
 
+
+    const [loading, setLoading] = useState(true)
+    const [loadedRoute, setMarker] = useState(null);
+
+    useEffect(() => {
+        //const resp = axios.get('http://secret-caverns-21869.herokuapp.com/ride');
+        console.log("work pls");
+
+        getCoordinates();
+
+    }, []);
+
+    async function getCoordinates(){
+         axios.get('http://secret-caverns-21869.herokuapp.com/ride').then(response => response.data).then(data => {
+            dataSon = data;
+            console.log(data);
+
+            console.log(dataSon[1]._id);
+
+            //TODO: do a for loop to compare userid and data 
+            console.log(dataSon[1].start);
+
+            //TODO: replace '0' with the id
+            const start = dataSon[1].start;
+            const destination = dataSon[1].destination;
+
+            const waypoints = dataSon[1].stopPoint;
+
+            var xArray = []
+
+            console.log(waypoints);
+
+            console.log("start point lat: " + start.latitude);
+            console.log("start point long: " + start.longitude);
+
+            for(var x = 0; x < waypoints.latitude.length; x++){
+                console.log("\n");
+                console.log(x + ": " + waypoints.longitude[x]);
+                console.log(x + ": " + waypoints.latitude[x]);
+
+                
+                xArray.push({key: x, userID: dataSon[1]._id, latitude: parseFloat(waypoints.latitude[x]), longitude: parseFloat(waypoints.longitude[x]), markerColor: color.red, travelDate: "2022-09-14"})
+
+            }
+
+            console.log("\n printing xArray:");
+            console.log(xArray);
+
+            console.log("\n printing dummyRoute:");
+            console.log(dummyRoute);
+
+
+
+            //setMarker(dummyRoute)
+            setMarker(xArray)
+            setLoading(false) 
+        }).catch(err=>console.log(err)) ;
+    }
+
+    // console.log("loading");
+    
+    // var dataSon = [];
+
+    // const resp = axios.get('http://secret-caverns-21869.herokuapp.com/ride');
+    // ridedata = resp.data;
+    // console.log(ridedata);
+
+
+    // (async () => {
+    //     console.log("hi");
+    //     await callRideDetails();
+    //     console.log(await cheeHeanData);
+    //     console.log("\n");
+    //     console.log(dummyRoute);
+    //     const [loadedRoute, setMarker] = useState(cheeHeanData);
+    // })()
+    //console.log("hu");
+    //console.log(loadedRoute);
+     //const [loadedRoute, setMarker] = useState(dummyRoute);
+
+    if (loading) { 
+    return (<View style={styles.container && <Text>Loading, Please Wait...</Text>}></View>)
+    }
 
     return (
         <View style={styles.container}>
