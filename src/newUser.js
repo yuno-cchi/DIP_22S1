@@ -21,6 +21,9 @@ import {
 import styles from '../assets/styles/styles.js'
 import IsValidString from './IsValidString';
 import showToast from './showToast.js';
+import { Logs } from 'expo'
+
+Logs.enableExpoCliLogging();
 
 export default function NewUser() {
     const [username, setUsername] = useState("");
@@ -170,6 +173,7 @@ export default function NewUser() {
 
 
     async function addUserToDb(username, password){
+        console.log("load");
         axios({
             method: 'post',
             url: 'http://secret-caverns-21869.herokuapp.com/user/add',
@@ -177,9 +181,20 @@ export default function NewUser() {
             data: {
                 username: username,
                 password: password,
+
+                //TODO: add email attribute
+                email: "testemail@gmail.com",
                 
             }
-          });
+          }).then((response) => {
+            console.log(response);
+
+            //TODO: log user into the app
+            
+
+          }, (error) => {
+            console.log(error);
+          });;
     }
 
     return (
