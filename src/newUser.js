@@ -142,6 +142,9 @@ export default function NewUser() {
             toastmessage += username;
             toastmessage += " pass: "
             toastmessage += password;
+
+            addUserToDb(username, password);
+
             showToast(toastmessage);
             toastmessage = "";
         } else {
@@ -163,6 +166,20 @@ export default function NewUser() {
             showToast(toastmessage);
             toastmessage = "";
         }
+    }
+
+
+    async function addUserToDb(username, password){
+        axios({
+            method: 'post',
+            url: 'http://secret-caverns-21869.herokuapp.com/user/add',
+            headers: {}, 
+            data: {
+                username: username,
+                password: password,
+                
+            }
+          });
     }
 
     return (
