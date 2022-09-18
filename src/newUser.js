@@ -2,8 +2,9 @@
 
     screen for creating new users, to be added to database
 
-    last updated 31/8 by Cris
+    last updated 31/8 by Chee Hean
 
+    18/9 - Linked sign up page to the backend, can finally add users to db - CH
     13/9 - Input validation finally done - Cris
     31/8 - component created - Cris
 
@@ -190,7 +191,7 @@ export default function NewUser() {
             console.log(response);
 
             //TODO: log user into the app
-            
+
 
           }, (error) => {
             console.log(error);
