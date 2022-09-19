@@ -8,8 +8,9 @@ import SearchBar from "../Components/SearchBar";
 import Icon from '../Components/Icon';
 import AppButton from "../Components/AppButton";
 import CircularButton from "../Components/CircularButton";
+import { color } from '../Config/Color';
 
-
+//Implment point of interest search function
 // userLocation = Geolocation.getCurrentPosition
 let markerKey = 0;
 export default function RiderMapScreen() {
@@ -25,7 +26,7 @@ export default function RiderMapScreen() {
             latitude: props.coordinate.latitude,
             longitude: props.coordinate.longitude
         });
-        //มิวมานี่แล้ว
+
         //markerArray.push(<Marker key={markerKey} coordinate={{ 'latitude': props.nativeEvent.lat, 'longitude': props.nativeEvent.long }} />);
         console.log(markerArray);
         console.log(markerKey);
@@ -49,16 +50,26 @@ export default function RiderMapScreen() {
             </MapView>
             <CircularButton name='user' onPress={() => { console.log('user pressed') }} style={styles.dashButton} />
             <SearchBar style={styles.searchBar} />
+            <View style={styles.tab}>
+                <AppButton
+                    style={styles.sendButton}
+                    thisColor={color.danger}
+                    title="Send"
+                    onPress={() => {
+                        const startCoor = coordinate[0];
+                        const destCoor = coordinate[1];
+                        const key = 99;
+                        //Add these key, destCoor, startCoor into the DB
+                        updateMarker([])
+                    }} />
+            </View>
         </View >
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        width: '100%',
-        height: '100%',
-        justifyContent: 'flex-start',
-        alignItems: 'center'
+        ...StyleSheet.absoluteFill
     },
     map: {
 
@@ -74,5 +85,18 @@ const styles = StyleSheet.create({
         height: 40,
         left: 30,
         marginTop: 60
+    },
+    tab: {
+        position: 'absolute',
+        backgroundColor: color.lightGray,
+        width: '100%',
+        height: 200,
+        bottom: 0
+    },
+    sendButton: {
+        position: 'absolute',
+        bottom: 40,
+        width: 200,
+        right: 20
     }
 })

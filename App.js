@@ -12,6 +12,7 @@ import RiderMapScreen from './Screen/RiderMapScreen';
 import ListingDetailScreen from './Screen/ListingDetailScreen';
 import DriverMapScreen from './Screen/DriverMapScreen';
 import CheeHeanDomain from './Screen/CheeHeanDomain';
+import AppButton from './Components/AppButton';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -22,31 +23,43 @@ const windowHeight = Dimensions.get('window').height;
 
 const Stack = createStackNavigator();
 const StackNavigator = () => (
-  <Stack.Navigator initialRouteName='ScreenA'>
-    <Stack.Screen name="ScreenA" component={Tweets} />
-    <Stack.Screen name="ScreenB" component={TweetDetail} />
+  <Stack.Navigator
+    initialRouteName='ScreenA'
+    screenOptions={{
+      headerBackButtonMenuEnabled: false,
+      headerShown: false
+    }}>
+    <Stack.Screen name="ScreenA" component={ScrrenA} />
+    <Stack.Screen name="ScreenB" component={ScreenB} />
 
   </Stack.Navigator>
 )
 const ScrrenA = ({ navigation }) => (
   < View style={{ backgroundColor: 'blue', flex: 1 }}>
-    <Text >ScreenA</Text>
-    <Button title="Change Screen" onPress={() => navigation.navigate("ScreenB")} />
+    <DriverMapScreen />
+    <AppButton
+      title="Rider Screen>>"
+      onPress={() => navigation.navigate("ScreenB")}
+      style={styles.switchScreen} />
   </View >
 )
 
 const ScreenB = ({ navigation }) => (
   <View style={{ backgroundColor: 'pink', flex: 1 }}>
-    <Text>ScreenB</Text>
-    <Button title="Change Screen" onPress={() => navigation.navigate("ScreenA")} />
-
+    <RiderMapScreen />
+    <AppButton
+      title="<<Driver Screen"
+      onPress={() => navigation.navigate("ScreenA")}
+      style={styles.switchScreen} />
   </View>
 )
 
 export default function App() {
   return (
     //Use FlatList for a bunch of cards
-    <DriverMapScreen />
+    <NavigationContainer>
+      <StackNavigator />
+    </NavigationContainer>
     //<CheeHeanDomain />
   );
 }
@@ -58,6 +71,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  switchScreen: {
+    position: 'absolute',
+    bottom: 120
   }
 
 });
