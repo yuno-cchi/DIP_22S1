@@ -36,7 +36,8 @@ const TabNavigator = () => (
   >
     <Tab.Screen name="Account" component={MyAccountScreen} />
     <Tab.Screen name="RiderMap" component={RiderMapScreen} />
-    <Tab.Screen name="DriverMap" component={DriverMapScreen} />
+    <Tab.Screen name="DriverMap" component={CheeHeanDomain} />
+    {/* <Tab.Screen name="DriverMap" component={DriverMapScreen} /> */}
     <Tab.Screen name="Calendar" component={CalendarScreen} />
   </Tab.Navigator>
 )
@@ -55,7 +56,7 @@ const StackNavigator = () => (
 )
 const ScrrenA = ({ navigation }) => (
   < View style={{ backgroundColor: 'blue', flex: 1 }}>
-    <DriverMapScreen />
+    <CheeHeanDomain />
     <AppButton
       title="Rider Screen>>"
       onPress={() => navigation.navigate("ScreenB")}

@@ -154,7 +154,7 @@ const dummyDesti = { latitude: 1.3295337383405326, longitude: 103.86303846371023
 
 
 export default function CheeHeanDomain() {
-    const [routeVisible, setRouteVisible] = useState(false);
+    const [routeVisible, setRouteVisible] = useState(null);
     const [desti, setDesti] = useState();
 
 
@@ -165,8 +165,6 @@ export default function CheeHeanDomain() {
     const [loadedRoute, setMarker] = useState(null);
 
     useEffect(() => {
-        console.log("work pls");
-
         //call API retrieve function to retrieve the coordinates
         getCoordinates();
 
@@ -212,33 +210,21 @@ export default function CheeHeanDomain() {
             //setting retrieved coordinates from the db to the map
             setMarker(xArray)
 
+            console.log("work pls");
+
             //set loading state to false and display the map along w its data
             setLoading(false)
+
+            setRouteVisible(false);
+
         }).catch(err => console.log(err));
     }
+    console.log("destination visible: " + routeVisible);
 
-    // console.log("loading");
-
-    // var dataSon = [];
-
-    // const resp = axios.get('http://secret-caverns-21869.herokuapp.com/ride');
-    // ridedata = resp.data;
-    // console.log(ridedata);
-
-
-    // (async () => {
-    //     console.log("hi");
-    //     await callRideDetails();
-    //     console.log(await cheeHeanData);
-    //     console.log("\n");
-    //     console.log(dummyRoute);
-    //     const [loadedRoute, setMarker] = useState(cheeHeanData);
-    // })()
-    //console.log("hu");
-    //console.log(loadedRoute);
-    //const [loadedRoute, setMarker] = useState(dummyRoute);
 
     if (loading) {
+        //setRouteVisible(false);
+        console.log(routeVisible);
         return (<View style={styles.container && <Text>Loading, Please Wait...</Text>}></View>)
     }
 
@@ -258,7 +244,7 @@ export default function CheeHeanDomain() {
                     strokeColor={color.red}
                     destination={routeVisible ? desti : null}
                 />
-                {loadedRoute.map(({ key, latitude, longitude, markerColor }) => (
+                {routeVisible ? loadedRoute.map(({ key, latitude, longitude, markerColor }) => (
                     <Marker
                         key={key}
                         coordinate={{ 'latitude': latitude, 'longitude': longitude }}
@@ -273,7 +259,7 @@ export default function CheeHeanDomain() {
 
                             setDesti({ latitude, longitude })
                         }}
-                    />))}
+                    />)) : null}
 
             </MapView>
             <AppButton style={styles.showRoute} title="Route" onPress={() => setRouteVisible(!routeVisible)} />
