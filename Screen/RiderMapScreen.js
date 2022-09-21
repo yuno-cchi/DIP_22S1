@@ -77,9 +77,6 @@ const styles = StyleSheet.create({
     container: {
         ...StyleSheet.absoluteFill
     },
-    map: {
-
-    },
     searchBar: {
         position: 'absolute',
         marginTop: 60,
