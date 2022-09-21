@@ -19,10 +19,6 @@ app.use(cors());
 app.use(express.json());
 
 
-app.get("/", (req, res) => {
-    res.send("Hello World")
-})
-
 const uri = process.env.ATLAS_URI;
 
 mongoose.connect(uri);
@@ -46,7 +42,7 @@ app.use('/ride', rideRouter);
 
 
 
-app.listen(port, ()=> {
+app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
 });
 

@@ -2,47 +2,48 @@ const router = require('express').Router();
 let Ride = require('../models/ride.model');
 
 router.route('/').get((req, res) => {
-    Ride.find()
-        .then(users => res.json(users))
-        .catch(err => res.status(400).json('Error: ' + err));
+  Ride.find()
+    .then(users => res.json(users))
+    .catch(err => res.status(400).json('Error: ' + err));
 });
 
 router.route('/add').post((req, res) => {
-    const routename = req.body.routename;
-    const start = req.body.start;
-    const destination = req.body.destination;
-    const numpassengers = req.body.numpassengers;
-    const price = req.body.price;
-    const stopPoint = req.body.stopPoint;
+  const routename = req.body.routename;
+  const start = req.body.start;
+  const destination = req.body.destination;
+  const numpassengers = req.body.numpassengers;
+  const price = req.body.price;
+  const stopPoint = req.body.stopPoint;
 
-    const newRide = new Ride({routename: routename, start: start, destination: destination, numpassengers: numpassengers, price: price, stopPoint: stopPoint});
+  const newRide = new Ride({ routename: routename, start: start, destination: destination, numpassengers: numpassengers, price: price, stopPoint: stopPoint });
 
-    newRide.save()
-        .then(() => res.json('ride added!'))
-        .catch(err => res.status(400).json('Error: ' + err));
+  newRide.save()
+    .then(() => res.json('ride added!'))
+    .catch(err => res.status(400).json('Error: ' + err));
 });
 
-//TODO: edit this to match with the current ride attributes (can refer to the add ride details)
+
 router.route('/update/:id').post((req, res) => {
-    Ride.findById(req.params.id)
-      .then(driver => {
-        driver.username = req.body.username;
-        driver.from = req.body.from;
-        driver.destination = req.body.destination;
-        driver.numpassengers = req.body.numpassengers;
-        driver.price = req.body.price;
-        
-  
-        driver.save()
-          .then(() => res.json('ride updated!'))
-          .catch(err => res.status(400).json('Error: ' + err));
-      })
-      .catch(err => res.status(400).json('Error: ' + err));
+  Ride.findById(req.params.id)
+    .then(driver => {
+      driver.routename = req.body.routename;
+      driver.start = req.body.start;
+      driver.destination = req.body.destination;
+      driver.numpassengers = req.body.numpassengers;
+      driver.price = req.body.price;
+      driver.stopPoint = req.body.stopPoint;
+
+
+      driver.save()
+        .then(() => res.json('ride updated!'))
+        .catch(err => res.status(400).json('Error: ' + err));
+    })
+    .catch(err => res.status(400).json('Error: ' + err));
 });
 
 
 router.route('/:id').delete((req, res) => {
-    Ride.findByIdAndDelete(req.params.id)
+  Ride.findByIdAndDelete(req.params.id)
     .then(() => res.json('ride deleted.'))
     .catch(err => res.status(400).json('Error: ' + err));
 });
