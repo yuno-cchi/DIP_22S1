@@ -139,30 +139,34 @@ export default function NewUser() {
     }
 
     const generateEmailError = (enteredEmail) => {
-	   var emailError = "";
-      var emailRegex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+	    var emailError = "";
+        var emailRegex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
 
-      if (!(emailRegex.test(enteredEmail))) {
-         emailError += "Not a valid email address";
-      } else {
-         emailError = "";
-      }
+        if (!(emailRegex.test(enteredEmail))) {
+            emailError += "Not a valid email address";
+        } else {
+            emailError = "";
+        }
+
+        setEmailErrorMessage(emailError);
+      
     }
    
    const onChangeEmail = (enteredEmail) => {
-      var emailRegex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
-	   setEmail(enteredEmail);
-      toggleIsValidEmail(emailRegex.test(enteredEmail);
-      generateEmailError(enteredEmail);
+        var emailRegex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+	    setEmail(enteredEmail);
+        toggleIsValidEmail(emailRegex.test(enteredEmail));
+        generateEmailError(enteredEmail);
     }
 
 
     const sendIt = () => {
         var toastmessage = "";
-        if (isValidPassword && isValidUsername && arePasswordsMatched) {
+        if (isValidPassword && isValidUsername && arePasswordsMatched && isValidEmail) {
             setUsernameErrorMessage("");
             setPasswordErrorMessage("");
             setPasswordConfirmErrorMessage("");
+            setEmailErrorMessage("");
 
             // TODO: account creation
             // placeholder for actual login
@@ -179,8 +183,13 @@ export default function NewUser() {
             onChangeUser(username);
             onChangePass(password);
             onChangeConfirmPass(passwordConfirm);
-            
+            onChangeEmail(email);
+
             //debug
+            if(!(isValidEmail)) {
+                toastmessage += "Email error. "
+            }
+
             if (!(isValidUsername)) {
                 toastmessage += "Username error. "
             }
@@ -225,16 +234,17 @@ export default function NewUser() {
     return (
         <View style={styles.container}>
             <Text>Enter e-mail Address</Text>
-	         <View style={styles.inputView}>
-	    	   <TextInput
-	    	      style={styles.TextInput}
-	    	      placeholder="email"
-	            placeholderTextColor="#fef2f0"
-	            onChangeText{(email) => (onChangeEmail(email))}
-	            autoCorrect={false}
-	         />
-            <Text style={styles.errorTest}>{usernameErrorMessage}</Text> 
-	         <Text>Set Username:</Text>
+	        <View style={styles.inputView}>
+	    	    <TextInput
+	    	        style={styles.TextInput}
+	    	        placeholder="email"
+	                placeholderTextColor="#fef2f0"
+                    onChangeText={(email) => (onChangeEmail(email))}
+	                autoCorrect={false}
+	            />
+            </View>
+            <Text style={styles.errorText}>{emailErrorMessage}</Text> 
+	        <Text>Set Username:</Text>
             <View style={styles.inputView}>
                <TextInput 
                   style={styles.TextInput}
