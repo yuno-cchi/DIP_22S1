@@ -9,6 +9,7 @@ import Icon from '../Components/Icon';
 import AppButton from "../Components/AppButton";
 import CircularButton from "../Components/CircularButton";
 import { color } from '../Config/Color';
+import BottomTab from "../Components/BottomTab";
 
 //Implment point of interest search function
 // userLocation = Geolocation.getCurrentPosition
@@ -16,6 +17,9 @@ let markerKey = 0;
 export default function RiderMapScreen() {
 
     const [coordinate, updateMarker] = useState([]);
+
+
+    //A function to get lastest markerKey from DB
 
     const putMarker = (props) => {
         console.log(coordinate)
@@ -50,7 +54,7 @@ export default function RiderMapScreen() {
             </MapView>
             <CircularButton name='user' onPress={() => { console.log('user pressed') }} style={styles.dashButton} />
             <SearchBar style={styles.searchBar} />
-            <View style={styles.tab}>
+            <BottomTab>
                 <AppButton
                     style={styles.sendButton}
                     thisColor={color.danger}
@@ -62,7 +66,9 @@ export default function RiderMapScreen() {
                         //Add these key, destCoor, startCoor into the DB
                         updateMarker([])
                     }} />
-            </View>
+            </BottomTab>
+
+
         </View >
     );
 }

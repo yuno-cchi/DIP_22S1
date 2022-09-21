@@ -16,6 +16,7 @@ import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { color } from '../Config/Color';
 import AppButton from '../Components/AppButton';
+import BottomTab from '../Components/BottomTab';
 
 const dummyRoute = [
     {
@@ -156,13 +157,14 @@ export default function DriverMapScreen() {
 
 
             </MapView>
-            <View style={styles.tab}>
+            <BottomTab>
                 <AppButton style={styles.showRoute} thisColor={buttonColor} title="Route" onPress={() => {
                     setRouteVisible(!routeVisible)
                     setButtonColor(buttonColor === color.primary ? color.secondary : color.primary)
                 }} />
                 <Marker draggable />
-            </View>
+            </BottomTab>
+
 
         </View>
 
