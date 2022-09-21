@@ -175,7 +175,7 @@ export default function NewUser() {
             toastmessage += " pass: "
             toastmessage += password;
 
-            addUserToDb(username, password);
+            addUserToDb(username, password, email);
 
             showToast(toastmessage);
             toastmessage = "";
@@ -206,7 +206,7 @@ export default function NewUser() {
     }
 
 
-    async function addUserToDb(username, password){
+    async function addUserToDb(username, password, email){
         console.log("load");
         axios({
             method: 'post',
@@ -215,9 +215,7 @@ export default function NewUser() {
             data: {
                 username: username,
                 password: password,
-
-                //TODO: add email attribute
-                email: "testemail@gmail.com",
+                email: email,
                 
             }
           }).then((response) => {
