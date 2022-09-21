@@ -15,7 +15,7 @@ Logs.enableExpoCliLogging();
 var cheeHeanData = [];
 const loadedRoute = [];
 
-async function test(){
+async function test() {
 
     // console.log("loading");
 
@@ -57,7 +57,7 @@ async function test(){
     //     console.log(x + ": " + waypoints.longitude[x]);
     //     console.log(x + ": " + waypoints.latitude[x]);
 
-        
+
     //     loadedRoute.push({key: x, userID: ridedata[0]._id, latitude: parseFloat(waypoints.latitude[x]), longitude: parseFloat(waypoints.longitude[x]), markerColor: color.red, travelDate: "2022-09-14"})
 
     // }
@@ -96,7 +96,7 @@ async function test(){
 //         console.log(x + ": " + waypoints.longitude[x]);
 //         console.log(x + ": " + waypoints.latitude[x]);
 
-        
+
 //         loadedRoute.push({key: x, userID: ridedata[0]._id, latitude: parseFloat(waypoints.latitude[x]), longitude: parseFloat(waypoints.longitude[x]), markerColor: color.red, travelDate: "2022-09-14"})
 
 //     }
@@ -172,8 +172,8 @@ export default function CheeHeanDomain() {
 
     }, []);
 
-    async function getCoordinates(){
-         axios.get('http://secret-caverns-21869.herokuapp.com/ride').then(response => response.data).then(data => {
+    async function getCoordinates() {
+        axios.get('http://secret-caverns-21869.herokuapp.com/ride').then(response => response.data).then(data => {
             dataSon = data;
             console.log(data);
 
@@ -195,13 +195,13 @@ export default function CheeHeanDomain() {
             console.log("start point lat: " + start.latitude);
             console.log("start point long: " + start.longitude);
 
-            for(var x = 0; x < waypoints.latitude.length; x++){
+            for (var x = 0; x < waypoints.latitude.length; x++) {
                 console.log("\n");
                 console.log(x + ": " + waypoints.longitude[x]);
                 console.log(x + ": " + waypoints.latitude[x]);
 
                 //pushing retrieved destination coordinates and mapping them out into an array called xArray
-                xArray.push({key: x, userID: dataSon[1]._id, latitude: parseFloat(waypoints.latitude[x]), longitude: parseFloat(waypoints.longitude[x]), markerColor: color.red, travelDate: "2022-09-14"})
+                xArray.push({ key: x, userID: dataSon[1]._id, latitude: parseFloat(waypoints.latitude[x]), longitude: parseFloat(waypoints.longitude[x]), markerColor: color.red, travelDate: "2022-09-14" })
 
             }
 
@@ -213,12 +213,12 @@ export default function CheeHeanDomain() {
             setMarker(xArray)
 
             //set loading state to false and display the map along w its data
-            setLoading(false) 
-        }).catch(err=>console.log(err)) ;
+            setLoading(false)
+        }).catch(err => console.log(err));
     }
 
     // console.log("loading");
-    
+
     // var dataSon = [];
 
     // const resp = axios.get('http://secret-caverns-21869.herokuapp.com/ride');
@@ -236,10 +236,10 @@ export default function CheeHeanDomain() {
     // })()
     //console.log("hu");
     //console.log(loadedRoute);
-     //const [loadedRoute, setMarker] = useState(dummyRoute);
+    //const [loadedRoute, setMarker] = useState(dummyRoute);
 
-    if (loading) { 
-    return (<View style={styles.container && <Text>Loading, Please Wait...</Text>}></View>)
+    if (loading) {
+        return (<View style={styles.container && <Text>Loading, Please Wait...</Text>}></View>)
     }
 
     return (
