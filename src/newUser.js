@@ -40,6 +40,11 @@ export default function NewUser() {
     const [arePasswordsMatched, togglePasswordsMatched] = useState(false);
     const [passwordConfirmErrorMessage, setPasswordConfirmErrorMessage] = useState("");
 
+    const [email, setEmail] = useState("");
+    const [isValidEmail, toggleIsValidEmail] = useState(false);
+
+    const [emailErrorMessage, setEmailErrorMessage] = useState("");
+
     const [readyToSubmit, setReadyToSubmt] = useState(false);
 
     const generateUsernameError = (enteredUser) => {
@@ -133,6 +138,25 @@ export default function NewUser() {
         generateConfirmPassError(enteredConfirm);
     }
 
+    const generateEmailError = (enteredEmail) => {
+	   var emailError = "";
+      var emailRegex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+
+      if (!(emailRegex.test(enteredEmail))) {
+         emailError += "Not a valid email address";
+      } else {
+         emailError = "";
+      }
+    }
+   
+   const onChangeEmail = (enteredEmail) => {
+      var emailRegex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+	   setEmail(enteredEmail);
+      toggleIsValidEmail(emailRegex.test(enteredEmail);
+      generateEmailError(enteredEmail);
+    }
+
+
     const sendIt = () => {
         var toastmessage = "";
         if (isValidPassword && isValidUsername && arePasswordsMatched) {
@@ -200,26 +224,36 @@ export default function NewUser() {
 
     return (
         <View style={styles.container}>
-            <Text>Set Username:</Text>
+            <Text>Enter e-mail Address</Text>
+	         <View style={styles.inputView}>
+	    	   <TextInput
+	    	      style={styles.TextInput}
+	    	      placeholder="email"
+	            placeholderTextColor="#fef2f0"
+	            onChangeText{(email) => (onChangeEmail(email))}
+	            autoCorrect={false}
+	         />
+            <Text style={styles.errorTest}>{usernameErrorMessage}</Text> 
+	         <Text>Set Username:</Text>
             <View style={styles.inputView}>
-                <TextInput 
-                    style={styles.TextInput}
-                    placeholder="username"
-                    placeholderTextColor="#fef2f0"
-                    onChangeText={(username) => (onChangeUser(username))}
-                    autoCorrect={false}
-                />
+               <TextInput 
+                  style={styles.TextInput}
+                  placeholder="username"
+                  placeholderTextColor="#fef2f0"
+                  onChangeText={(username) => (onChangeUser(username))}
+                  autoCorrect={false}
+               />
             </View>
             <Text style={styles.errorText}>{usernameErrorMessage}</Text>
             <Text>Set Password:</Text>
             <View style={styles.inputView}>
-                <TextInput 
-                    style={styles.TextInput}
-                    placeholder="password"
-                    placeholderTextColor="#fef2f0"
-                    onChangeText={(password) => (onChangePass(password))}
-                    secureTextEntry={true}
-                />
+               <TextInput 
+                  style={styles.TextInput}
+                  placeholder="password"
+                  placeholderTextColor="#fef2f0"
+                  onChangeText={(password) => (onChangePass(password))}
+                  secureTextEntry={true}
+               />
             </View>
             <Text>DEBUG -- Entered: {password}</Text>
             <Text style={styles.errorText}>{passwordErrorMessage}</Text>
@@ -241,4 +275,3 @@ export default function NewUser() {
         </View>
     );
 }
-
