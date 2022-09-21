@@ -15,9 +15,14 @@ import { StyleSheet, Text, View, Button, FlatList, SafeAreaView } from 'react-na
 import Login from './src/login';
 import { TouchableOpacity } from 'react-native';
 import DriverMapScreen from './Screen/DriverMapScreen';
+import ReccommendedRouteScreen from './Screen/ReccommendedRouteScreen';
+
 export default function App() {
   return (
-    <DriverMapScreen />
+    <View>
+      <ReccommendedRouteScreen />
+
+    </View>
     /*
     <View style={styles.container}>
       <Login style={{ width: "100%" }} />

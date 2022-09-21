@@ -5,6 +5,8 @@ import AppText from "../Components/AppText";
 import { color } from '../Config/Color';
 import axios from 'axios';
 import Card from "../Components/Card";
+import AppButton from "../Components/AppButton";
+import BottomTab from "../Components/BottomTab";
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -50,8 +52,14 @@ const dummyRoute = [
     }
 ]
 
+//getShorestRoute return an array of coordinates that are nearest the argument coordinates which, in turn, is the shorest route to pass through.
 
-export default function ListingDetailScreen() {
+const getShortestRoute = (passengerNumber, coordinates) => {
+
+    return (null);
+}
+
+export default function ReccommendedRouteScreen() {
 
     const [initialDummyRoute, setDummyroute] = useState(dummyRoute);
     const [isRefrehing, setRefreshing] = useState(false);
@@ -70,8 +78,11 @@ export default function ListingDetailScreen() {
                 renderItem={({ item }) => <Card title={item.routeName} subTitle={item.routeDescription} route={item} onPress={() => deleteThisCard(item)} />}
                 refreshing={isRefrehing}
                 onRefresh={() => setDummyroute(dummyRoute)}
-            >
-            </FlatList>
+            />
+            <BottomTab>
+                <AppButton title='Confirm' style={styles.confirmButton} />
+
+            </BottomTab>
         </View >
     );
 }
@@ -79,18 +90,27 @@ export default function ListingDetailScreen() {
 const styles = StyleSheet.create({
     container: {
         minWidth: '80%',
-        height: windowHeight
+        height: windowHeight,
+        backgroundColor: 'white',
+        alignItems: 'center'
     },
     title: {
         marginTop: 15,
         marginBottom: 10,
         marginLeft: 20
     },
+    topFreeSpace: {
+        height: 50,
+        width: '100%',
+    },
     subtitle: {
         color: color.green,
         marginTop: 10,
         marginBottom: 10,
         marginLeft: 20
+    },
+    confirmButton: {
+        backgroundColor: 'gray'
     }
 
 })

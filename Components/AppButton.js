@@ -4,9 +4,9 @@ import { color } from '../Config/Color';
 import Icon from "./Icon";
 
 
-export default function AppButton({ title, onPress, thisColor = color.primary, style, iconName }) {
+export default function AppButton({ title, onPress, style, iconName }) {
     return (
-        <TouchableOpacity style={[[styles.button, style], { backgroundColor: thisColor }]} onPress={onPress}>
+        <TouchableOpacity style={[[styles.button, style]]} onPress={onPress}>
             {iconName && <Icon name={iconName} />}
             <Text style={styles.title}>
                 {title}
