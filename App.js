@@ -12,9 +12,13 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View, Button, FlatList, SafeAreaView } from 'react-native';
-
+import Login from './src/login';
+import { TouchableOpacity } from 'react-native';
+import DriverMapScreen from './Screen/DriverMapScreen';
 export default function App() {
   return (
+    <DriverMapScreen />
+    /*
     <View style={styles.container}>
       <Login style={{ width: "100%" }} />
       <TouchableOpacity style={styles.buttonNormal}>
@@ -25,6 +29,7 @@ export default function App() {
         <Text style={styles.buttonText} onPress={() => showToast("test")}>Debug Stack crosser</Text>
       </TouchableOpacity>
     </View>
+    */
   );
 }
 
@@ -47,17 +52,22 @@ function SelectUserTypeScreen({ navigation }) {
 }
 
 
-export default function App() {
+// export default function App() {
 
-  return (
-    <NavigationContainer style={styles}>
-      <BeginStack.Navigator initialRouteName='Login'>
-        <BeginStack.Screen name="Login" component={LoginScreen} />
-        <BeginStack.Screen name="Account Creation" component={CreateAccountScreen} />
-      </BeginStack.Navigator>
-    </NavigationContainer>
-  );
+//   return (
+//     <NavigationContainer style={styles}>
+//       <BeginStack.Navigator initialRouteName='Login'>
+//         <BeginStack.Screen name="Login" component={LoginScreen} />
+//         <BeginStack.Screen name="Account Creation" component={CreateAccountScreen} />
+//       </BeginStack.Navigator>
+//     </NavigationContainer>
+//   );
 
 
-}
+// }
+const styles = StyleSheet.create({
+  container: {
+
+  }
+})
 
