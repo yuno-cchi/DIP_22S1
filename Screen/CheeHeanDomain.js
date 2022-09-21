@@ -158,13 +158,16 @@ export default function CheeHeanDomain() {
     const [desti, setDesti] = useState();
 
 
+    //set page loading state to true (meaning the map will not be showing as its loading)
     const [loading, setLoading] = useState(true)
+
+    //set the route variable setMarker to null first, will use to retrieve the driver destination coords
     const [loadedRoute, setMarker] = useState(null);
 
     useEffect(() => {
-        //const resp = axios.get('http://secret-caverns-21869.herokuapp.com/ride');
         console.log("work pls");
 
+        //call API retrieve function to retrieve the coordinates
         getCoordinates();
 
     }, []);
@@ -197,21 +200,19 @@ export default function CheeHeanDomain() {
                 console.log(x + ": " + waypoints.longitude[x]);
                 console.log(x + ": " + waypoints.latitude[x]);
 
-                
+                //pushing retrieved destination coordinates and mapping them out into an array called xArray
                 xArray.push({key: x, userID: dataSon[1]._id, latitude: parseFloat(waypoints.latitude[x]), longitude: parseFloat(waypoints.longitude[x]), markerColor: color.red, travelDate: "2022-09-14"})
 
             }
 
+            //for debug: printing the retrieved destinations onto the log
             console.log("\n printing xArray:");
             console.log(xArray);
 
-            console.log("\n printing dummyRoute:");
-            console.log(dummyRoute);
-
-
-
-            //setMarker(dummyRoute)
+            //setting retrieved coordinates from the db to the map
             setMarker(xArray)
+
+            //set loading state to false and display the map along w its data
             setLoading(false) 
         }).catch(err=>console.log(err)) ;
     }
