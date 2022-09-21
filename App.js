@@ -21,6 +21,7 @@ import Login from './src/login.js';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import NewUser from './src/newUser.js';
+import SelectUserType from './src/selectUserType.js';
 import showToast from './src/showToast.js';
 
 
@@ -50,6 +51,17 @@ function CreateAccountScreen({navigation}) {
   );
 }
 
+function SelectUserTypeScreen({navigation}) {
+  return (
+    <View style={styles.container}>
+      <SelectUserType style={{width:"100%"}} />
+    </View>
+
+    //TODO: Add this to the stack
+    )
+}
+
+
 export default function App() {
   
   return (
@@ -60,5 +72,7 @@ export default function App() {
       </BeginStack.Navigator>
     </NavigationContainer>
   );
+
+
 }
 
