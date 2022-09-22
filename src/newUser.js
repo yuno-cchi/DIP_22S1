@@ -221,7 +221,13 @@ export default function NewUser() {
           }).then((response) => {
             console.log(response);
 
-            //TODO: log user into the app
+
+            AsyncStorage.multiSet([
+                ["isLoggedIn", true] //setlogin state to true, set to false once logged out
+                ["name", username]
+            ]) 
+
+            //TODO: log user into the app 
 
 
           }, (error) => {
