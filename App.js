@@ -16,6 +16,10 @@ import CheeHeanDomain from './Screen/CheeHeanDomain';
 import AppButton from './Components/AppButton';
 import MyAccountScreen from './Screen/MyAcountScreen';
 import CalendarScreen from './Screen/CalendarScreen';
+import SideMenu from './Screen/SideMenu';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+
+
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -26,6 +30,20 @@ const windowHeight = Dimensions.get('window').height;
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+const Drawer = createDrawerNavigator();
+
+function DrawerNavigator() {
+    return (
+      <Drawer.Navigator
+        useLegacyImplementation
+        drawerContent={(props) => <SideMenu {...props} />}
+      >
+      <Drawer.Screen name = "Drawer" component={TabNavigator} />
+      </Drawer.Navigator>
+    );
+}
+
+
 
 const TabNavigator = () => (
   <Tab.Navigator
@@ -78,7 +96,8 @@ export default function App() {
   return (
     //Use FlatList for a bunch of cards
     <NavigationContainer>
-      <TabNavigator />
+      
+      <DrawerNavigator/>
     </NavigationContainer>
     //<CheeHeanDomain />
   );
@@ -95,6 +114,6 @@ const styles = StyleSheet.create({
   switchScreen: {
     position: 'absolute',
     bottom: 120
-  }
+  } 
 
 });

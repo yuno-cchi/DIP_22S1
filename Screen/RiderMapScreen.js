@@ -10,10 +10,12 @@ import AppButton from "../Components/AppButton";
 import CircularButton from "../Components/CircularButton";
 import { color } from '../Config/Color';
 import BottomTab from "../Components/BottomTab";
-
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
 //Implment point of interest search function
 // userLocation = Geolocation.getCurrentPosition
 let markerKey = 0;
+
 export default function RiderMapScreen() {
 
     const [coordinate, updateMarker] = useState([]);
@@ -52,7 +54,7 @@ export default function RiderMapScreen() {
                 {coordinate.map(({ key, latitude, longitude }) => <Marker key={key} coordinate={{ 'latitude': latitude, 'longitude': longitude }} />)}
 
             </MapView>
-            <CircularButton name='user' onPress={() => { console.log('user pressed') }} style={styles.dashButton} />
+            <CircularButton name='user' onPress={() => console.log("aabc")} style={styles.dashButton} />
             <SearchBar style={styles.searchBar} />
             <BottomTab>
                 <AppButton
