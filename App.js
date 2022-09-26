@@ -10,19 +10,38 @@
  * 17/8 - file created
  */
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { StyleSheet, Text, View, Button, FlatList, SafeAreaView } from 'react-native';
 import Login from './src/login';
 import { TouchableOpacity } from 'react-native';
 import DriverMapScreen from './Screen/DriverMapScreen';
 import ReccommendedRouteScreen from './Screen/ReccommendedRouteScreen';
+import TopTab from './Components/TopTab';
+import SearchBar from './Components/SearchBar';
+import TopSearchBar from './Components/TopSearchBar';
+import DriverPutRoute from './Screen/DriverPutRoute';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 export default function App() {
-  return (
-    <View>
-      <ReccommendedRouteScreen />
 
-    </View>
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <GooglePlacesAutocomplete
+        styles={styles.googleTextBox}
+        placeholder='Search'
+        onPress={(data, details = null) => {
+          // 'details' is provided when fetchDetails = true
+          console.log(data, details);
+        }}
+        query={{
+          key: 'AIzaSyBYDEKY12RzWyP0ACQEpgsr4up2w3CjH88',
+          language: 'en',
+        }}
+      />
+
+    </SafeAreaView>
+
     /*
     <View style={styles.container}>
       <Login style={{ width: "100%" }} />
@@ -72,7 +91,21 @@ function SelectUserTypeScreen({ navigation }) {
 // }
 const styles = StyleSheet.create({
   container: {
-
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'black',
+    flex: 1
+  },
+  searchBar: {
+    height: 20,
+    width: 300,
+    borderRadius: 10,
+  },
+  googleTextBox: {
+    container: {
+      width: 300,
+    },
   }
+
 })
 
