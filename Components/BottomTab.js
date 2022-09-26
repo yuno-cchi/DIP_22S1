@@ -2,9 +2,9 @@ import React, { Children } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { color } from '../Config/Color'
 
-export default function BottomTab({ children }) {
+export default function BottomTab({ children, style }) {
     return (
-        <View style={styles.tab}>
+        <View style={[styles.tab, style]}>
             {children}
         </View>
     );

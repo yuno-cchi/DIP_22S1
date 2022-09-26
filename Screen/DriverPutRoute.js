@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import BottomTab from '../Components/BottomTab';
 import AppButton from '../Components/AppButton';
@@ -11,70 +11,160 @@ import TopTab from '../Components/TopTab';
 import SearchBar from '../Components/SearchBar';
 import { Formik } from 'formik';
 import { TextInput } from 'react-native';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import * as Location from 'expo-location';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
+const GOOGLE_API_KEY = 'AIzaSyBYDEKY12RzWyP0ACQEpgsr4up2w3CjH88';
+const ANIMATE_SPEED = 1000;
+const ANIMATE_ZOOM = 1;
+const INITIAL_POINT = null;
+const STROKE_WIDTH = 5;
+const STROKE_COLOR = color.danger;
 
 
-const findCoordinatesFromLocationNames = (locationNames) => {
+const animateToLocation = (coordinates) => {
+    mapViewRef.animateToRegion(
+        coordinates
+        , ANIMATE_SPEED);
+}
+
+const getCoordinatesKey = () => {
 
 }
 
 
+const storeInDatabase = (startLocation, endLocation, date, key, userID) => {
+
+
+}
 
 export default function DriverPutRoute() {
-    const ref = useRef();
 
+    const [date, setDate] = useState(new Date());
+    const [mode, setMode] = useState('datetime');
+    const [selectedDate, setSelectedDate] = useState();
+
+    const [location, setLocation] = useState(null);
+    const [errorMsg, setErrorMsg] = useState(null);
+
+    const [startLocation, setStartLocation] = useState();
+    const [endLocation, setEndLocation] = useState();
+
+
+    //Ask for userLocation on the first render
     useEffect(() => {
-        ref.current?.setAddressText('Some Text');
+        (
+            async () => {
+                let { status } = await Location.requestForegroundPermissionsAsync();
+                if (status !== 'granted') {
+                    setErrorMsg('Permission to access location was denied');
+                    return;
+                }
+
+                let location = await Location.getCurrentPositionAsync();
+                setLocation(location);
+                const userCoordinate = { latitude: location.coords.latitude, longitude: location.coords.longitude };
+                console.log(userCoordinate);
+            });
     }, []);
+
+
+
     return (
         <View style={styles.container}>
-            <MapView style={styles.container}>
+            <MapView
+                ref={(mapView) => { mapViewRef = mapView; }}
+                style={styles.container}
+                showsUserLocation={true}
+            >
+                <MapViewDirections
+                    origin={startLocation}
+                    destination={endLocation}
+                    apikey={GOOGLE_API_KEY}
+                    strokeWidth={STROKE_WIDTH}
+                    strokeColor={STROKE_COLOR}
+                />
             </MapView>
-            <TopTab>
-                <Formik
-                    initialValues={{ startLocation: "", endLocation: "" }}
-                    onSubmit={(value) => console.log(value)}
-                >
-                    {
-                        ({ handleChange, handleSubmit }) => (
 
+            <View style={styles.locationTextBoxContainer}>
+                <GooglePlacesAutocomplete
+                    GooglePlacesDetailsQuery={{ fields: "geometry" }}
+                    styles={styles.endTextBox}
+                    placeholder='End Location'
+                    onPress={(data, details) => {
+                        // 'details' is provided when fetchDetails = true
+                        coordinates = { latitude: details.geometry.location.lat, longitude: details.geometry.location.lng }
+                        setEndLocation(coordinates);
+                        console.log(coordinates);
+                        animateToLocation(coordinates);
+                    }}
+                    fetchDetails={true}
+                    query={{
+                        key: GOOGLE_API_KEY,
+                        language: 'en',
+                        components: 'country:sg'
+                    }}
+                    nearbyPlacesAPI="GoogleReverseGeocodingQuery" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+                    GooglePlacesSearchQuery={{
+                        // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+                        rankby: 'distance',
+                    }}
+                    enablePoweredByContainer={false}
 
-                            <React.Fragment>
-                                <TextInput
-                                    style={styles.textInput}
-                                    placeholder="Start location"
-                                    onChangeText={handleChange("startLocation")}
-                                >
+                />
+                <GooglePlacesAutocomplete
+                    GooglePlacesDetailsQuery={{ fields: "geometry" }}
+                    fetchDetails={true}
+                    styles={styles.startTextBox}
+                    placeholder='Start Location'
+                    onPress={(data, details) => {
+                        // 'details' is provided when fetchDetails = true
+                        coordinates = { latitude: details.geometry.location.lat, longitude: details.geometry.location.lng }
+                        setStartLocation(coordinates);
+                        console.log(coordinates);
+                        animateToLocation(coordinates);
 
-                                </TextInput>
-                                <TextInput
-                                    style={styles.textInput}
-                                    placeholder="End location"
-                                    onChangeText={handleChange("endLocation")}
-                                >
+                    }}
 
-                                </TextInput>
-                                <AppButton
-                                    title="Confirm"
-                                    style={styles.confirmButtonStyle}
-                                    onPress={(value) => { handleSubmit(value) }}
-                                    textSize={14} >
-                                </AppButton>
+                    query={{
+                        key: GOOGLE_API_KEY,
+                        language: 'en',
+                        components: 'country:sg'
+                    }}
+                    nearbyPlacesAPI="GooglePlacesSearch" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+                    GooglePlacesSearchQuery={{
+                        // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+                        rankby: 'distance',
+                    }}
+                    enablePoweredByContainer={false}
+                />
 
+            </View>
+            <BottomTab style={{ alignItems: 'center' }}>
+                <AppButton style={styles.showRoute}
+                    title="Go"
+                    onPress={() => {
+                        console.log(startLocation, endLocation, selectedDate);
+                        //Send the two coordiantes to the Database, then move to a new screen
+                    }}
+                />
+                <View style={styles.timeContainer}>
+                    <DateTimePicker
+                        value={date}
+                        mode={mode}
+                        onChange={(event, selectedDate) => {
+                            setSelectedDate(selectedDate);
+                            console.log(selectedDate);
+                            var d = new Date(selectedDate);
+                            console.log('Hour: ', d.getUTCHours(), ' ', 'Minute: ', d.getUTCMinutes(), 'Sec: ', d.getUTCSeconds());
+                            //Need to offset by -4 hours, this is UTC time
+                        }}
+                        display="compact"
+                        style={{ width: 200, transform: [{ scale: 1.5, }], }}
+                    />
+                </View>
 
-                            </React.Fragment>
-                        )
-
-                    }
-                </Formik >
-            </TopTab>
-
-
-            <BottomTab>
-                <AppButton style={styles.showRoute} title="Route" onPress={() => {
-                    setRouteVisible(!routeVisible)
-                    setButtonColor(buttonColor === color.primary ? color.secondary : color.primary)
-                }} />
-                <Marker draggable />
             </BottomTab>
         </View>
     );
@@ -87,8 +177,15 @@ const styles = StyleSheet.create({
     showRoute: {
         position: 'absolute',
         bottom: 40,
+        width: 80,
+        right: 20,
+        height: 80,
+    },
+    showLoc: {
+        position: 'absolute',
+        bottom: 40,
         width: 200,
-        right: 20
+        left: 20
     },
     tab: {
         position: 'absolute',
@@ -107,12 +204,15 @@ const styles = StyleSheet.create({
         padding: 15
     },
     confirmButtonStyle: {
+        position: 'absolute',
         backgroundColor: color.primary,
         color: color.primary,
         height: 40,
-        width: 100,
+        width: 80,
         borderRadius: 15,
-        padding: 5
+        padding: 5,
+        right: 10,
+        top: 130
     },
     textInput: {
         backgroundColor: color.white,
@@ -121,5 +221,46 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         margin: 4,
         padding: 5
+    },
+    locationTextBoxContainer: {
+        top: 50,
+        right: 0,
+        backgroundColor: color.black
+    },
+    startTextBox: {
+        container: {
+            position: 'absolute',
+            width: 300,
+            height: 200,
+            top: 0,
+            right: 20,
+
+        },
+    },
+    endTextBox: {
+        container: {
+            position: 'absolute',
+            width: 300,
+            height: 200,
+            top: 60,
+            right: 20,
+
+        },
+    },
+    textboxContainer: {
+        width: '100%',
+        height: 400,
+        backgroundColor: color.lightGray,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    timeContainer: {
+        position: 'absolute',
+        left: 0,
+        top: 10,
+        width: 300,
+        height: 100,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })
