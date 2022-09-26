@@ -60,10 +60,23 @@ async function callUsers(username, password){
                         alert(message);
                     }
 
-                    sessionStorage.setItem("isLoggedIn", true); //setlogin state to true, set to false once logged out
-                    sessionStorage.setItem("usernameStorage", username); //store username in sessionStorage,
-                    var s = sessionStorage.getItem("isLoggedIn");
-                    console.log(s);
+                    
+                    //TO TEST: react-native AsyncStorage for username and isLoggedIn state
+                    AsyncStorage.multiSet([
+                        ["isLoggedIn", true] //setlogin state to true, set to false once logged out
+                        ["name", username]
+                    ]) //store username in sessionStorage,
+
+                    //TO TEST: retrieving username and isLoggedIn state from AsyncStorage
+                    AsyncStorage.multiGet(['isLoggedIn', 'name']).then((data) => {
+                        let loggedInStatus = data[0][1];
+                        let username = data[1][1];
+                    
+                        
+                        console.log(loggedInStatus);
+                        console.log("username: " + username);
+                    });
+
                     return;
                 }
                 else if (i == userdata.length-1 && userdata[i].password != password){
