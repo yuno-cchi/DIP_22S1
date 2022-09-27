@@ -36,59 +36,9 @@ export default function App() {
 
 
   return (
-    /*
-    <SafeAreaView style={{ flex: 1 }}>
-      <MapView
-        style={styles.maps}
-        ref={(map) => { TheMap = map; }}
-        initialRegion={{
-          latitude: 6.8523,
-          longitude: 79.8895,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-      />
-      <TouchableOpacity
-        style={{ backgroundColor: 'black', height: 30, width: 100, bottom: 30, position: 'absolute' }}
-        onPress={() => TheMap.animateToRegion({
-          latitude: 1,
-          longitude: 1
-        }, 1000)}>
-        <Text>Tap</Text>
-      </TouchableOpacity>
-    </SafeAreaView>
-    */
+
     <DriverPutRoute />
-    /*
-     <View style={styles.container}>
- 
- 
-       <View style={styles.textboxContainer}>
-         <GooglePlacesAutocomplete
-           styles={styles.googleTextBox}
-           placeholder='Search'
-           onPress={(data, details = null) => {
-             // 'details' is provided when fetchDetails = true
-             console.log(data, details);
- 
-           }}
- 
-           query={{
-             key: 'AIzaSyBYDEKY12RzWyP0ACQEpgsr4up2w3CjH88',
-             language: 'en',
-             components: 'country:sg'
-           }}
-           nearbyPlacesAPI="GooglePlacesSearch" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
-           GooglePlacesSearchQuery={{
-             // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
-             rankby: 'distance',
-           }}
-           enablePoweredByContainer={false}
-         />
- 
-       </View>
-     </View>
-         */
+
     /*
     <View style={styles.container}>
       <Login style={{ width: "100%" }} />

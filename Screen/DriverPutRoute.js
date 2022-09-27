@@ -21,12 +21,16 @@ const ANIMATE_ZOOM = 1;
 const INITIAL_POINT = null;
 const STROKE_WIDTH = 5;
 const STROKE_COLOR = color.danger;
-
+const DATE_MODE = "datetime"
 
 const animateToLocation = (coordinates) => {
     mapViewRef.animateToRegion(
         coordinates
         , ANIMATE_SPEED);
+}
+
+const getTimeInLocalTimeZone = (UTCTime) => {
+
 }
 
 const getCoordinatesKey = () => {
@@ -41,9 +45,8 @@ const storeInDatabase = (startLocation, endLocation, date, key, userID) => {
 
 export default function DriverPutRoute() {
 
-    const [date, setDate] = useState(new Date());
-    const [mode, setMode] = useState('datetime');
-    const [selectedDate, setSelectedDate] = useState();
+
+    const [selectedDate, setSelectedDate] = useState(new Date());
 
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
@@ -51,6 +54,10 @@ export default function DriverPutRoute() {
     const [startLocation, setStartLocation] = useState();
     const [endLocation, setEndLocation] = useState();
 
+
+    //WORK IN-PROGRESS: DYNAMIC MARKERS
+    const [startDetail, setStartDetail] = useState();
+    const [endDetail, setEndDetail] = useState();
 
     //Ask for userLocation on the first render
     useEffect(() => {
@@ -85,6 +92,18 @@ export default function DriverPutRoute() {
                     strokeWidth={STROKE_WIDTH}
                     strokeColor={STROKE_COLOR}
                 />
+                {startLocation &&
+                    <Marker
+                        title="Start"
+                        description='yeah'
+                        coordinate={startLocation}
+                    />}
+                {endLocation &&
+                    <Marker
+                        title="End"
+                        description='qwe'
+                        coordinate={endLocation}
+                    />}
             </MapView>
 
             <View style={styles.locationTextBoxContainer}>
@@ -99,6 +118,7 @@ export default function DriverPutRoute() {
                         console.log(coordinates);
                         animateToLocation(coordinates);
                     }}
+                    on
                     fetchDetails={true}
                     query={{
                         key: GOOGLE_API_KEY,
@@ -134,7 +154,6 @@ export default function DriverPutRoute() {
                     }}
                     nearbyPlacesAPI="GooglePlacesSearch" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
                     GooglePlacesSearchQuery={{
-                        // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
                         rankby: 'distance',
                     }}
                     enablePoweredByContainer={false}
@@ -151,17 +170,23 @@ export default function DriverPutRoute() {
                 />
                 <View style={styles.timeContainer}>
                     <DateTimePicker
-                        value={date}
-                        mode={mode}
+                        value={selectedDate}
+                        mode={DATE_MODE}
                         onChange={(event, selectedDate) => {
                             setSelectedDate(selectedDate);
                             console.log(selectedDate);
-                            var d = new Date(selectedDate);
+                            const d = new Date(selectedDate);
                             console.log('Hour: ', d.getUTCHours(), ' ', 'Minute: ', d.getUTCMinutes(), 'Sec: ', d.getUTCSeconds());
                             //Need to offset by -4 hours, this is UTC time
                         }}
+                        minimumDate={new Date()}
+                        accentColor={color.red}
+                        textColor={color.medium}
                         display="compact"
-                        style={{ width: 200, transform: [{ scale: 1.5, }], }}
+                        style={{
+                            width: 200,
+                            transform: [{ scale: 1.5, }],
+                        }}
                     />
                 </View>
 

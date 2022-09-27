@@ -19,14 +19,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         height: 220,
-        padding: 0,
+        padding: 3,
         backgroundColor: color.lightGray,
 
     },
     smallContainer: {
         width: '100%',
         alignItems: 'flex-end',
-        marginTop: 0,
-        marginRight: 0,
+        marginTop: 10,
+        marginRight: 10,
     }
 })
