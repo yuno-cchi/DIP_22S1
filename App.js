@@ -25,6 +25,7 @@ import { color } from './Config/Color';
 import * as Location from 'expo-location';
 import MapView from 'react-native-maps';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import DatePicker from 'react-native-date-picker';
 
 //navigator.geolocation = require('react-native-geolocation-service');
 
@@ -38,7 +39,35 @@ export default function App() {
   return (
 
     <DriverPutRoute />
+    // <View style={{flex: 1, backgroundColor: 'red'}}>
+    //   <DatePicker
+    //     date={date}
+    //     //mode={DATE_MODE}
+    //     //mode="datetime"
+    //     onDateChange={setDate}
+    //     // onDateChange={(event, selectedDate) => {
+    //     //     setSelectedDate(selectedDate);
+    //     //     console.log(selectedDate);
+    //     //     const d = new Date(selectedDate);
+            
+    //     //     var hora = d.getUTCHours()+8;
+    //     //     if (hora >= 24){
+    //     //         hora = hora - 24
+    //     //     }
 
+    //     //     console.log('Hour: ', hora, ' ', 'Minute: ', d.getUTCMinutes(), 'Sec: ', d.getUTCSeconds());
+    //     //     //Need to offset by -4 hours, this is UTC time
+    //     // }}
+    //     // minimumDate={new Date()}
+    //     // accentColor={color.red}
+    //     // textColor={color.medium}
+    //     // display="default"
+    //     // style={{
+    //     //     width: 200,
+    //     //     transform: [{ scale: 1.5, }],
+    //     // }}
+    // />
+    // </View>
     /*
     <View style={styles.container}>
       <Login style={{ width: "100%" }} />

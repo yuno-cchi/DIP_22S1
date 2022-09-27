@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text, Button, Platform } from 'react-native';
 import BottomTab from '../Components/BottomTab';
 import AppButton from '../Components/AppButton';
 import MapView from 'react-native-maps';
@@ -13,7 +13,10 @@ import { Formik } from 'formik';
 import { TextInput } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import * as Location from 'expo-location';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker, { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+
+// DateTimePickerAndroid.open(params: AndroidNativeProps);
+// DateTimePickerAndroid.dismiss(model: AndroidNativeProps['mode']);
 
 const GOOGLE_API_KEY = 'AIzaSyBYDEKY12RzWyP0ACQEpgsr4up2w3CjH88';
 const ANIMATE_SPEED = 1000;
@@ -22,6 +25,8 @@ const INITIAL_POINT = null;
 const STROKE_WIDTH = 5;
 const STROKE_COLOR = color.danger;
 const DATE_MODE = "datetime"
+
+console.log("loading")
 
 const animateToLocation = (coordinates) => {
     mapViewRef.animateToRegion(
@@ -46,13 +51,20 @@ const storeInDatabase = (startLocation, endLocation, date, key, userID) => {
 export default function DriverPutRoute() {
 
 
-    const [selectedDate, setSelectedDate] = useState(new Date());
+    //for datetimepicker
+    const [selecteddate, setSelectedDate] = useState(new Date());
+    const [mode, setMode] = useState('date');
+    //const [show, setShow] = useState(false);
+    const [text, setText] = useState('Empty');
 
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
 
     const [startLocation, setStartLocation] = useState();
     const [endLocation, setEndLocation] = useState();
+
+    const [loading, setLoading] = useState(true)
+
 
 
     //WORK IN-PROGRESS: DYNAMIC MARKERS
@@ -61,22 +73,87 @@ export default function DriverPutRoute() {
 
     //Ask for userLocation on the first render
     useEffect(() => {
-        (
-            async () => {
-                let { status } = await Location.requestForegroundPermissionsAsync();
-                if (status !== 'granted') {
-                    setErrorMsg('Permission to access location was denied');
-                    return;
-                }
-
-                let location = await Location.getCurrentPositionAsync();
-                setLocation(location);
-                const userCoordinate = { latitude: location.coords.latitude, longitude: location.coords.longitude };
-                console.log(userCoordinate);
-            });
+        getLiveLocation();
     }, []);
 
+    //function for swapping date/time
+    const showMode = (currentMode) =>{
+        setShow(true);
+        setMode(currentMode);
+    }
+    //function for handling date onchange
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate || selecteddate;
+        setShow(Platform.OS == 'android')
+        setSelectedDate(currentDate);
 
+        let tempDate = new Date(currentDate);
+        let fDate = tempDate.getFullYear() + '/' + (tempDate.getMonth()+1) + '/' + tempDate.getDay();
+        let fTime = 'Hours: ' + tempDate.getHours() + ' | Minutes: ' + tempDate.getMinutes();
+        setText(fDate + '\n' + fTime);
+        console.log(fDate + ' || ' + fTime)
+    }
+
+    async function getLiveLocation(){
+        console.log("getting location")
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+            setErrorMsg('Permission to access location was denied');
+            return;
+        }
+
+        let location = await Location.getCurrentPositionAsync();
+        setLocation(location);
+
+        setLoading(false)
+
+        const userCoordinate = { latitude: location.coords.latitude, longitude: location.coords.longitude };
+        console.log(userCoordinate);
+           
+    }
+
+    const functionSetTime = () => {{
+        return <DateTimePicker
+            value={new Date()}
+            //mode={DATE_MODE}
+            mode= "time"
+            onChange={(event, selectedDate) => {
+                setSelectedDate(selectedDate);
+                console.log(selectedDate);
+                const d = new Date(selectedDate);
+
+                // setTimeDisplay(true);
+
+                // let tempDate = new Date(currentDate);
+                // let fDate = tempDate.getFullYear() + '/' + (tempDate.getMonth()+1) + '/' + tempDate.getDay();
+                // let fTime = 'Hours: ' + tempDate.getHours() + ' | Minutes: ' + tempDate.getMinutes();
+                
+                var hora = d.getUTCHours()+8;
+                if (hora >= 24){
+                    hora = hora - 24
+                }
+
+                console.log('Hour: ', d.getUTCHours()-16, ' ', 'Minute: ', d.getUTCMinutes(), 'Sec: ', d.getUTCSeconds());
+                //Need to offset by -4 hours, this is UTC time
+            }}
+            minimumDate={new Date()}
+            accentColor={color.red}
+            textColor={color.medium}
+            display="default"
+            style={{
+                width: 200,
+                transform: [{ scale: 1.5, }],
+            }}
+        />
+        }
+    }
+
+
+    if (loading) {
+        //setRouteVisible(false);
+        console.log("attenzione");
+        return <View><Text>Loading, please wait</Text></View>
+    }
 
     return (
         <View style={styles.container}>
@@ -168,26 +245,78 @@ export default function DriverPutRoute() {
                         //Send the two coordiantes to the Database, then move to a new screen
                     }}
                 />
-                <View style={styles.timeContainer}>
-                    <DateTimePicker
+
+                {/* <View style={styles.timeContainer}>
+                    <DatePicker
                         value={selectedDate}
-                        mode={DATE_MODE}
+                        //mode={DATE_MODE}
+                        mode="time"
                         onChange={(event, selectedDate) => {
                             setSelectedDate(selectedDate);
                             console.log(selectedDate);
                             const d = new Date(selectedDate);
-                            console.log('Hour: ', d.getUTCHours(), ' ', 'Minute: ', d.getUTCMinutes(), 'Sec: ', d.getUTCSeconds());
+                            
+                            var hora = d.getUTCHours()+8;
+                            if (hora >= 24){
+                                hora = hora - 24
+                            }
+
+                            console.log('Hour: ', hora, ' ', 'Minute: ', d.getUTCMinutes(), 'Sec: ', d.getUTCSeconds());
                             //Need to offset by -4 hours, this is UTC time
                         }}
                         minimumDate={new Date()}
                         accentColor={color.red}
                         textColor={color.medium}
-                        display="compact"
+                        display="default"
                         style={{
                             width: 200,
                             transform: [{ scale: 1.5, }],
                         }}
                     />
+                </View> */}
+                <View style={styles.androidTimeContainer}>
+                    <DateTimePicker
+                        value={new Date()}
+                        //mode={DATE_MODE}
+                        mode={mode}
+                        onChange={(event, selectedDate1) => {
+                            // setSelectedDate(selecrtedDate);
+                            // console.log(selectedDate);
+                            // const d = new Date(selectedDate);
+
+                            // //setTimeDisplay(true);
+                            
+                            // var hora = d.getUTCHours()+8;
+                            // if (hora >= 24){
+                            //     hora = hora - 24
+                            // }
+
+                            // console.log('Hour: ', hora, ' ', 'Minute: ', d.getUTCMinutes(), 'Sec: ', d.getUTCSeconds());
+                            // //Need to offset by -4 hours, this is UTC time
+                            // console.log(event)
+                            const currentDate = selectedDate1 || selecteddate;
+                            //setShow(Platform.OS == 'android')
+                            setSelectedDate(currentDate);
+                            console.log(selecteddate);
+                            let tempDate = new Date(currentDate);
+                            let fDate = tempDate.getFullYear() + '/' + (tempDate.getMonth()+1) + '/' + tempDate.getDay();
+                            let fTime = 'Hours: ' + tempDate.getHours() + ' | Minutes: ' + tempDate.getMinutes();
+                            setText(fDate + '\n' + fTime);
+                            console.log(fDate + ' || ' + fTime)
+                            setMode("time")
+                        }}
+                        minimumDate={new Date()}
+                        accentColor={color.red}
+                        textColor={color.medium}
+                        display="default"
+                        style={{
+                            width: 200,
+                            transform: [{ scale: 1.5, }],
+                        }}
+                    />
+                   { mode == "time" &&
+                        functionSetTime()
+                    }
                 </View>
 
             </BottomTab>
@@ -284,6 +413,15 @@ const styles = StyleSheet.create({
         left: 0,
         top: 10,
         width: 300,
+        height: 100,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    androidTimeContainer: {
+        position: 'absolute',
+        left: 0,
+        top: 10,
+        width: 100,
         height: 100,
         justifyContent: 'center',
         alignItems: 'center'
