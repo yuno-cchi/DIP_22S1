@@ -272,7 +272,8 @@ export default function DriverPutRouteAndroid() {
 
             </View>
             <BottomTab style={{ alignItems: 'center' }}>
-                <Button
+                <View style={styles.fixToText}>
+                <Button style={styles.timeButton}
                     title={textTime}
                     onPress={() => {setTextTime("Empty"), setShow(true), setMode("time")}}
                 />
@@ -280,6 +281,7 @@ export default function DriverPutRouteAndroid() {
                     title={textDate}
                     onPress={() => {setTextDate("Empty"), setShowDate(true), setMode("date")}}
                 />
+                </View>
                 <AppButton style={styles.showRoute}
                     title="Go"
                     onPress={() => {
@@ -468,5 +470,12 @@ const styles = StyleSheet.create({
         height: 100,
         justifyContent: 'center',
         alignItems: 'center'
-    }
+    },
+    fixToText: {
+        flexDirection: 'row',
+        top: 30,
+        right: 40,
+        height: 50,
+        justifyContent: 'space-between',
+    },
 })
