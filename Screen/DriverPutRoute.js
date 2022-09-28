@@ -172,13 +172,13 @@ export default function DriverPutRoute() {
                 {startLocation &&
                     <Marker
                         title="Start"
-                        description='yeah'
+                        description='Youre here'
                         coordinate={startLocation}
                     />}
                 {endLocation &&
                     <Marker
                         title="End"
-                        description='qwe'
+                        description='Hmmmm wanna go there'
                         coordinate={endLocation}
                     />}
             </MapView>
