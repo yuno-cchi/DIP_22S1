@@ -65,7 +65,7 @@ const storeInDatabase = (startLocation, endLocation, date, key, userID) => {
 
 }
 
-export default function DriverPutRoute() {
+export default function DriverPutRouteAndroid() {
 
 
     //for datetimepicker

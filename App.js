@@ -15,6 +15,7 @@ import { StyleSheet, Text, View, Button, FlatList, SafeAreaView } from 'react-na
 import Login from './src/login';
 import { TouchableOpacity } from 'react-native';
 import DriverMapScreen from './Screen/DriverMapScreen';
+import DriverPutRouteAndroid from './Screen/DriverPutRouteAndroid';
 import ReccommendedRouteScreen from './Screen/ReccommendedRouteScreen';
 import TopTab from './Components/TopTab';
 import SearchBar from './Components/SearchBar';
@@ -38,7 +39,7 @@ export default function App() {
 
   return (
 
-    <DriverPutRoute />
+    <DriverPutRouteAndroid />
     // <View style={{flex: 1, backgroundColor: 'red'}}>
     //   <DatePicker
     //     date={date}
