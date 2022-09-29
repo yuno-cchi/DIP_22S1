@@ -172,13 +172,14 @@ export default function DriverPutRouteAndroid() {
 
                 
                 let tempDate = new Date(currentDate);
-                let fTime = 'Hours: ' + tempDate.getHours() + ' | Minutes: ' + tempDate.getMinutes();
+                let fTime = 'Hours: ' + tempDate.getHours() + ': Minutes: ' + tempDate.getMinutes();
                 //setText(fDate + '\n' + fTime);
                 console.log(fDate + ' , ' + fTime)
                 
                 setTextDate(fDate);
                 setTextTime(fTime);
 
+                //format to save in the db: "yyyy/mm/dd , hh:mm"
                 setFinalDate(fDate + ' , ' + fTime);
 
                 console.log(show);
