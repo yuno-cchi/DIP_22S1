@@ -38,7 +38,7 @@ function DrawerNavigator() {
         useLegacyImplementation
         drawerContent={(props) => <SideMenu {...props} />}
       >
-      <Drawer.Screen name = "Drawer" component={TabNavigator} />
+      <Drawer.Screen name = "Drawer" component={TabNavigator}  options={{ headerShown: false }} />
       </Drawer.Navigator>
     );
 }

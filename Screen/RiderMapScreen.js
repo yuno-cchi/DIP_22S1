@@ -16,9 +16,11 @@ import { NavigationContainer } from '@react-navigation/native';
 // userLocation = Geolocation.getCurrentPosition
 let markerKey = 0;
 
-export default function RiderMapScreen() {
+export default function RiderMapScreen({navigation}) {
 
     const [coordinate, updateMarker] = useState([]);
+
+   
 
 
     //A function to get lastest markerKey from DB
@@ -54,7 +56,7 @@ export default function RiderMapScreen() {
                 {coordinate.map(({ key, latitude, longitude }) => <Marker key={key} coordinate={{ 'latitude': latitude, 'longitude': longitude }} />)}
 
             </MapView>
-            <CircularButton name='user' onPress={() => console.log("aabc")} style={styles.dashButton} />
+            <CircularButton name='user' onPress={() => navigation.toggleDrawer()} style={styles.dashButton} />
             <SearchBar style={styles.searchBar} />
             <BottomTab>
                 <AppButton
