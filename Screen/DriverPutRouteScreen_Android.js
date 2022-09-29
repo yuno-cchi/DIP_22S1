@@ -67,7 +67,7 @@ const storeInDatabase = (startLocation, endLocation, date, key, userID) => {
 
 }
 
-export default function DriverPutRouteAndroid() {
+export default function DriverPutRouteScreen_Android() {
 
 
     //for datetimepicker
@@ -106,7 +106,7 @@ export default function DriverPutRouteAndroid() {
     }, []);
 
     //function for swapping date/time
-    const showMode = (currentMode) =>{
+    const showMode = (currentMode) => {
         setShow(true);
         setMode(currentMode);
     }
@@ -117,13 +117,13 @@ export default function DriverPutRouteAndroid() {
         setSelectedDate(currentDate);
 
         let tempDate = new Date(currentDate);
-        let fDate = tempDate.getFullYear() + '/' + (tempDate.getMonth()+1) + '/' + tempDate.getDay();
+        let fDate = tempDate.getFullYear() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getDay();
         let fTime = 'Hours: ' + tempDate.getHours() + ' | Minutes: ' + tempDate.getMinutes();
         setText(fDate + '\n' + fTime);
         console.log(fDate + ' || ' + fTime)
     }
 
-    async function getLiveLocation(){
+    async function getLiveLocation() {
         console.log("getting location")
         let { status } = await Location.requestForegroundPermissionsAsync();
         if (status !== 'granted') {
@@ -138,61 +138,62 @@ export default function DriverPutRouteAndroid() {
 
         const userCoordinate = { latitude: location.coords.latitude, longitude: location.coords.longitude };
         console.log(userCoordinate);
-           
+
     }
 
-    function checkButtonQuery(){
-        if (startLocation == undefined && endLocation == undefined){
+    function checkButtonQuery() {
+        if (startLocation == undefined && endLocation == undefined) {
             setButtonState(true)
         }
-        else{
+        else {
             setButtonState(false)
         }
     }
 
-    const functionSetTime = () => {{
-        return <DateTimePicker
-            value={new Date()}
-            mode= "time"
-            onChange={(event, selectedTime) => {
-               
-                //halt display of time picker again
-                setShow(false);
+    const functionSetTime = () => {
+        {
+            return <DateTimePicker
+                value={new Date()}
+                mode="time"
+                onChange={(event, selectedTime) => {
 
-                const currentDate = selectedTime || selectedtime;
-                //setShow(Platform.OS == 'android')a
-                setSelectedTime(currentDate);
-                console.log("default: " + selectedTime);
-                console.log("blyat: " + selectedTime);
+                    //halt display of time picker again
+                    setShow(false);
 
-                let fDate = textDate;
+                    const currentDate = selectedTime || selectedtime;
+                    //setShow(Platform.OS == 'android')a
+                    setSelectedTime(currentDate);
+                    console.log("default: " + selectedTime);
+                    console.log("blyat: " + selectedTime);
 
-                console.log("datepickerdate: " + selecteddate);
-                console.log("datepickerdate2: " + textDate);
+                    let fDate = textDate;
 
-                
-                let tempDate = new Date(currentDate);
-                let fTime = 'Hours: ' + tempDate.getHours() + ': Minutes: ' + tempDate.getMinutes();
-                //setText(fDate + '\n' + fTime);
-                console.log(fDate + ' , ' + fTime)
-                
-                setTextDate(fDate);
-                setTextTime(fTime);
+                    console.log("datepickerdate: " + selecteddate);
+                    console.log("datepickerdate2: " + textDate);
 
-                //format to save in the db: "yyyy/mm/dd , hh:mm"
-                setFinalDate(fDate + ' , ' + fTime);
 
-                console.log(show);
-            }}
-            minimumDate={new Date()}
-            accentColor={color.red}
-            textColor={color.medium}
-            display="default"
-            style={{
-                width: 200,
-                transform: [{ scale: 1.5, }],
-            }}
-        />
+                    let tempDate = new Date(currentDate);
+                    let fTime = 'Hours: ' + tempDate.getHours() + ': Minutes: ' + tempDate.getMinutes();
+                    //setText(fDate + '\n' + fTime);
+                    console.log(fDate + ' , ' + fTime)
+
+                    setTextDate(fDate);
+                    setTextTime(fTime);
+
+                    //format to save in the db: "yyyy/mm/dd , hh:mm"
+                    setFinalDate(fDate + ' , ' + fTime);
+
+                    console.log(show);
+                }}
+                minimumDate={new Date()}
+                accentColor={color.red}
+                textColor={color.medium}
+                display="default"
+                style={{
+                    width: 200,
+                    transform: [{ scale: 1.5, }],
+                }}
+            />
         }
     }
 
@@ -291,25 +292,25 @@ export default function DriverPutRouteAndroid() {
             </View>
             <BottomTab style={{ alignItems: 'center' }}>
                 <View style={styles.fixToText}>
-                <Button style={styles.timeButton}
-                    title={textTime}
-                    onPress={() => {setTextTime("Empty"), setShow(true), setMode("time")}}
-                />
-                <Button
-                    title={textDate}
-                    onPress={() => {setTextDate("Empty"), setShowDate(true), setMode("date")}}
-                />
+                    <Button style={styles.timeButton}
+                        title={textTime}
+                        onPress={() => { setTextTime("Empty"), setShow(true), setMode("time") }}
+                    />
+                    <Button
+                        title={textDate}
+                        onPress={() => { setTextDate("Empty"), setShowDate(true), setMode("date") }}
+                    />
                 </View>
                 <AppButton style={styles.showRoute}
-                    disable = {buttonDisabled}
+                    disable={buttonDisabled}
                     title="Go"
                     onPress={() => {
                         console.log(startLocation, endLocation, selectedDate);
-                        if (startLocation == undefined && endLocation == undefined){
+                        if (startLocation == undefined && endLocation == undefined) {
                             console.log("missing fields");
                         }
                         else {
-                            storeInDatabase(startLocation, endLocation, selectedDate) 
+                            storeInDatabase(startLocation, endLocation, selectedDate)
                         }
                         //Send the two coordiantes to the Database, then move to a new screen
                     }}
@@ -358,9 +359,9 @@ export default function DriverPutRouteAndroid() {
                             setSelectedDate(currentDate);
                             console.log("default date: " + selecteddate);
                             console.log("chosen date: " + selectedDate1);
-                            
+
                             let tempDate = new Date(currentDate);
-                            let fDate = tempDate.getFullYear() + '/' + (tempDate.getMonth()+1) + '/' + tempDate.getDate();
+                            let fDate = tempDate.getFullYear() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getDate();
                             //let fTime = 'Hours: ' + tempDate.getHours() + ' | Minutes: ' + tempDate.getMinutes();
                             setTextDate(fDate);
                             console.log("selected date: " + fDate)
@@ -378,7 +379,7 @@ export default function DriverPutRouteAndroid() {
                             transform: [{ scale: 1.5, }],
                         }}
                     />}
-                   { mode == "time" && show == true &&
+                    {mode == "time" && show == true &&
                         functionSetTime()
                     }
                 </View>

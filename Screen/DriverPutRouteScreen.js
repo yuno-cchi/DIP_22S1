@@ -14,6 +14,8 @@ import { TextInput } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import * as Location from 'expo-location';
 import DateTimePicker, { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // DateTimePickerAndroid.open(params: AndroidNativeProps);
 // DateTimePickerAndroid.dismiss(model: AndroidNativeProps['mode']);
@@ -48,11 +50,11 @@ const storeInDatabase = (startLocation, endLocation, date, key, userID) => {
 
 }
 
-export default function DriverPutRoute() {
+export default function DriverPutRouteScreen({ navigation, route }) {
 
 
     //for datetimepicker
-    const [selecteddate, setSelectedDate] = useState(new Date());
+    const [selectedDate, setSelectedDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     //const [show, setShow] = useState(false);
     const [text, setText] = useState('Empty');
@@ -77,7 +79,7 @@ export default function DriverPutRoute() {
     }, []);
 
     //function for swapping date/time
-    const showMode = (currentMode) =>{
+    const showMode = (currentMode) => {
         setShow(true);
         setMode(currentMode);
     }
@@ -88,13 +90,13 @@ export default function DriverPutRoute() {
         setSelectedDate(currentDate);
 
         let tempDate = new Date(currentDate);
-        let fDate = tempDate.getFullYear() + '/' + (tempDate.getMonth()+1) + '/' + tempDate.getDay();
+        let fDate = tempDate.getFullYear() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getDay();
         let fTime = 'Hours: ' + tempDate.getHours() + ' | Minutes: ' + tempDate.getMinutes();
         setText(fDate + '\n' + fTime);
         console.log(fDate + ' || ' + fTime)
     }
 
-    async function getLiveLocation(){
+    async function getLiveLocation() {
         console.log("getting location")
         let { status } = await Location.requestForegroundPermissionsAsync();
         if (status !== 'granted') {
@@ -109,51 +111,46 @@ export default function DriverPutRoute() {
 
         const userCoordinate = { latitude: location.coords.latitude, longitude: location.coords.longitude };
         console.log(userCoordinate);
-           
+
     }
 
-    const functionSetTime = () => {{
-        return <DateTimePicker
-            value={new Date()}
-            //mode={DATE_MODE}
-            mode= "time"
-            onChange={(event, selectedDate) => {
-                setSelectedDate(selectedDate);
-                console.log(selectedDate);
-                const d = new Date(selectedDate);
+    const functionSetTime = () => {
+        {
+            return <DateTimePicker
+                value={new Date()}
+                //mode={DATE_MODE}
+                mode="datetime"
+                onChange={(event, selectedDate) => {
+                    setSelectedDate(selectedDate);
+                    console.log(selectedDate);
+                    const d = new Date(selectedDate);
 
-                // setTimeDisplay(true);
+                    // setTimeDisplay(true);
 
-                // let tempDate = new Date(currentDate);
-                // let fDate = tempDate.getFullYear() + '/' + (tempDate.getMonth()+1) + '/' + tempDate.getDay();
-                // let fTime = 'Hours: ' + tempDate.getHours() + ' | Minutes: ' + tempDate.getMinutes();
-                
-                var hora = d.getUTCHours()+8;
-                if (hora >= 24){
-                    hora = hora - 24
-                }
+                    // let tempDate = new Date(currentDate);
+                    // let fDate = tempDate.getFullYear() + '/' + (tempDate.getMonth()+1) + '/' + tempDate.getDay();
+                    // let fTime = 'Hours: ' + tempDate.getHours() + ' | Minutes: ' + tempDate.getMinutes();
 
-                console.log('Hour: ', d.getUTCHours()-16, ' ', 'Minute: ', d.getUTCMinutes(), 'Sec: ', d.getUTCSeconds());
-                //Need to offset by -4 hours, this is UTC time
-            }}
-            minimumDate={new Date()}
-            accentColor={color.red}
-            textColor={color.medium}
-            display="default"
-            style={{
-                width: 200,
-                transform: [{ scale: 1.5, }],
-            }}
-        />
+                    var hora = d.getUTCHours() + 8;
+                    if (hora >= 24) {
+                        hora = hora - 24
+                    }
+
+                    console.log('Hour: ', d.getUTCHours() - 16, ' ', 'Minute: ', d.getUTCMinutes(), 'Sec: ', d.getUTCSeconds());
+                    //Need to offset by -4 hours, this is UTC time
+                }}
+                minimumDate={new Date()}
+                accentColor={color.red}
+                textColor={color.medium}
+                display="default"
+                style={{
+                    width: 200,
+                    transform: [{ scale: 1.5, }],
+                }}
+            />
         }
     }
 
-
-    if (loading) {
-        //setRouteVisible(false);
-        console.log("attenzione");
-        return <View><Text>Loading, please wait</Text></View>
-    }
 
     return (
         <View style={styles.container}>
@@ -242,50 +239,27 @@ export default function DriverPutRoute() {
                     title="Go"
                     onPress={() => {
                         console.log(startLocation, endLocation, selectedDate);
+                        navigation.navigate('ReccommendedRouteScreen', {
+                            startLocation: startLocation,
+                            endLocation: endLocation,
+                            selectedDate: selectedDate.toISOString()
+                        })
                         //Send the two coordiantes to the Database, then move to a new screen
+                        //navigation.navigate(navigation, [startLocation, endLocation, selectedDate]);
                     }}
                 />
 
-                {/* <View style={styles.timeContainer}>
-                    <DatePicker
-                        value={selectedDate}
-                        //mode={DATE_MODE}
-                        mode="time"
-                        onChange={(event, selectedDate) => {
-                            setSelectedDate(selectedDate);
-                            console.log(selectedDate);
-                            const d = new Date(selectedDate);
-                            
-                            var hora = d.getUTCHours()+8;
-                            if (hora >= 24){
-                                hora = hora - 24
-                            }
-
-                            console.log('Hour: ', hora, ' ', 'Minute: ', d.getUTCMinutes(), 'Sec: ', d.getUTCSeconds());
-                            //Need to offset by -4 hours, this is UTC time
-                        }}
-                        minimumDate={new Date()}
-                        accentColor={color.red}
-                        textColor={color.medium}
-                        display="default"
-                        style={{
-                            width: 200,
-                            transform: [{ scale: 1.5, }],
-                        }}
-                    />
-                </View> */}
-                <View style={styles.androidTimeContainer}>
+                <View style={styles.timeContainer}>
                     <DateTimePicker
-                        value={new Date()}
-                        //mode={DATE_MODE}
-                        mode={mode}
+                        value={selectedDate}
+                        mode={DATE_MODE}
                         onChange={(event, selectedDate1) => {
                             // setSelectedDate(selecrtedDate);
                             // console.log(selectedDate);
                             // const d = new Date(selectedDate);
 
                             // //setTimeDisplay(true);
-                            
+
                             // var hora = d.getUTCHours()+8;
                             // if (hora >= 24){
                             //     hora = hora - 24
@@ -297,13 +271,12 @@ export default function DriverPutRoute() {
                             const currentDate = selectedDate1 || selecteddate;
                             //setShow(Platform.OS == 'android')
                             setSelectedDate(currentDate);
-                            console.log(selecteddate);
+                            console.log(selectedDate);
                             let tempDate = new Date(currentDate);
-                            let fDate = tempDate.getFullYear() + '/' + (tempDate.getMonth()+1) + '/' + tempDate.getDay();
+                            let fDate = tempDate.getFullYear() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getDay();
                             let fTime = 'Hours: ' + tempDate.getHours() + ' | Minutes: ' + tempDate.getMinutes();
                             setText(fDate + '\n' + fTime);
                             console.log(fDate + ' || ' + fTime)
-                            setMode("time")
                         }}
                         minimumDate={new Date()}
                         accentColor={color.red}
@@ -314,9 +287,6 @@ export default function DriverPutRoute() {
                             transform: [{ scale: 1.5, }],
                         }}
                     />
-                   { mode == "time" &&
-                        functionSetTime()
-                    }
                 </View>
 
             </BottomTab>

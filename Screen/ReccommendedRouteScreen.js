@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Image, FlatList, Dimensions } from 'react-native';
+import { View, StyleSheet, Image, FlatList, Dimensions, Alert } from 'react-native';
 import AppText from "../Components/AppText";
 
 import { color } from '../Config/Color';
@@ -59,10 +59,12 @@ const getShortestRoute = (passengerNumber, coordinates) => {
     return (null);
 }
 
-export default function ReccommendedRouteScreen() {
+export default function ReccommendedRouteScreen({ navigation, route }) {
 
     const [initialDummyRoute, setDummyroute] = useState(dummyRoute);
     const [isRefrehing, setRefreshing] = useState(false);
+
+    const { startLocation, endLocation, selectedDate } = route.params;
 
     const deleteThisCard = (deleteRoute) => {
         setDummyroute(initialDummyRoute.filter(route => route.routeId !== deleteRoute.routeId));
@@ -79,8 +81,14 @@ export default function ReccommendedRouteScreen() {
                 refreshing={isRefrehing}
                 onRefresh={() => setDummyroute(dummyRoute)}
             />
-            <BottomTab>
-                <AppButton title='Confirm' style={styles.confirmButton} />
+            <BottomTab style={styles.bottomTab}>
+                <AppButton
+                    title='Confirm'
+                    style={styles.confirmButton}
+                    onPress={
+                        Alert.alert("The values are", JSON.stringify(startLocation) + JSON.stringify(endLocation) + JSON.stringify(selectedDate))
+                    }
+                />
 
             </BottomTab>
         </View >
@@ -110,7 +118,11 @@ const styles = StyleSheet.create({
         marginLeft: 20
     },
     confirmButton: {
-        backgroundColor: 'gray'
+        backgroundColor: color.red,
+        width: '80%',
+    },
+    bottomTab: {
+        alignItems: 'center'
     }
 
 })

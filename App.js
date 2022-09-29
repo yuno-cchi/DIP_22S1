@@ -15,19 +15,20 @@ import { StyleSheet, Text, View, Button, FlatList, SafeAreaView } from 'react-na
 import Login from './src/login';
 import { TouchableOpacity } from 'react-native';
 import DriverMapScreen from './Screen/DriverMapScreen';
-import DriverPutRouteAndroid from './Screen/DriverPutRouteAndroid';
+import DriverPutRouteAndroid from './Screen/DriverPutRouteScreen_Android';
 import ReccommendedRouteScreen from './Screen/ReccommendedRouteScreen';
 import TopTab from './Components/TopTab';
 import SearchBar from './Components/SearchBar';
 import TopSearchBar from './Components/TopSearchBar';
-import DriverPutRoute from './Screen/DriverPutRoute';
+import DriverPutRoute from './Screen/DriverPutRouteScreen';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { color } from './Config/Color';
 import * as Location from 'expo-location';
 import MapView from 'react-native-maps';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DatePicker from 'react-native-date-picker';
-
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
 //navigator.geolocation = require('react-native-geolocation-service');
 
 export default function App() {
@@ -35,11 +36,17 @@ export default function App() {
   const [mode, setMode] = useState('datetime');
   const [show, setShow] = useState(false);
 
-
+  const Stack = createNativeStackNavigator();
 
   return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="DriverRoute" component={DriverPutRoute} />
+        <Stack.Screen name="ReccommendedRouteScreen" component={ReccommendedRouteScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
 
-    <DriverPutRouteAndroid />
+
     // <View style={{flex: 1, backgroundColor: 'red'}}>
     //   <DatePicker
     //     date={date}
@@ -50,7 +57,7 @@ export default function App() {
     //     //     setSelectedDate(selectedDate);
     //     //     console.log(selectedDate);
     //     //     const d = new Date(selectedDate);
-            
+
     //     //     var hora = d.getUTCHours()+8;
     //     //     if (hora >= 24){
     //     //         hora = hora - 24
