@@ -62,6 +62,8 @@ const storeInDatabase = (startLocation, endLocation, date, key, userID) => {
     console.log("userID: ")
     console.log(userID)
 
+    //TODO: use axios to post into database
+
 
 }
 
@@ -90,6 +92,8 @@ export default function DriverPutRouteAndroid() {
 
     const [loading, setLoading] = useState(true)
 
+    //for button control
+    const [buttonDisabled, setButtonState] = useState(true);
 
 
     //WORK IN-PROGRESS: DYNAMIC MARKERS
@@ -130,11 +134,20 @@ export default function DriverPutRouteAndroid() {
         let location = await Location.getCurrentPositionAsync();
         setLocation(location);
 
-        setLoading(false)
+        //setLoading(false)
 
         const userCoordinate = { latitude: location.coords.latitude, longitude: location.coords.longitude };
         console.log(userCoordinate);
            
+    }
+
+    function checkButtonQuery(){
+        if (startLocation == undefined && endLocation == undefined){
+            setButtonState(true)
+        }
+        else{
+            setButtonState(false)
+        }
     }
 
     const functionSetTime = () => {{
@@ -183,11 +196,11 @@ export default function DriverPutRouteAndroid() {
     }
 
 
-    if (loading) {
-        //setRouteVisible(false);
-        console.log("attenzione");
-        return <View><Text>Loading, please wait</Text></View>
-    }
+    // if (loading) {
+    //     //setRouteVisible(false);
+    //     console.log("attenzione");
+    //     return <View><Text>Loading, please wait</Text></View>
+    // }
 
     return (
         <View style={styles.container}>
@@ -228,6 +241,8 @@ export default function DriverPutRouteAndroid() {
                         setEndLocation(coordinates);
                         console.log(coordinates);
                         animateToLocation(coordinates);
+
+                        checkButtonQuery();
                     }}
                     on
                     fetchDetails={true}
@@ -256,6 +271,8 @@ export default function DriverPutRouteAndroid() {
                         console.log(coordinates);
                         animateToLocation(coordinates);
 
+                        checkButtonQuery();
+
                     }}
 
                     query={{
@@ -283,6 +300,7 @@ export default function DriverPutRouteAndroid() {
                 />
                 </View>
                 <AppButton style={styles.showRoute}
+                    disable = {buttonDisabled}
                     title="Go"
                     onPress={() => {
                         console.log(startLocation, endLocation, selectedDate);
