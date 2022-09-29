@@ -6,10 +6,8 @@ const Schema = mongoose.Schema;
 const rideSchema = new Schema({
     routename:{
         type: String,
-        required: true,
-        unique: true,
-        trim: true,
-        minlength: 3
+        unique: false,
+        trim: true
     },
     start:{
         type: Object,
@@ -20,15 +18,13 @@ const rideSchema = new Schema({
             type: String,
             required: true,
             unique: false,
-            trim: true,
-            minlength: 3
+            trim: true
         },
         longitude: {
             type: String,
             required: true,
             unique: false,
-            trim: true,
-            minlength: 3
+            trim: true
         },
     },
     destination:{
@@ -40,48 +36,43 @@ const rideSchema = new Schema({
             type: String,
             required: true,
             unique: false,
-            trim: true,
-            minlength: 3
+            trim: true
         },
         longitude: {
             type: String,
             required: true,
             unique: false,
-            trim: true,
-            minlength: 3
+            trim: true
         },
     },
     numpassengers:{
         type: String,
-        required: true,
         unique: false,
-        trim: true,
-        minlength: 3
+        trim: true
+    },
+    date:{
+        type: String,
+        unique: false,
+        trim: true
     },
     price:{
         type: String,
-        required: true,
         unique: false,
-        trim: true,
+        trim: true
     },
     stopPoint:{
         type: Object,
-        required: true,
         unique: false,
         trim: true,
         latitude: {
             type: String,
-            required: true,
             unique: false,
-            trim: true,
-            minlength: 3
+            trim: true
         },
         longitude: {
             type: String,
-            required: true,
             unique: false,
-            trim: true,
-            minlength: 3
+            trim: true
         },
     },
 }, {

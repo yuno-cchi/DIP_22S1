@@ -26,7 +26,6 @@ router.route('/update/:id').post((req, res) => {
         user.username = req.body.username;
         user.password = req.body.password;
         user.email = req.body.email;
-        user.address = req.body.address;
         // user.email = Number(req.body.duration);
         // user.date = Date.parse(req.body.date);
   
