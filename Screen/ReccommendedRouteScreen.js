@@ -19,8 +19,7 @@ const dummyRoute = [
         routeDescription: 'Route1 so fun',
         start: { latitude: 1.33300621554807, longitude: 103.71818707395227 },
         destination: { latitude: 1.3259478205865913, longitude: 103.81212770732003 },
-        passengerNumber: 4,
-        stopPoint: [{ latitude: 1.3496884588957907, longitude: 103.98626434421578 }, { latitude: 1.4057132690528746, longitude: 103.85914023847647 }]
+
 
     },
     {
@@ -29,8 +28,7 @@ const dummyRoute = [
         routeDescription: 'Route2 so fun',
         start: { latitude: 1.3259478205865913, longitude: 103.81212770732003 },
         destination: { latitude: 1.4057132690528746, longitude: 103.85914023847647 },
-        passengerNumber: 4,
-        stopPoint: [{ latitude: 1.3496884588957907, longitude: 103.98626434421578 }, { latitude: 1.4057132690528746, longitude: 103.85914023847647 }]
+
     },
     {
         routeId: 2,
@@ -38,8 +36,7 @@ const dummyRoute = [
         routeDescription: 'Route3 so fun',
         start: { latitude: 1.287764200204629, longitude: 103.84689407843125 },
         destination: { latitude: 1.3521, longitude: 103.8198 },
-        passengerNumber: 4,
-        stopPoint: [{ latitude: 1.3496884588957907, longitude: 103.98626434421578 }, { latitude: 1.4057132690528746, longitude: 103.85914023847647 }]
+
     },
     {
         routeId: 3,
@@ -47,8 +44,7 @@ const dummyRoute = [
         routeDescription: 'Route4 so fun',
         start: { latitude: 1.4057132690528746, longitude: 103.85914023847647 },
         destination: { latitude: 1.3521, longitude: 103.8198 },
-        passengerNumber: 4,
-        stopPoint: [{ latitude: 1.3496884588957907, longitude: 103.98626434421578 }, { latitude: 1.4057132690528746, longitude: 103.85914023847647 }]
+
     }
 ]
 
@@ -70,6 +66,24 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
         setDummyroute(initialDummyRoute.filter(route => route.routeId !== deleteRoute.routeId));
     }
 
+    const getNearestRoutes = (numberOfRoute, centroid) => {
+
+        let routeArray = [];
+
+        if (numberOfRoute > 4) {
+            console.log("Exceed route limit")
+            return null;
+        }
+
+        for (let i = 0; i < numberOfRoute; i++) {
+            //searchDatabase for route's centroid +- 0.5 for less query call
+            if (true/*if the centroid is smaller that any of array's centroid*/) {
+                //pop the biggest
+                routeArray.push()//Push the desired route into the array
+            }
+        }
+    }
+
 
     return (
         <View
@@ -77,7 +91,12 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
             <FlatList
                 data={initialDummyRoute}
                 keyExtractor={item => item.routeId}
-                renderItem={({ item }) => <Card title={item.routeName} subTitle={item.routeDescription} route={item} onPress={() => deleteThisCard(item)} />}
+                renderItem={({ item }) =>
+                    <Card
+                        title={item.routeName}
+                        subTitle={item.routeDescription}
+                        route={item}
+                        onPress={() => deleteThisCard(item)} />}
                 refreshing={isRefrehing}
                 onRefresh={() => setDummyroute(dummyRoute)}
             />
@@ -86,7 +105,7 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
                     title='Confirm'
                     style={styles.confirmButton}
                     onPress={
-                        Alert.alert("The values are", JSON.stringify(startLocation) + JSON.stringify(endLocation) + JSON.stringify(selectedDate))
+                        console.log("The selected route is", JSON.stringify(startLocation) + JSON.stringify(endLocation) + JSON.stringify(selectedDate))
                     }
                 />
 
