@@ -29,6 +29,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import DatePicker from 'react-native-date-picker';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
+import DriverPutRouteScreen_Android from './Screen/DriverPutRouteScreen_Android';
 //navigator.geolocation = require('react-native-geolocation-service');
 
 export default function App() {
@@ -41,7 +42,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="DriverRoute" component={DriverPutRoute} />
+        <Stack.Screen name="DriverRoute" component={DriverPutRouteScreen_Android} />
         <Stack.Screen name="ReccommendedRouteScreen" component={ReccommendedRouteScreen} />
       </Stack.Navigator>
     </NavigationContainer>

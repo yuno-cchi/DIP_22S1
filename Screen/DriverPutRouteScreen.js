@@ -78,22 +78,58 @@ export default function DriverPutRouteScreen({ navigation, route }) {
         getLiveLocation();
     }, []);
 
-    //function for swapping date/time
-    const showMode = (currentMode) => {
-        setShow(true);
-        setMode(currentMode);
+    const storeInDatabase = (startLocation, endLocation, date, key, userID) => {
+        console.log("adding to database")
+    
+        console.log("Start: ")
+        console.log(startLocation)
+    
+        console.log("Destination: ")
+        console.log(endLocation)
+    
+        console.log("Date: ")
+        console.log(date)
+    
+        //userID has to be retrieved from the login
+        console.log("key: ") //this is automatically created so thank god
+        console.log(key)
+    
+        console.log("userID: ")
+        userID = "kigali";
+        console.log(userID)
+    
+        //TODO: use axios to post into database
+        axios({
+            method: 'post',
+            url: 'http://secret-caverns-21869.herokuapp.com/ride/add',
+            headers: {}, 
+            data: {
+                routename: userID,
+                start: startLocation,
+                destination: endLocation,
+                date: date
+            }
+          }).then((response) => {
+            console.log(response);
+    
+    
+            navigateToRecc()
+    
+    
+          }, (error) => {
+            console.log(error);
+          });
+    
+    
     }
-    //function for handling date onchange
-    const onChange = (event, selectedDate) => {
-        const currentDate = selectedDate || selecteddate;
-        setShow(Platform.OS == 'android')
-        setSelectedDate(currentDate);
 
-        let tempDate = new Date(currentDate);
-        let fDate = tempDate.getFullYear() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getDay();
-        let fTime = 'Hours: ' + tempDate.getHours() + ' | Minutes: ' + tempDate.getMinutes();
-        setText(fDate + '\n' + fTime);
-        console.log(fDate + ' || ' + fTime)
+    function navigateToRecc(){
+        //alert successful and move to next page
+        navigation.navigate('ReccommendedRouteScreen', {
+            startLocation: startLocation,
+            endLocation: endLocation,
+            selectedDate: selectedDate.toISOString()
+        })
     }
 
     async function getLiveLocation() {
@@ -239,11 +275,13 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                     title="Go"
                     onPress={() => {
                         console.log(startLocation, endLocation, selectedDate);
-                        navigation.navigate('ReccommendedRouteScreen', {
-                            startLocation: startLocation,
-                            endLocation: endLocation,
-                            selectedDate: selectedDate.toISOString()
-                        })
+
+                        storeInDatabase();
+                        // navigation.navigate('ReccommendedRouteScreen', {
+                        //     startLocation: startLocation,
+                        //     endLocation: endLocation,
+                        //     selectedDate: selectedDate.toISOString()
+                        // })
                         //Send the two coordiantes to the Database, then move to a new screen
                         //navigation.navigate(navigation, [startLocation, endLocation, selectedDate]);
                     }}
