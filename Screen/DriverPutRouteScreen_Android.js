@@ -14,7 +14,7 @@ import { TextInput } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import * as Location from 'expo-location';
 import DateTimePicker, { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
-
+import axios from 'axios';
 // DateTimePickerAndroid.open(params: AndroidNativeProps);
 // DateTimePickerAndroid.dismiss(model: AndroidNativeProps['mode']);
 
@@ -63,6 +63,27 @@ const storeInDatabase = (startLocation, endLocation, date, key, userID) => {
     console.log(userID)
 
     //TODO: use axios to post into database
+    axios({
+        method: 'post',
+        url: 'http://secret-caverns-21869.herokuapp.com/ride/add',
+        headers: {}, 
+        data: {
+            routename: userID,
+            startLocation: startLocation,
+            endLocation: endLocation,
+            date: date
+            
+        }
+      }).then((response) => {
+        console.log(response);
+
+
+        //TODO: alert successful and move to next page
+
+
+      }, (error) => {
+        console.log(error);
+      });
 
 
 }
