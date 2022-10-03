@@ -8,6 +8,6 @@ export default {
         marginLeft: 5,
         color: color.black,
         fontSize: 20,
-        maxWidth: '100%'
+        maxWidth: "100%"
     }
 }

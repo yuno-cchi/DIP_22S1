@@ -97,6 +97,11 @@ export default function DriverPutRouteScreen({ navigation, route }) {
         console.log("userID: ")
         userID = "kigali";
         console.log(userID)
+
+        centroid = {latitude: (startLocation.latitude + endLocation.latitude) / 2.0, longitude: (startLocation.longitude + endLocation.longitude) / 2.0,};
+
+        console.log("centroid coord: ")
+        console.log(centroid);
     
         //TODO: use axios to post into database
         axios({
@@ -107,7 +112,8 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                 routename: userID,
                 start: startLocation,
                 destination: endLocation,
-                date: date
+                date: date,
+                centroid: centroid,
             }
           }).then((response) => {
             console.log(response);
