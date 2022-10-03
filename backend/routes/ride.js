@@ -12,11 +12,10 @@ router.route('/add').post((req, res) => {
   const start = req.body.start;
   const destination = req.body.destination;
   const date = req.body.date;
-  const numpassengers = req.body.numpassengers;
   const price = req.body.price;
-  const stopPoint = req.body.stopPoint;
+  const centroid = req.body.centroid;
 
-  const newRide = new Ride({ routename: routename, start: start, destination: destination, date: date, numpassengers: numpassengers, price: price, stopPoint: stopPoint });
+  const newRide = new Ride({ routename: routename, start: start, destination: destination, date: date, price: price, centroid: centroid });
 
   newRide.save()
     .then(() => res.json('ride added!'))
@@ -31,9 +30,8 @@ router.route('/update/:id').post((req, res) => {
       driver.start = req.body.start;
       driver.destination = req.body.destination;
       driver.date = req.body.date;
-      driver.numpassengers = req.body.numpassengers;
       driver.price = req.body.price;
-      driver.stopPoint = req.body.stopPoint;
+      driver.centroid = req.body.centroid;
 
 
       driver.save()

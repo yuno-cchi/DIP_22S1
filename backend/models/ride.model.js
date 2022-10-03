@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 //for users db
 const rideSchema = new Schema({
-    routename:{
+    routename:{ //to store userID/username from session inside
         type: String,
         unique: false,
         trim: true
@@ -45,11 +45,6 @@ const rideSchema = new Schema({
             trim: true
         },
     },
-    numpassengers:{
-        type: String,
-        unique: false,
-        trim: true
-    },
     date:{
         type: String,
         unique: false,
@@ -60,7 +55,7 @@ const rideSchema = new Schema({
         unique: false,
         trim: true
     },
-    stopPoint:{
+    centroid:{
         type: Object,
         unique: false,
         trim: true,
