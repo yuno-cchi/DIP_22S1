@@ -4,11 +4,11 @@ import { color } from '../Config/Color';
 import Icon from "./Icon";
 
 
-export default function AppButton({ title, onPress, thisColor = color.primary, style, iconName }) {
+export default function AppButton({ title, onPress, style, iconName, textSize = 20 }) {
     return (
-        <TouchableOpacity style={[[styles.button, style], { backgroundColor: thisColor }]} onPress={onPress}>
+        <TouchableOpacity style={[[styles.button, style]]} onPress={onPress}>
             {iconName && <Icon name={iconName} />}
-            <Text style={styles.title}>
+            <Text style={[styles.title, { fontSize: textSize }]}>
                 {title}
             </Text>
         </TouchableOpacity>
@@ -28,8 +28,7 @@ const styles = StyleSheet.create({
     },
     title: {
         color: color.white,
-        fontSize: 20,
-        fontWeight: 'bold',
+        fontWeight: "bold",
         textTransform: 'uppercase',
         alignSelf: 'center'
     }

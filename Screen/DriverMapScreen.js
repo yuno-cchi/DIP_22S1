@@ -1,5 +1,5 @@
 /* 
-By: Manussawin Millenium Sahassapon (Mil)
+By: Manussawin Sahassapon
 Last Update: 14/9/2022
 
 The Screen renders all coordinate objects from the database as <Marker/> JSX elements

@@ -4,12 +4,10 @@ const Schema = mongoose.Schema;
 
 //for users db
 const rideSchema = new Schema({
-    routename:{
+    routename:{ //to store userID/username from session inside
         type: String,
-        required: true,
-        unique: true,
-        trim: true,
-        minlength: 3
+        unique: false,
+        trim: true
     },
     start:{
         type: Object,
@@ -20,15 +18,13 @@ const rideSchema = new Schema({
             type: String,
             required: true,
             unique: false,
-            trim: true,
-            minlength: 3
+            trim: true
         },
         longitude: {
             type: String,
             required: true,
             unique: false,
-            trim: true,
-            minlength: 3
+            trim: true
         },
     },
     destination:{
@@ -40,48 +36,38 @@ const rideSchema = new Schema({
             type: String,
             required: true,
             unique: false,
-            trim: true,
-            minlength: 3
+            trim: true
         },
         longitude: {
             type: String,
             required: true,
             unique: false,
-            trim: true,
-            minlength: 3
+            trim: true
         },
     },
-    numpassengers:{
+    date:{
         type: String,
-        required: true,
         unique: false,
-        trim: true,
-        minlength: 3
+        trim: true
     },
     price:{
         type: String,
-        required: true,
         unique: false,
-        trim: true,
+        trim: true
     },
-    stopPoint:{
+    centroid:{
         type: Object,
-        required: true,
         unique: false,
         trim: true,
         latitude: {
             type: String,
-            required: true,
             unique: false,
-            trim: true,
-            minlength: 3
+            trim: true
         },
         longitude: {
             type: String,
-            required: true,
             unique: false,
-            trim: true,
-            minlength: 3
+            trim: true
         },
     },
 }, {
