@@ -27,6 +27,7 @@ import * as Location from 'expo-location';
 import MapView from 'react-native-maps';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DatePicker from 'react-native-date-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import DriverPutRouteScreen_Android from './Screen/DriverPutRouteScreen_Android';
@@ -38,13 +39,45 @@ import RiderMapScreen from './Screen/RiderMapScreen';
 export default function App() {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('datetime');
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(true);
+
+  const [initialPage, setInitialPage] = useState("Login");
 
   const Stack = createNativeStackNavigator();
 
+  useEffect(() => {
+    checkLoginState();
+  }, []);
+
+  //to redirect users to login / create screen if not logged in for first time, else proceed to calendar page
+  const checkLoginState = async () => {
+    console.log("wait");
+
+    const loginState = await AsyncStorage.getItem("isLoggedIn");
+    const idUser = await AsyncStorage.getItem("userId");
+
+    if (loginState == "true"){
+      console.log("User is logged in: " + idUser)
+      setInitialPage("RiderMapScreen")
+    }
+    else{
+      console.log("user is not logged in")
+    }
+
+    setShow(false);
+  }
+  
+
+  if (show) {
+        //setRouteVisible(false);
+        console.log("attenzione");
+        return <View><Text>Loading, please wait</Text></View>
+    }
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+      <Stack.Navigator initialRouteName={initialPage} screenOptions={{ headerShown: false }}>
+    
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="SelectUserType" component={selectUserType} />
         <Stack.Screen name="RiderMapScreen" component={RiderMapScreen} />
