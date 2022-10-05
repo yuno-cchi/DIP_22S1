@@ -71,6 +71,8 @@ export default function ReccommendedRouteScreen({ navigation, /*route*/ }) {
         selectedDate: "2022-10-05T07:22:13.049Z"
     }
 
+    const { loading, setLoading} = useState(true);
+
     const { startLocation, endLocation, selectedDate } = route; //route has to be route.param, use const route in place for testing 
 
     const deleteThisCard = (deleteRoute) => {

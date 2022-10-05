@@ -14,7 +14,7 @@
 
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-// import { AsyncStorage } from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 import {
@@ -64,20 +64,13 @@ async function callUsers(username, password) {
 
 
                     //TO TEST: react-native AsyncStorage for username and isLoggedIn state
-                    AsyncStorage.multiSet([
-                        ["isLoggedIn", true] //setlogin state to true, set to false once logged out
-                        ["name", username]
-                    ]) //store username in sessionStorage,
+                    await AsyncStorage.setItem("isLoggedIn", "true")
+                    await AsyncStorage.setItem("userId", (userdata[x]._id).toString());
 
-
-                    AsyncStorage.multiGet(['isLoggedIn', 'name']).then((data) => {
-                        let loggedInStatus = data[0][1];
-                        let username = data[1][1];
-        
-        
-                        console.log(loggedInStatus);
-                        console.log("username: " + username);
-                    });
+                    const loggedState = await AsyncStorage.getItem("isLoggedIn");
+                    const userid = await AsyncStorage.getItem("userId");
+                    console.log(loggedState);
+                    console.log("userID: " + userid);
 
                     return;
                 }
@@ -148,6 +141,7 @@ export default function Login({ navigation }) {
             callUsers(userToValidate, passToValidate);
 
             //TO TEST: retrieving username and isLoggedIn state from AsyncStorage
+            
 
             navigation.navigate('DriverRoute');
         }
