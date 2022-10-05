@@ -24,11 +24,11 @@ export default StyleSheet.create({
         //backgroundColor: "#f5f5f5",
         justifyContent: "center",
         alignItems: "center",
-        width:"100%",
+        width: "100%",
     },
 
     inputView: {
-        marginTop:10,
+        marginTop: 10,
         backgroundColor: "#ffcccc",
         borderRadius: 5,
         width: "70%",
@@ -44,18 +44,17 @@ export default StyleSheet.create({
     },
 
     logoView: {
-        width:200,
-        height:300,
+
         marginBottom: 10,
     },
 
     textLinks: {
         fontSize: 15,
-        marginBottom:5,
+        marginBottom: 5,
         alignContent: "center",
         justifyContent: "center",
     },
-    
+
     buttonNormal: {
         backgroundColor: "#e76850",
         borderRadius: 30,
@@ -78,15 +77,15 @@ export default StyleSheet.create({
     },
 
     buttonText: {
-        marginTop:30,
-        height:50,
-        color:"#f5f5f5",
+        marginTop: 30,
+        height: 50,
+        color: "#f5f5f5",
         alignContent: "center",
         justifyContent: "center",
     },
 
     errorText: {
-        color:"#ff0000",
-        fontStyle:'italic',
+        color: "#ff0000",
+        fontStyle: 'italic',
     }
 })

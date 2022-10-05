@@ -24,12 +24,13 @@ export default function Card({ title, subTitle, onPress, route = {
     passengerNumber: 4,
     stopPoint: [{ latitude: 1.3496884588957907, longitude: 103.98626434421578 }, { latitude: 1.4057132690528746, longitude: 103.85914023847647 }]
 }
+    , style
 }) {
 
 
 
     return (
-        <View style={styles.card}>
+        <View style={[styles.card, style]}>
 
             <MapView
                 style={styles.mapStyle}

@@ -28,7 +28,7 @@ const dummyRoute = [
         routeDescription: 'Route2 so fun',
         start: { latitude: 1.3259478205865913, longitude: 103.81212770732003 },
         destination: { latitude: 1.4057132690528746, longitude: 103.85914023847647 },
-
+        centroid: { latitude: 1.3658, longitude: 103.8356 }
     },
     {
         routeId: 2,
@@ -36,7 +36,7 @@ const dummyRoute = [
         routeDescription: 'Route3 so fun',
         start: { latitude: 1.287764200204629, longitude: 103.84689407843125 },
         destination: { latitude: 1.3521, longitude: 103.8198 },
-
+        centroid: { latitude: 1.31995, longitude: 103.833345 }
     },
     {
         routeId: 3,
@@ -44,7 +44,7 @@ const dummyRoute = [
         routeDescription: 'Route4 so fun',
         start: { latitude: 1.4057132690528746, longitude: 103.85914023847647 },
         destination: { latitude: 1.3521, longitude: 103.8198 },
-
+        centroid: { latitude: 1.378905, longitude: 103.83947 }
     }
 ]
 
@@ -64,6 +64,10 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
 
     const deleteThisCard = (deleteRoute) => {
         setDummyroute(initialDummyRoute.filter(route => route.routeId !== deleteRoute.routeId));
+    }
+
+    const selectThisCard = (selectedCard, cardRef) => {
+
     }
 
     const getNearestRoutes = (numberOfRoute, centroid) => {
@@ -93,10 +97,11 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
                 keyExtractor={item => item.routeId}
                 renderItem={({ item }) =>
                     <Card
+                        ref={(card) => { cardRef = card; }}
                         title={item.routeName}
                         subTitle={item.routeDescription}
                         route={item}
-                        onPress={() => deleteThisCard(item)} />}
+                        onPress={() => selectThisCard(item, cardRef)} />}
                 refreshing={isRefrehing}
                 onRefresh={() => setDummyroute(dummyRoute)}
             />

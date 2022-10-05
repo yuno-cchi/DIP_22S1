@@ -16,6 +16,7 @@ import * as Location from 'expo-location';
 import DateTimePicker, { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import axios from 'axios';
 
 // DateTimePickerAndroid.open(params: AndroidNativeProps);
 // DateTimePickerAndroid.dismiss(model: AndroidNativeProps['mode']);
@@ -80,50 +81,50 @@ export default function DriverPutRouteScreen({ navigation, route }) {
 
     const storeInDatabase = (startLocation, endLocation, date, key, userID) => {
         console.log("adding to database")
-    
+
         console.log("Start: ")
         console.log(startLocation)
-    
+
         console.log("Destination: ")
         console.log(endLocation)
-    
+
         console.log("Date: ")
         console.log(date)
-    
+
         //userID has to be retrieved from the login
         console.log("key: ") //this is automatically created so thank god
         console.log(key)
-    
+
         console.log("userID: ")
         userID = "kigali";
         console.log(userID)
-    
+
         //TODO: use axios to post into database
         axios({
             method: 'post',
             url: 'http://secret-caverns-21869.herokuapp.com/ride/add',
-            headers: {}, 
+            headers: {},
             data: {
                 routename: userID,
                 start: startLocation,
                 destination: endLocation,
                 date: date
             }
-          }).then((response) => {
+        }).then((response) => {
             console.log(response);
-    
-    
+
+
             navigateToRecc()
-    
-    
-          }, (error) => {
+
+
+        }, (error) => {
             console.log(error);
-          });
-    
-    
+        });
+
+
     }
 
-    function navigateToRecc(){
+    function navigateToRecc() {
         //alert successful and move to next page
         navigation.navigate('ReccommendedRouteScreen', {
             startLocation: startLocation,
@@ -193,6 +194,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
             <MapView
                 ref={(mapView) => { mapViewRef = mapView; }}
                 style={styles.container}
+                showsPointsOfInterest={true}
                 showsUserLocation={true}
             >
                 <MapViewDirections
@@ -276,14 +278,13 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                     onPress={() => {
                         console.log(startLocation, endLocation, selectedDate);
 
-                        storeInDatabase();
-                        // navigation.navigate('ReccommendedRouteScreen', {
-                        //     startLocation: startLocation,
-                        //     endLocation: endLocation,
-                        //     selectedDate: selectedDate.toISOString()
-                        // })
-                        //Send the two coordiantes to the Database, then move to a new screen
-                        //navigation.navigate(navigation, [startLocation, endLocation, selectedDate]);
+                        //storeInDatabase();
+                        navigation.navigate('ReccommendedRouteScreen', {
+                            startLocation: startLocation,
+                            endLocation: endLocation,
+                            selectedDate: selectedDate.toISOString()
+                        })
+                        // Send the two coordiantes to the Database, then move to a new screen
                     }}
                 />
 
@@ -292,22 +293,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                         value={selectedDate}
                         mode={DATE_MODE}
                         onChange={(event, selectedDate1) => {
-                            // setSelectedDate(selecrtedDate);
-                            // console.log(selectedDate);
-                            // const d = new Date(selectedDate);
-
-                            // //setTimeDisplay(true);
-
-                            // var hora = d.getUTCHours()+8;
-                            // if (hora >= 24){
-                            //     hora = hora - 24
-                            // }
-
-                            // console.log('Hour: ', hora, ' ', 'Minute: ', d.getUTCMinutes(), 'Sec: ', d.getUTCSeconds());
-                            // //Need to offset by -4 hours, this is UTC time
-                            // console.log(event)
                             const currentDate = selectedDate1 || selecteddate;
-                            //setShow(Platform.OS == 'android')
                             setSelectedDate(currentDate);
                             console.log(selectedDate);
                             let tempDate = new Date(currentDate);

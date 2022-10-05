@@ -11,7 +11,7 @@
  */
 import { StatusBar } from 'expo-status-bar';
 import React, { useRef, useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Button, FlatList, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, Button, FlatList, SafeAreaView, Platform } from 'react-native';
 import Login from './src/login';
 import { TouchableOpacity } from 'react-native';
 import DriverMapScreen from './Screen/DriverMapScreen';
@@ -30,6 +30,9 @@ import DatePicker from 'react-native-date-picker';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import DriverPutRouteScreen_Android from './Screen/DriverPutRouteScreen_Android';
+import DriverPutRouteScreen from './Screen/DriverPutRouteScreen';
+import selectUserType from './src/selectUserType';
+import RiderMapScreen from './Screen/RiderMapScreen';
 //navigator.geolocation = require('react-native-geolocation-service');
 
 export default function App() {
@@ -41,8 +44,11 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="DriverRoute" component={DriverPutRouteScreen_Android} />
+      <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="SelectUserType" component={selectUserType} />
+        <Stack.Screen name="RiderMapScreen" component={RiderMapScreen} />
+        <Stack.Screen name="DriverRoute" component={Platform.OS === 'ios' ? DriverPutRouteScreen : DriverPutRouteScreen_Android} />
         <Stack.Screen name="ReccommendedRouteScreen" component={ReccommendedRouteScreen} />
       </Stack.Navigator>
     </NavigationContainer>
