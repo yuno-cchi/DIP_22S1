@@ -1,24 +1,30 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View, Button, FlatList, SafeAreaView } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  FlatList,
+  SafeAreaView,
+} from "react-native";
 
+import { Dimensions } from "react-native";
+import { color } from "./Config/Color";
 
-import { Dimensions } from 'react-native';
-import { color } from './Config/Color';
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import RiderMapScreen from "./Screen/RiderMapScreen";
+import ListingDetailScreen from "./Screen/ListingDetailScreen";
+import DriverMapScreen from "./Screen/DriverMapScreen";
+import CheeHeanDomain from "./Screen/CheeHeanDomain";
+import AppButton from "./Components/AppButton";
+import MyAccountScreen from "./Screen/MyAcountScreen";
+import CalendarScreen from "./Screen/CalendarScreen";
 
-import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import RiderMapScreen from './Screen/RiderMapScreen';
-import ListingDetailScreen from './Screen/ListingDetailScreen';
-import DriverMapScreen from './Screen/DriverMapScreen';
-import CheeHeanDomain from './Screen/CheeHeanDomain';
-import AppButton from './Components/AppButton';
-import MyAccountScreen from './Screen/MyAcountScreen';
-import CalendarScreen from './Screen/CalendarScreen';
-
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 // [] array
 // {} function, not rendered
@@ -31,7 +37,7 @@ const TabNavigator = () => (
   <Tab.Navigator
     initialRouteName="RiderMap"
     screenOptions={{
-      headerShown: false
+      headerShown: false,
     }}
   >
     <Tab.Screen name="Account" component={MyAccountScreen} />
@@ -40,39 +46,41 @@ const TabNavigator = () => (
     {/* <Tab.Screen name="DriverMap" component={DriverMapScreen} /> */}
     <Tab.Screen name="Calendar" component={CalendarScreen} />
   </Tab.Navigator>
-)
+);
 
 const StackNavigator = () => (
   <Stack.Navigator
-    initialRouteName='ScreenA'
+    initialRouteName="ScreenA"
     screenOptions={{
       headerBackButtonMenuEnabled: false,
-      headerShown: false
-    }}>
+      headerShown: false,
+    }}
+  >
     <Stack.Screen name="ScreenA" component={ScrrenA} />
     <Stack.Screen name="ScreenB" component={ScreenB} />
-
   </Stack.Navigator>
-)
+);
 const ScrrenA = ({ navigation }) => (
-  < View style={{ backgroundColor: 'blue', flex: 1 }}>
+  <View style={{ backgroundColor: "blue", flex: 1 }}>
     <CheeHeanDomain />
     <AppButton
       title="Rider Screen>>"
       onPress={() => navigation.navigate("ScreenB")}
-      style={styles.switchScreen} />
-  </View >
-)
+      style={styles.switchScreen}
+    />
+  </View>
+);
 
 const ScreenB = ({ navigation }) => (
-  <View style={{ backgroundColor: 'pink', flex: 1 }}>
+  <View style={{ backgroundColor: "pink", flex: 1 }}>
     <RiderMapScreen />
     <AppButton
       title="<<Driver Screen"
       onPress={() => navigation.navigate("ScreenA")}
-      style={styles.switchScreen} />
+      style={styles.switchScreen}
+    />
   </View>
-)
+);
 
 export default function App() {
   return (
@@ -88,13 +96,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: color.primary,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center'
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
   },
   switchScreen: {
-    position: 'absolute',
-    bottom: 120
-  }
-
+    position: "absolute",
+    bottom: 120,
+  },
 });

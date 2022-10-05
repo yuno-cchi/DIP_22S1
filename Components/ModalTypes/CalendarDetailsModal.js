@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
-import { NavigationContainer } from '@react-navigation/native';
 //changed
-class CancelRideModal extends Component {
+class CalendarDetailsModal extends Component {
   state = {
     modalVisible: false,
   };
@@ -15,33 +14,20 @@ class CancelRideModal extends Component {
     const { modalVisible } = this.state;
     return (
       <View style={styles.centeredView}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            this.setModalVisible(!modalVisible);
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}></Text>
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => this.setModalVisible(!modalVisible)}
-              >
-                <Text style={styles.textStyle}>Hide Modal</Text>
-              </Pressable>
-            </View>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={[styles.modalText, styles.modalTextHeader]}>
+              Contact Driver
+            </Text>
+            <Text style={[styles.modalText]}>+65 999</Text>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => this.setModalVisible(!modalVisible)}
+            >
+              <Text style={styles.textStyle}>Cancel</Text>
+            </Pressable>
           </View>
-        </Modal>
-        <Pressable
-          style={[styles.button, styles.buttonOpen]}
-          onPress={() => this.setModalVisible(true)}
-        >
-          <Text style={styles.textStyle}>Cancel Ride</Text>
-        </Pressable>
+        </View>
       </View>
     );
   }
@@ -74,11 +60,8 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 2,
   },
-
   buttonOpen: {
     backgroundColor: "#F194FF",
-    // width: "80%",
-    // height: "40%",
   },
   buttonClose: {
     backgroundColor: "#2196F3",
@@ -88,10 +71,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
+
   modalText: {
     marginBottom: 15,
     textAlign: "center",
   },
+  modalTextHeader: {
+    fontSize: 20,
+  },
 });
 
-export default CancelRideModal;
+export default CalendarDetailsModal;
