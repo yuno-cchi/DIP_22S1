@@ -19,7 +19,7 @@ const dummyRoute = [
         routeDescription: 'Route1 so fun',
         start: { latitude: 1.33300621554807, longitude: 103.71818707395227 },
         destination: { latitude: 1.3259478205865913, longitude: 103.81212770732003 },
-
+        selected: false,
 
     },
     {
@@ -28,7 +28,8 @@ const dummyRoute = [
         routeDescription: 'Route2 so fun',
         start: { latitude: 1.3259478205865913, longitude: 103.81212770732003 },
         destination: { latitude: 1.4057132690528746, longitude: 103.85914023847647 },
-        centroid: { latitude: 1.3658, longitude: 103.8356 }
+        centroid: { latitude: 1.3658, longitude: 103.8356 },
+        selected: false,
     },
     {
         routeId: 2,
@@ -36,7 +37,8 @@ const dummyRoute = [
         routeDescription: 'Route3 so fun',
         start: { latitude: 1.287764200204629, longitude: 103.84689407843125 },
         destination: { latitude: 1.3521, longitude: 103.8198 },
-        centroid: { latitude: 1.31995, longitude: 103.833345 }
+        centroid: { latitude: 1.31995, longitude: 103.833345 },
+        selected: false,
     },
     {
         routeId: 3,
@@ -44,7 +46,8 @@ const dummyRoute = [
         routeDescription: 'Route4 so fun',
         start: { latitude: 1.4057132690528746, longitude: 103.85914023847647 },
         destination: { latitude: 1.3521, longitude: 103.8198 },
-        centroid: { latitude: 1.378905, longitude: 103.83947 }
+        centroid: { latitude: 1.378905, longitude: 103.83947 },
+        selected: false,
     }
 ]
 
@@ -55,19 +58,33 @@ const getShortestRoute = (passengerNumber, coordinates) => {
     return (null);
 }
 
-export default function ReccommendedRouteScreen({ navigation, route }) {
+export default function ReccommendedRouteScreen({ navigation, /*route*/ }) {
 
     const [initialDummyRoute, setDummyroute] = useState(dummyRoute);
     const [isRefrehing, setRefreshing] = useState(false);
 
-    const { startLocation, endLocation, selectedDate } = route.params;
+    const [selectedRoute, setSelectedRoute] = useState([]);
+
+    const route = {
+        startLocation: { latitude: 1.302127, longitude: 103.625382 },
+        endLocation: { latitude: 1.2988981, longitude: 103.8547574 },
+        selectedDate: "2022-10-05T07:22:13.049Z"
+    }
+
+    const { startLocation, endLocation, selectedDate } = route; //route has to be route.param, use const route in place for testing 
 
     const deleteThisCard = (deleteRoute) => {
         setDummyroute(initialDummyRoute.filter(route => route.routeId !== deleteRoute.routeId));
+
     }
 
-    const selectThisCard = (selectedCard, cardRef) => {
+    const selectThisCard = (selectedCard) => {
 
+
+        console.log(selectedCard)
+        selectedCard.selected = !selectedCard.selected;
+        tempRoute = initialDummyRoute.map(route => route.routeId !== selectedCard.routeId ? route : selectedCard);
+        setDummyroute(tempRoute);
     }
 
     const getNearestRoutes = (numberOfRoute, centroid) => {
@@ -97,11 +114,11 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
                 keyExtractor={item => item.routeId}
                 renderItem={({ item }) =>
                     <Card
-                        ref={(card) => { cardRef = card; }}
                         title={item.routeName}
                         subTitle={item.routeDescription}
                         route={item}
-                        onPress={() => selectThisCard(item, cardRef)} />}
+                        style={item.selected ? { backgroundColor: color.primary } : { backgroundColor: color.white }}
+                        onPress={() => selectThisCard(item)} />}
                 refreshing={isRefrehing}
                 onRefresh={() => setDummyroute(dummyRoute)}
             />
