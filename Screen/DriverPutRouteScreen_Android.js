@@ -14,6 +14,7 @@ import { TextInput } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import * as Location from 'expo-location';
 import DateTimePicker, { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 // DateTimePickerAndroid.open(params: AndroidNativeProps);
 // DateTimePickerAndroid.dismiss(model: AndroidNativeProps['mode']);
@@ -88,8 +89,9 @@ const getCoordinatesKey = () => {
 
 // }
 
-export default function DriverPutRouteScreen_Android( navigation, route ) {
+export default function DriverPutRouteScreen_Android( route ) {
 
+    const navigation = useNavigation();
 
     //for datetimepicker
     const [selecteddate, setSelectedDate] = useState(null);
@@ -138,36 +140,42 @@ export default function DriverPutRouteScreen_Android( navigation, route ) {
         console.log("Date: ")
         console.log(date)
     
-        //userID has to be retrieved from the login
+        
         console.log("key: ") //this is automatically created so thank god
         console.log(key)
     
+        //TODO: userID has to be retrieved from the login session
         console.log("userID: ")
         userID = "kigali";
         console.log(userID)
     
+        centroid = {latitude: (startLocation.latitude + endLocation.latitude) / 2.0, longitude: (startLocation.longitude + endLocation.longitude) / 2.0,};
+
+        console.log("centroid coord: ")
+        console.log(centroid);
+
         //TODO: use axios to post into database
-        axios({
-            method: 'post',
-            url: 'http://secret-caverns-21869.herokuapp.com/ride/add',
-            headers: {}, 
-            data: {
-                routename: userID,
-                start: startLocation,
-                destination: endLocation,
-                date: date
-            }
-          }).then((response) => {
-            console.log(response);
+        // axios({
+        //     method: 'post',
+        //     url: 'http://secret-caverns-21869.herokuapp.com/ride/add',
+        //     headers: {}, 
+        //     data: {
+        //         routename: userID,
+        //         start: startLocation,
+        //         destination: endLocation,
+        //         date: date
+        //     }
+        //   }).then((response) => {
+        //     console.log(response);
     
     
-            navigateToRecc()
+        //     navigateToRecc()
     
     
-          }, (error) => {
-            console.log(error);
-          });
-    
+        //   }, (error) => {
+        //     console.log(error);
+        //   });
+        navigateToRecc()
     
     }
 

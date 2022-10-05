@@ -58,7 +58,7 @@ export default function Card({ title, subTitle, onPress, route = {
             <AppText style={styles.subTitle}>{subTitle}</AppText>
             <TouchableOpacity style={styles.deleteButton} onPress={onPress}>
                 <View>
-                    <MaterialCommunityIcons name={'close'} size='30' color={color.white} />
+                    <MaterialCommunityIcons name={'close'} size={30} color={color.white} />
                 </View>
             </TouchableOpacity>
         </View>
@@ -78,13 +78,13 @@ const styles = StyleSheet.create({
         height: '75%',
     },
     title: {
-        fontWeight: '200',
+        fontWeight: "200",
         marginTop: 5,
         marginLeft: 5
     },
     subTitle: {
         color: color.green,
-        fontWeight: '150',
+        fontWeight: "150",
         marginTop: 2,
         marginLeft: 5
     },

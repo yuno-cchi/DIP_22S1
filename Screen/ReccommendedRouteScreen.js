@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Image, FlatList, Dimensions, Alert } from 'react-native';
-import AppText from "../Components/AppText";
+// import AppText from "../Components/AppText";
 
 import { color } from '../Config/Color';
 import axios from 'axios';
@@ -121,10 +121,10 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
 
 const styles = StyleSheet.create({
     container: {
-        minWidth: '80%',
+        minWidth: "80%",
         height: windowHeight,
-        backgroundColor: 'white',
-        alignItems: 'center'
+        backgroundColor: "white",
+        alignItems: "center"
     },
     title: {
         marginTop: 15,
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     },
     topFreeSpace: {
         height: 50,
-        width: '100%',
+        width: "100%",
     },
     subtitle: {
         color: color.green,
@@ -143,10 +143,10 @@ const styles = StyleSheet.create({
     },
     confirmButton: {
         backgroundColor: color.red,
-        width: '80%',
+        width: "80%",
     },
     bottomTab: {
-        alignItems: 'center'
+        alignItems: "center"
     }
 
 })

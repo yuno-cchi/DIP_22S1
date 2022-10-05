@@ -108,7 +108,8 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                 routename: userID,
                 start: startLocation,
                 destination: endLocation,
-                date: date
+                date: date,
+                centroid: centroid,
             }
         }).then((response) => {
             console.log(response);
@@ -172,6 +173,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                     if (hora >= 24) {
                         hora = hora - 24
                     }
+                    date = Date("2022-10")
 
                     console.log('Hour: ', d.getUTCHours() - 16, ' ', 'Minute: ', d.getUTCMinutes(), 'Sec: ', d.getUTCSeconds());
                     //Need to offset by -4 hours, this is UTC time

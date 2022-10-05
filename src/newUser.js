@@ -288,4 +288,6 @@ export default function NewUser() {
             </TouchableOpacity>
         </View>
     );
+
+
 }
