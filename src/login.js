@@ -14,6 +14,7 @@
 
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
+// import { AsyncStorage } from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 import {
@@ -68,12 +69,12 @@ async function callUsers(username, password) {
                         ["name", username]
                     ]) //store username in sessionStorage,
 
-                    //TO TEST: retrieving username and isLoggedIn state from AsyncStorage
+
                     AsyncStorage.multiGet(['isLoggedIn', 'name']).then((data) => {
                         let loggedInStatus = data[0][1];
                         let username = data[1][1];
-
-
+        
+        
                         console.log(loggedInStatus);
                         console.log("username: " + username);
                     });
@@ -146,7 +147,9 @@ export default function Login({ navigation }) {
 
             callUsers(userToValidate, passToValidate);
 
-            navigation.navigate('DriverRoute')
+            //TO TEST: retrieving username and isLoggedIn state from AsyncStorage
+
+            navigation.navigate('DriverRoute');
         }
     }
 

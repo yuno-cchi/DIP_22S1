@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, StyleSheet, Image, FlatList, Dimensions, Alert } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, Image, FlatList, Dimensions, Alert } from 'react-native';
 // import AppText from "../Components/AppText";
 
 import { color } from '../Config/Color';
@@ -87,24 +87,48 @@ export default function ReccommendedRouteScreen({ navigation, /*route*/ }) {
         setDummyroute(tempRoute);
     }
 
-    const getNearestRoutes = (numberOfRoute, centroid) => {
+
+    useEffect(() => {
+        getNearestRoutes();
+    }, []);
+
+    const getNearestRoutes = async (numberOfRoute, centroid1) => {
 
         let routeArray = [];
 
-        if (numberOfRoute > 4) {
-            console.log("Exceed route limit")
-            return null;
-        }
 
-        for (let i = 0; i < numberOfRoute; i++) {
-            //searchDatabase for route's centroid +- 0.5 for less query call
-            if (true/*if the centroid is smaller that any of array's centroid*/) {
-                //pop the biggest
-                routeArray.push()//Push the desired route into the array
-            }
-        }
+
+        const resp = await axios.get('http://secret-caverns-21869.herokuapp.com/ride');
+        ridedata = resp.data;
+
+        console.log(centroid);
+        console.log(ridedata);
+
+        // if (numberOfRoute > 4) {
+        //     console.log("Exceed route limit")
+        //     return null;
+        // }
+
+        // for (let i = 0; i < numberOfRoute; i++) {
+        //     //searchDatabase for route's centroid +- 0.5 for less query call
+
+
+
+        //     if (true/*if the centroid is smaller that any of array's centroid*/) {
+        //         //pop the biggest
+        //         routeArray.push()//Push the desired route into the array
+        //     }
+        // }
+
+        setLoading(false);
     }
 
+
+    if (loading) {
+        //setRouteVisible(false);
+        console.log("ladung");
+        return <View><Text>Loading, please wait</Text></View>
+    }
 
     return (
         <View

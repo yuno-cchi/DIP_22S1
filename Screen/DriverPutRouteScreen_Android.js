@@ -112,6 +112,7 @@ export default function DriverPutRouteScreen_Android( route ) {
 
     const [startLocation, setStartLocation] = useState();
     const [endLocation, setEndLocation] = useState();
+    const [centroidLocation, setCentroid] = useState();
 
     const [loading, setLoading] = useState(true)
 
@@ -154,6 +155,8 @@ export default function DriverPutRouteScreen_Android( route ) {
         console.log("centroid coord: ")
         console.log(centroid);
 
+        setCentroid(centroid);
+
         //TODO: use axios to post into database
         // axios({
         //     method: 'post',
@@ -184,7 +187,8 @@ export default function DriverPutRouteScreen_Android( route ) {
         navigation.navigate('ReccommendedRouteScreen', {
             startLocation: startLocation,
             endLocation: endLocation,
-            selectedDate: selectedDate
+            selectedDate: selectedDate,
+            centroid: centroidLocation
         })
     }
 
