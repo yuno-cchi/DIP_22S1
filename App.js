@@ -56,32 +56,32 @@ export default function App() {
     const loginState = await AsyncStorage.getItem("isLoggedIn");
     const idUser = await AsyncStorage.getItem("userId");
 
-    if (loginState == "true"){
+    if (loginState == "true") {
       console.log("User is logged in: " + idUser)
       setInitialPage("RiderMapScreen")
     }
-    else{
+    else {
       console.log("user is not logged in")
     }
 
     setShow(false);
   }
-  
+
 
   if (show) {
-        //setRouteVisible(false);
-        console.log("attenzione");
-        return <View><Text>Loading, please wait</Text></View>
-    }
+    //setRouteVisible(false);
+    console.log("attenzione");
+    return <View><Text>Loading, please wait</Text></View>
+  }
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={initialPage} screenOptions={{ headerShown: false }}>
-    
+      <Stack.Navigator initialRouteName={"DriverPutRoute"} screenOptions={{ headerShown: false }}>
+
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="SelectUserType" component={selectUserType} />
         <Stack.Screen name="RiderMapScreen" component={RiderMapScreen} />
-        <Stack.Screen name="DriverRoute" component={Platform.OS === 'ios' ? DriverPutRouteScreen : DriverPutRouteScreen_Android} />
+        <Stack.Screen name="DriverPutRoute" component={Platform.OS === 'ios' ? DriverPutRouteScreen : DriverPutRouteScreen_Android} />
         <Stack.Screen name="ReccommendedRouteScreen" component={ReccommendedRouteScreen} />
       </Stack.Navigator>
     </NavigationContainer>
