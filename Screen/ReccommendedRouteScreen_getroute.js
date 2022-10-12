@@ -58,12 +58,14 @@ const getShortestRoute = (passengerNumber, coordinates) => {
     return (null);
 }
 
-export default function ReccommendedRouteScreen({ navigation, /*route*/ }) {
+export default function ReccommendedRouteScreen_getroute({ navigation, /*route*/ }) {
 
     const [initialDummyRoute, setDummyroute] = useState(dummyRoute);
     const [isRefrehing, setRefreshing] = useState(false);
 
     const [selectedRoute, setSelectedRoute] = useState([]);
+
+
 
     const route = {
         startLocation: { latitude: 1.302127, longitude: 103.625382 },
@@ -71,7 +73,7 @@ export default function ReccommendedRouteScreen({ navigation, /*route*/ }) {
         selectedDate: "2022-10-05T07:22:13.049Z"
     }
 
-    const { loading, setLoading } = useState(true);
+    const [ loading, setLoading ] = useState(true);
 
     const { startLocation, endLocation, selectedDate } = route; //route has to be route.param, use const route in place for testing 
 
@@ -89,11 +91,11 @@ export default function ReccommendedRouteScreen({ navigation, /*route*/ }) {
         setDummyroute(tempRoute);
     }
 
-    /*
+    
     useEffect(() => {
         getNearestRoutes();
     }, []);
-    */
+    
     const getNearestRoutes = async (numberOfRoute, centroid1) => {
 
         let routeArray = [];

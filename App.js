@@ -17,6 +17,7 @@ import { TouchableOpacity } from 'react-native';
 import DriverMapScreen from './Screen/DriverMapScreen';
 import DriverPutRouteAndroid from './Screen/DriverPutRouteScreen_Android';
 import ReccommendedRouteScreen from './Screen/ReccommendedRouteScreen';
+import ReccommendedRouteScreen_getroute from './Screen/ReccommendedRouteScreen_getroute';
 import TopTab from './Components/TopTab';
 import SearchBar from './Components/SearchBar';
 import TopSearchBar from './Components/TopSearchBar';
@@ -84,6 +85,8 @@ export default function App() {
         <Stack.Screen name="RiderMapScreen" component={RiderMapScreen} />
         <Stack.Screen name="DriverPutRoute" component={Platform.OS === 'ios' ? DriverPutRouteScreen : DriverPutRouteScreen_Android} />
         <Stack.Screen name="ReccommendedRouteScreen" component={ReccommendedRouteScreen} />
+        <Stack.Screen name="ReccommendedRouteScreenGet" component={ReccommendedRouteScreen_getroute} />
+        
       </Stack.Navigator>
     </NavigationContainer>
 
