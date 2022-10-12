@@ -70,6 +70,11 @@ const rideSchema = new Schema({
             trim: true
         },
     },
+    selected: {
+        type: Boolean,
+        unique: false,
+        trim: true
+    }
 }, {
     timestamps: true,
 });
