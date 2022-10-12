@@ -17,20 +17,12 @@ const GOOGLE_MAPS_APIKEY = 'AIzaSyBYDEKY12RzWyP0ACQEpgsr4up2w3CjH88';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-export default function Card({ title, subTitle, onPress, route = {
-    routeId: 0,
-    start: { latitude: 1.33300621554807, longitude: 103.71818707395227 },
-    destination: { latitude: 1.3259478205865913, longitude: 103.81212770732003 },
-    passengerNumber: 4,
-    stopPoint: [{ latitude: 1.3496884588957907, longitude: 103.98626434421578 }, { latitude: 1.4057132690528746, longitude: 103.85914023847647 }]
-}
-    , style
-}) {
+export default function Card({ title, subTitle, onPress, route, style, ...otherProps }) {
 
 
 
     return (
-        <View style={[styles.card, style]}>
+        <View style={[styles.card, style]} {...otherProps}>
 
             <MapView
                 style={styles.mapStyle}

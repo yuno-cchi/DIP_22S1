@@ -11,6 +11,7 @@ import TopTab from '../Components/TopTab';
 import SearchBar from '../Components/SearchBar';
 import { Formik } from 'formik';
 import { TextInput } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import * as Location from 'expo-location';
 import DateTimePicker, { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
@@ -112,6 +113,7 @@ export default function DriverPutRouteScreen_Android( route ) {
 
     const [startLocation, setStartLocation] = useState();
     const [endLocation, setEndLocation] = useState();
+    const [centroidLocation, setCentroid] = useState();
 
     const [loading, setLoading] = useState(true)
 
@@ -128,7 +130,7 @@ export default function DriverPutRouteScreen_Android( route ) {
         getLiveLocation();
     }, []);
 
-    const storeInDatabase = (startLocation, endLocation, date, key, userID) => {
+    const storeInDatabase = async (startLocation, endLocation, date, key, userID) => {
         console.log("adding to database")
     
         console.log("Start: ")
@@ -146,13 +148,17 @@ export default function DriverPutRouteScreen_Android( route ) {
     
         //TODO: userID has to be retrieved from the login session
         console.log("userID: ")
-        userID = "kigali";
+
+        userID = await AsyncStorage.getItem("userId");
+
         console.log(userID)
     
         centroid = {latitude: (startLocation.latitude + endLocation.latitude) / 2.0, longitude: (startLocation.longitude + endLocation.longitude) / 2.0,};
 
         console.log("centroid coord: ")
         console.log(centroid);
+
+        setCentroid(centroid);
 
         //TODO: use axios to post into database
         // axios({
@@ -184,7 +190,8 @@ export default function DriverPutRouteScreen_Android( route ) {
         navigation.navigate('ReccommendedRouteScreen', {
             startLocation: startLocation,
             endLocation: endLocation,
-            selectedDate: selectedDate
+            selectedDate: selectedDate,
+            centroid: centroidLocation
         })
     }
 
