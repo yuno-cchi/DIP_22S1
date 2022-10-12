@@ -1,14 +1,3 @@
-<<<<<<< Updated upstream
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-
-export default function CalendarScreen() {
-    return (
-        <View></View>
-    );
-<<<<<<< Updated upstream
-=======
-=======
 import React, { ReactNode, SyntheticEvent, useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
@@ -16,8 +5,8 @@ import data from "./calendarData.json";
 import mydata from "./dayTripData.json";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import PlannedDayDetails from "./PlannedDayDetails.js";
-import { render } from "react-dom";
+//import PlannedDayDetails from "./PlannedDayDetails.js";
+//import { render } from "react-dom";
 
 const Stack = createNativeStackNavigator();
 var dataLen = Object.keys(data).length;
@@ -55,21 +44,17 @@ function DayPlan({ navigation }) {
         </View>
       );
     }
->>>>>>> Stashed changes
   }
   console.log("display?", displayPlan);
   return (
     <View style={styles.plan}>
-<<<<<<< Updated upstream
-      {/* <Text>hi</Text>
-          <PlannedDayDetails />
-          */}
-      {displayPlan}
-=======
       <View style={styles.component}>{displayPlan}</View>
->>>>>>> Stashed changes
     </View>
   );
+}
+
+function MarkCalender() {
+  for (let i = 0; i < dayDataLen; i++) {}
 }
 
 function CalendarScreen({ navigation }) {
@@ -83,11 +68,7 @@ function CalendarScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Calendar
-        // Initially visible month. Default = now
-        //initialDate={today}
-        // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
         minDate={today}
-        // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
         maxDate={maxPlanning}
         // Handler which gets executed on day press. Default = undefined
         onDayPress={(day) => {
@@ -109,9 +90,6 @@ function CalendarScreen({ navigation }) {
         }}
         // Hide month navigation arrows. Default = false
         hideArrows={false}
-        // Replace default arrows with custom ones (direction can be 'left' or 'right')
-        //renderArrow={(direction) => <Arrow />}
-        // Do not show days of other months in month page. Default = false
         hideExtraDays={true}
         // If hideArrows = false and hideExtraDays = false do not switch month when tapping on greyed out
         // day from another month that is visible in calendar page. Default = false
@@ -124,9 +102,6 @@ function CalendarScreen({ navigation }) {
         onPressArrowRight={(addMonth) => addMonth()}
         // Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates
         disableAllTouchEventsForDisabledDays={false}
-        // Replace default month and year title with custom one. the function receive a date as parameter
-        //renderHeader={calendarName}
-        // Enable the option to swipe between months. Default = false
         enableSwipeMonths={true}
         theme={{
           backgroundColor: "#ffffff",
@@ -156,15 +131,9 @@ function CalendarScreen({ navigation }) {
       ></Calendar>
     </View>
   );
->>>>>>> Stashed changes
 }
 
 const styles = StyleSheet.create({
-<<<<<<< Updated upstream
-    container: {
-    }
-})
-=======
   container: {
     flex: 1,
     justifyContent: "center",
@@ -182,4 +151,3 @@ const styles = StyleSheet.create({
 });
 
 export default CalendarNavigator;
->>>>>>> Stashed changes
