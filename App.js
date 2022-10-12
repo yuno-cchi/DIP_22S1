@@ -75,6 +75,7 @@ export default function App() {
   }
 
   return (
+
     <NavigationContainer>
       <Stack.Navigator initialRouteName={"DriverPutRoute"} screenOptions={{ headerShown: false }}>
 
