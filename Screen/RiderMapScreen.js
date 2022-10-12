@@ -70,7 +70,8 @@ export default function RiderMapScreen() {
                 destination: endLocation,
                 centroid: centroid,
                 date: date,
-                selected: false
+                selected: false,
+                driverID: null,
             }
         }).then((response) => {
             console.log(response);

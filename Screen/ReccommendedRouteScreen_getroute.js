@@ -113,16 +113,18 @@ export default function ReccommendedRouteScreen_getroute({ navigation, /*route*/
         //     return null;
         // }
 
-        // for (let i = 0; i < numberOfRoute; i++) {
-        //     //searchDatabase for route's centroid +- 0.5 for less query call
+        for (let i = 0; i < ridedata; i++) {
+            //searchDatabase for route's centroid +- 0.5 for less query call
+            if (ridedata[i].selected == false){
+                if (ridedata[i].centroid.latitude <= centroid1.latitude+0.5 && ridedata[i].centroid.latitude >= centroid1.latitude-0.5){
+                //if (true/*if the centroid is smaller that any of array's centroid*/) {
+                    //pop the biggest
+                    routeArray.push(ridedata[i]);//Push the desired route into the array
+                }
+            }
+        }
 
-
-
-        //     if (true/*if the centroid is smaller that any of array's centroid*/) {
-        //         //pop the biggest
-        //         routeArray.push()//Push the desired route into the array
-        //     }
-        // }
+        console.log(routeArray);
 
         setLoading(false);
     }
