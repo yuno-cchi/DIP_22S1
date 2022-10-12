@@ -19,6 +19,7 @@ const dummyRoute = [
         routeDescription: 'Route1 so fun',
         start: { latitude: 1.33300621554807, longitude: 103.71818707395227 },
         destination: { latitude: 1.3259478205865913, longitude: 103.81212770732003 },
+        centroid: { latitude: 1.329477, longitude: 103.765158 },
         selected: false,
 
     },
@@ -80,13 +81,21 @@ export default function ReccommendedRouteScreen({ navigation, /*route*/ }) {
 
     }
 
-    const selectThisCard = (selectedCard) => {
+    const selectThisCard = (selectedRouteId) => {
 
-
-        console.log(selectedCard)
-        selectedCard.selected = !selectedCard.selected;
-        tempRoute = initialDummyRoute.map(route => route.routeId !== selectedCard.routeId ? route : selectedCard);
+        tempRoute2 = selectedRoute;
+        if (selectedRouteId.selected === false) {
+            tempRoute2.push(initialDummyRoute.filter(prop => prop.routeId === selectedRouteId.routeId));
+            setSelectedRoute(tempRoute2);
+        } else {
+            tempRoute2.pop(initialDummyRoute.filter(prop => prop.routeId === selectedRouteId.routeId));
+            setSelectedRoute(tempRoute2);
+        }
+        console.log(selectedRouteId)
+        selectedRouteId.selected = !selectedRouteId.selected;
+        tempRoute = initialDummyRoute.map(route => route.routeId !== selectedRouteId.routeId ? route : selectedRouteId);
         setDummyroute(tempRoute);
+
     }
 
     /*
@@ -128,7 +137,7 @@ export default function ReccommendedRouteScreen({ navigation, /*route*/ }) {
 
     if (loading) {
         //setRouteVisible(false);
-        console.log("ladung");
+        console.log("loading");
         return <View><Text>Loading, please wait</Text></View>
     }
 
@@ -156,6 +165,9 @@ export default function ReccommendedRouteScreen({ navigation, /*route*/ }) {
                         () => {
                             console.log("The selected route is", JSON.stringify(startLocation) + JSON.stringify(endLocation) + JSON.stringify(selectedDate))
                             console.log("Hello there")
+
+                            //Send driver's startLocation, endLocation, selectedDate to the database.
+                            //navigation.navigate('CalendarScreen')
                         }
                     }
                 />
@@ -164,7 +176,12 @@ export default function ReccommendedRouteScreen({ navigation, /*route*/ }) {
                     style={styles.confirmButton}
                     onPress={
                         () => {
-                            console.log("The selected route is", JSON.stringify(startLocation) + JSON.stringify(endLocation) + JSON.stringify(selectedDate))
+                            console.log("There are: ", selectedRoute.length, "routes")
+                            console.log("Selected route: ", selectedRoute)
+                            console.log("The selected route is/are")
+                            for (let x = 0; x < selectedRoute.length; x++) {
+                                console.log(selectedRoute[x].routeId)
+                            }
                             console.log("Hello there")
                         }
                     }

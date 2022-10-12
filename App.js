@@ -84,6 +84,7 @@ export default function App() {
         <Stack.Screen name="RiderMapScreen" component={RiderMapScreen} />
         <Stack.Screen name="DriverPutRoute" component={Platform.OS === 'ios' ? DriverPutRouteScreen : DriverPutRouteScreen_Android} />
         <Stack.Screen name="ReccommendedRouteScreen" component={ReccommendedRouteScreen} />
+        <Stack.Screen name="CalendarScreen" component={() => { }} />
       </Stack.Navigator>
     </NavigationContainer>
 
