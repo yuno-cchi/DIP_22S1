@@ -110,6 +110,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                 destination: endLocation,
                 date: date,
                 centroid: centroid,
+                selected: false
             }
         }).then((response) => {
             console.log(response);
@@ -280,13 +281,13 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                     onPress={() => {
                         console.log(startLocation, endLocation, selectedDate);
 
-                        //storeInDatabase();
+
                         navigation.navigate('ReccommendedRouteScreen', {
                             startLocation: startLocation,
                             endLocation: endLocation,
                             selectedDate: selectedDate.toISOString()
                         })
-                        // Send the two coordiantes to the Database, then move to a new screen
+
                     }}
                 />
 

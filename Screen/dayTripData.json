@@ -1,0 +1,38 @@
+[
+    {
+    "routename": "randomuseridfromlogin",
+      "start": {
+        "latitude": "1.33300621554807",
+        "longitude": "103.71818707395227"
+      },
+      "destination": {
+        "latitude": "1.3259478205865913",
+        "longitude": "103.81212770732003"
+      },
+      "date": "2022-10-17T15:41:00.000Z"
+  },
+    {
+    "routename": "haha",
+      "start": {
+        "latitude": "1.33300621554807",
+        "longitude": "103.71818707395227"
+      },
+      "destination": {
+        "latitude": "1.3259478205865913",
+        "longitude": "103.81212770732003"
+      },
+      "date": "2022-10-19T15:41:00.000Z"
+  },
+    {
+    "routename": "meek",
+      "start": {
+        "latitude": "1.33300621554807",
+        "longitude": "103.71818707395227"
+      },
+      "destination": {
+        "latitude": "1.3259478205865913",
+        "longitude": "103.81212770732003"
+      },
+      "date": "2022-10-19T15:41:00.000Z"
+  }
+]
