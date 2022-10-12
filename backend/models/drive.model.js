@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 //for users db
-const rideSchema = new Schema({
-    routename:{ //to store userID/username from session inside
+const driveSchema = new Schema({
+    routeUserID:{ //to store userID/username from session inside
         type: String,
         unique: false,
         trim: true
@@ -75,15 +75,15 @@ const rideSchema = new Schema({
         unique: false,
         trim: true
     },
-    driverID: {
+    routeIdPair: [{
         type: String,
         unique: false,
-        trim: true
-    },
+        trim: true,
+    }]
 }, {
     timestamps: true,
 });
 
-const Rider = mongoose.model('ride', rideSchema);
+const Drive = mongoose.model('drives', driveSchema);
 
-module.exports = Rider;
+module.exports = Drive;

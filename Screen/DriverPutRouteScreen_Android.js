@@ -187,7 +187,7 @@ export default function DriverPutRouteScreen_Android( route ) {
 
     function navigateToRecc(){
         //alert successful and move to next page
-        navigation.navigate('ReccommendedRouteScreen', {
+        navigation.navigate('ReccommendedRouteScreenGet', {
             startLocation: startLocation,
             endLocation: endLocation,
             selectedDate: selectedDate,
@@ -379,12 +379,13 @@ export default function DriverPutRouteScreen_Android( route ) {
                     title="Go"
                     onPress={() => {
                         console.log(startLocation, endLocation, selectedDate);
-                        if (startLocation == undefined && endLocation == undefined) {
-                            console.log("missing fields");
-                        }
-                        else {
-                            storeInDatabase(startLocation, endLocation, selectedDate)
-                        }
+                        // if (startLocation == undefined && endLocation == undefined) {
+                        //     console.log("missing fields");
+                        // }
+                        // else {
+                        //     storeInDatabase(startLocation, endLocation, selectedDate)
+                        // }
+                        storeInDatabase(startLocation, endLocation, selectedDate)
                         //Send the two coordiantes to the Database, then move to a new screen
                     }}
                 />

@@ -22,38 +22,37 @@ export default function Card({ title, subTitle, onPress, route, style, ...otherP
 
 
     return (
-        <View style={[styles.card, style]} {...otherProps}>
+        <TouchableOpacity onPress={onPress}>
+            <View style={[styles.card, style]} {...otherProps}>
 
-            <MapView
-                style={styles.mapStyle}
-                initialRegion={{
-                    latitude: (route.start.latitude + route.destination.latitude) / 2,
-                    longitude: (route.start.longitude + route.destination.longitude) / 2,
-                    latitudeDelta: 0.1,
-                    longitudeDelta: 0.1,
-                }}
-                zoomEnabled={false}
-                rotateEnabled={false}
-                scrollEnabled={false}>
-                <MapViewDirections
-                    origin={route.start}
-                    destination={route.destination}
-                    strokeWidth={3}
-                    apikey={GOOGLE_MAPS_APIKEY}
-                    optimizeWaypoints={true}
-                    strokeColor="red"
-                >
+                <MapView
+                    style={styles.mapStyle}
+                    initialRegion={{
+                        latitude: (route.start.latitude + route.destination.latitude) / 2,
+                        longitude: (route.start.longitude + route.destination.longitude) / 2,
+                        latitudeDelta: 0.1,
+                        longitudeDelta: 0.1,
+                    }}
+                    zoomEnabled={false}
+                    rotateEnabled={false}
+                    scrollEnabled={false}>
+                    <MapViewDirections
+                        origin={route.start}
+                        destination={route.destination}
+                        strokeWidth={3}
+                        apikey={GOOGLE_MAPS_APIKEY}
+                        optimizeWaypoints={true}
+                        strokeColor="red"
+                    >
 
-                </MapViewDirections>
-            </MapView>
-            <AppText style={styles.title}>{title}</AppText>
-            <AppText style={styles.subTitle}>{subTitle}</AppText>
-            <TouchableOpacity style={styles.deleteButton} onPress={onPress}>
-                <View>
-                    <MaterialCommunityIcons name={'close'} size={30} color={color.white} />
-                </View>
-            </TouchableOpacity>
-        </View>
+                    </MapViewDirections>
+                </MapView>
+                <AppText style={styles.title}>{title}</AppText>
+                <AppText style={styles.subTitle}>{subTitle}</AppText>
+
+            </View>
+        </TouchableOpacity>
+
     );
 }
 const styles = StyleSheet.create({

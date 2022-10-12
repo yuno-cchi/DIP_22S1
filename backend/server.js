@@ -32,12 +32,14 @@ connection.once('open', () => {
 
 //TODO: to add once u have more routes 
 const userRouter = require('./routes/user')
-const driverRouter = require('./routes/driverdetails')
+const driveDetailsRouter = require('./routes/driverdetails')
+const driveRouter = require('./routes/driveRoute')
 const rideRouter = require('./routes/ride')
 
 //TODO: add accordingly based on the router variable u declared
 app.use('/user', userRouter);
-app.use('/driverdetails', driverRouter);
+app.use('/driverdetails', driveDetailsRouter);
+app.use('/drive', driveRouter);
 app.use('/ride', rideRouter);
 
 
