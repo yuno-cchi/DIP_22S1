@@ -5,6 +5,9 @@ import data from "./calendarData.json";
 import mydata from "./dayTripData.json";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import PlanList from "../Components/PlanList";
+import { FlatList } from "react-native";
+import { color } from "../Config/Color";
 //import PlannedDayDetails from "./PlannedDayDetails.js";
 //import { render } from "react-dom";
 
@@ -25,22 +28,23 @@ function DayPlan({ navigation }) {
 
   for (let i = 0; i < dayDataLen; i++) {
     console.log("loop", Object.values(mydata)[i].date.slice(0, 10));
+    let thisRoute = Object.values(mydata)[i];
     if (
       Object.values(selectedday)[4] ==
       Object.values(mydata)[i].date.slice(0, 10)
     ) {
       displayPlan.push(
-        <View key={i}>
-          <View>
-            <View>
-              <Text>User: {Object.values(mydata)[i].routename}</Text>
-            </View>
-            <Text>{Object.values(mydata)[i].date}</Text>
-            <Text>Start: {Object.values(mydata)[i].start.latitude}</Text>
-            <Text>
-              destination: {Object.values(mydata)[i].destination.longitude}
-            </Text>
-          </View>
+        <View>
+          <PlanList
+            title={thisRoute.date}
+            user="User"
+            style={
+              Object.values(mydata)[i].selected
+                ? { backgroundColor: color.primary }
+                : { backgroundColor: color.white }
+            }
+            //onPress={}
+          />
         </View>
       );
     }
@@ -143,6 +147,7 @@ const styles = StyleSheet.create({
     justifyContent: "start",
     alignItems: "center",
     marginTop: 10,
+    //margin: 10,
   },
   component: {
     height: "15%",
