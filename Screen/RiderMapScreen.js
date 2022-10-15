@@ -35,7 +35,7 @@ export default function RiderMapScreen() {
             , ANIMATE_SPEED);
     }
 
-    const storeInDatabase = (startLocation, endLocation, date, key, userID) => {
+    const storeInDatabase = async (startLocation, endLocation, date, key, userID) => {
         console.log("adding to database")
 
         console.log("Start: ")
@@ -48,13 +48,15 @@ export default function RiderMapScreen() {
         console.log(date)
 
         //userID has to be retrieved from the login
-        console.log("key: ") //this is automatically created so thank god
-        console.log(key)
+        centroid = {latitude: (startLocation.latitude + endLocation.latitude) / 2.0, longitude: (startLocation.longitude + endLocation.longitude) / 2.0,};
 
         console.log("userID: ")
-        if (userID === null) {
-            userID = "user" + Math.floor(Math.random() * 100);
-        }
+        // if (userID === null) {
+        //     userID = "user" + Math.floor(Math.random() * 100);
+        // }
+
+        userID = await AsyncStorage.getItem("userId");
+
         console.log(userID)
 
         //TODO: use axios to post into database
@@ -66,7 +68,10 @@ export default function RiderMapScreen() {
                 routename: userID,
                 start: startLocation,
                 destination: endLocation,
-                date: date
+                centroid: centroid,
+                date: date,
+                selected: false,
+                driverID: null,
             }
         }).then((response) => {
             console.log(response);

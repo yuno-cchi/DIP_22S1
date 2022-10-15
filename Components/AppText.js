@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, Platform } from 'react-native';
 
 export default function AppText({ children, style }) {
     return (
@@ -10,8 +10,11 @@ export default function AppText({ children, style }) {
 }
 
 const styles = StyleSheet.create({
-    text: {
+    text: Platform.OS === 'ios' ? {
         fontSize: 22,
         fontFamily: 'Avenir'
+    } : {
+        fontSize: 22,
+        fontFamily: 'Roboto'
     }
 })

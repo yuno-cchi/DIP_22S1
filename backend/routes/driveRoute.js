@@ -1,8 +1,8 @@
 const router = require('express').Router();
-let Ride = require('../models/ride.model');
+let Drive = require('../models/drive.model');
 
 router.route('/').get((req, res) => {
-  Ride.find()
+  Drive.find()
     .then(users => res.json(users))
     .catch(err => res.status(400).json('Error: ' + err));
 });
@@ -15,9 +15,9 @@ router.route('/add').post((req, res) => {
   const price = req.body.price;
   const centroid = req.body.centroid;
   const selected = req.body.selected;
-  const driverID = req.body.driverID
+  const routeIdPair = req.body.routeIdPair;
 
-  const newRide = new Ride({ routename: routename, start: start, destination: destination, date: date, price: price, centroid: centroid, selected: selected, driverID: driverID});
+  const newRide = new Drive({ routename: routename, start: start, destination: destination, date: date, price: price, centroid: centroid, selected: selected, routeIdPair: routeIdPair});
 
   newRide.save()
     .then(() => res.json('ride added!'))
@@ -35,7 +35,7 @@ router.route('/update/:id').post((req, res) => {
       driver.price = req.body.price;
       driver.centroid = req.body.centroid;
       driver.selected = req.body.selected;
-      driver.driverID = req.body.driverID;
+      driver.routeIdPair = req.body.routeIdPair;
 
 
       driver.save()

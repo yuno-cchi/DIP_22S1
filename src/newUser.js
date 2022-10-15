@@ -21,6 +21,7 @@ import {
 } from 'react-native';
 import styles from '../assets/styles/styles.js'
 import IsValidString from './IsValidString';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import showToast from './showToast.js';
 import { Logs } from 'expo'
 
@@ -222,17 +223,35 @@ export default function NewUser() {
             console.log(response);
 
 
-            AsyncStorage.multiSet([
-                ["isLoggedIn", true] //setlogin state to true, set to false once logged out
-                ["name", username]
-            ]) 
+           
 
-            //TODO: log user into the app 
+            getDetails(username);
 
 
           }, (error) => {
             console.log(error);
-          });;
+          });
+    }
+
+    async function getDetails(username1){
+
+        const resp = await axios.get('http://secret-caverns-21869.herokuapp.com/user');
+        userdata = resp.data;
+
+        console.log(userdata);
+
+        for (i = 0; i < userdata.length; i++){
+            if(username1 == userdata[i].username){
+
+                console.log(userdata[x]._id);
+
+                await AsyncStorage.setItem("isLoggedIn", "true")
+                await AsyncStorage.setItem("userId", (userdata[x]._id).toString());
+
+                //TODO: log user into the app by redirecting user to main page
+
+            }
+        }
     }
 
     return (
