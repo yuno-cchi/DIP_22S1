@@ -34,6 +34,7 @@ import DriverPutRouteScreen_Android from './Screen/DriverPutRouteScreen_Android'
 import DriverPutRouteScreen from './Screen/DriverPutRouteScreen';
 import selectUserType from './src/selectUserType';
 import RiderMapScreen from './Screen/RiderMapScreen';
+import TestRouteFinding from './Screen/TestRouteFinding';
 //navigator.geolocation = require('react-native-geolocation-service');
 
 export default function App() {
@@ -77,59 +78,18 @@ export default function App() {
   return (
 
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={"DriverPutRoute"} screenOptions={{ headerShown: false }}>
+      <Stack.Navigator initialRouteName={"ReccommendedRouteScreen"} screenOptions={{ headerShown: false }}>
 
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="SelectUserType" component={selectUserType} />
         <Stack.Screen name="RiderMapScreen" component={RiderMapScreen} />
         <Stack.Screen name="DriverPutRoute" component={Platform.OS === 'ios' ? DriverPutRouteScreen : DriverPutRouteScreen_Android} />
         <Stack.Screen name="ReccommendedRouteScreen" component={ReccommendedRouteScreen} />
-        <Stack.Screen name="CalendarScreen" component={() => { }} />
+        <Stack.Screen name="TestScreen" component={TestRouteFinding} />
       </Stack.Navigator>
     </NavigationContainer>
 
 
-    // <View style={{flex: 1, backgroundColor: 'red'}}>
-    //   <DatePicker
-    //     date={date}
-    //     //mode={DATE_MODE}
-    //     //mode="datetime"
-    //     onDateChange={setDate}
-    //     // onDateChange={(event, selectedDate) => {
-    //     //     setSelectedDate(selectedDate);
-    //     //     console.log(selectedDate);
-    //     //     const d = new Date(selectedDate);
-
-    //     //     var hora = d.getUTCHours()+8;
-    //     //     if (hora >= 24){
-    //     //         hora = hora - 24
-    //     //     }
-
-    //     //     console.log('Hour: ', hora, ' ', 'Minute: ', d.getUTCMinutes(), 'Sec: ', d.getUTCSeconds());
-    //     //     //Need to offset by -4 hours, this is UTC time
-    //     // }}
-    //     // minimumDate={new Date()}
-    //     // accentColor={color.red}
-    //     // textColor={color.medium}
-    //     // display="default"
-    //     // style={{
-    //     //     width: 200,
-    //     //     transform: [{ scale: 1.5, }],
-    //     // }}
-    // />
-    // </View>
-    /*
-    <View style={styles.container}>
-      <Login style={{ width: "100%" }} />
-      <TouchableOpacity style={styles.buttonNormal}>
-        <Text style={styles.buttonText} onPress={() => navigation.navigate("Account Creation")}>New user?</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.buttonNormal}>
-        <Text style={styles.buttonText} onPress={() => showToast("test")}>Debug Stack crosser</Text>
-      </TouchableOpacity>
-    </View>
-    */
   );
 }
 
@@ -152,19 +112,6 @@ function SelectUserTypeScreen({ navigation }) {
 }
 
 
-// export default function App() {
-
-//   return (
-//     <NavigationContainer style={styles}>
-//       <BeginStack.Navigator initialRouteName='Login'>
-//         <BeginStack.Screen name="Login" component={LoginScreen} />
-//         <BeginStack.Screen name="Account Creation" component={CreateAccountScreen} />
-//       </BeginStack.Navigator>
-//     </NavigationContainer>
-//   );
-
-
-// }
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'flex-start',
