@@ -177,7 +177,11 @@ export default function ReccommendedRouteScreen_getroute({ navigation, /*route*/
     }
 
 
-
+    if (loading) {
+        //setRouteVisible(false);
+        console.log("ladung");
+        return <View><Text>Loading, please wait</Text></View>
+    }
 
     return (
         <View
