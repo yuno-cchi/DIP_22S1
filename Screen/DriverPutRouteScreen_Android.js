@@ -187,11 +187,14 @@ export default function DriverPutRouteScreen_Android( route ) {
 
     function navigateToRecc(){
         //alert successful and move to next page
-        navigation.navigate('ReccommendedRouteScreenGet', {
+        navigation.navigate('ReccommendedRouteScreen', {
             startLocation: startLocation,
             endLocation: endLocation,
             selectedDate: selectedDate,
-            centroid: centroidLocation
+            centroid: {
+                latitude: (startLocation.latitude + endLocation.latitude) / 2, 
+                longitude: (startLocation.longitude + endLocation.longitude) / 2
+            }
         })
     }
 

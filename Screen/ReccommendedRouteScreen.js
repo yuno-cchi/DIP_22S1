@@ -163,7 +163,8 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
 
 
 
-    const { loading, setLoading } = useState(true);
+    //const [ routeArrays, setLoadRoutes ] = useState({bestRouteKey: null, centroid: null, destination: null, routeDescription: null, routeName: null, routeId: null, selected: false, start: null});
+    const [ loading, setLoading ] = useState(true);
 
     const { startLocation, endLocation, selectedDate } = route; //route has to be route.param, use const route in place for testing 
 
@@ -189,22 +190,38 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
 
     }
 
-    /*
+    
     useEffect(() => {
         getNearestRoutes();
     }, []);
-    */
-    const getNearestRoutes = async (numberOfRoute, centroid1) => {
+
+    const getNearestRoutes = async () => {
 
         let routeArray = [];
-
-
-
         const resp = await axios.get('http://secret-caverns-21869.herokuapp.com/ride');
         ridedata = resp.data;
 
         console.log(centroid);
         console.log(ridedata);
+
+        for (let i = 0; i < ridedata.length; i++) {
+            console.log("inside now")
+            if (ridedata[i].selected == false) {
+                // if (ridedata[i].centroid.latitude <= centroid1.latitude + 0.5 && ridedata[i].centroid.latitude >= centroid1.latitude - 0.5) {
+                //     routeArray.push({centroid: ridedata[i].centroid, destination: ridedata[i].destination, routeDescription: ridedata[i].routeName, routeId: ridedata[i]._id, selected: false,
+                //     start: ridedata[i].start});
+                // }
+                routeArray.push({bestRouteKey: i, centroid: ridedata[i].centroid, destination: ridedata[i].destination, routeDescription: ridedata[i].routename, routeName: "Route " + i, routeId: ridedata[i]._id, selected: false,
+                    start: ridedata[i].start});
+            }
+        }
+
+        console.log("route from db: ");
+        console.log(routeArray);
+        setDummyroute(routeArray);
+
+        console.log("routeArrays: ");
+        console.log(initialDummyRoute);
 
         setLoading(false);
     }

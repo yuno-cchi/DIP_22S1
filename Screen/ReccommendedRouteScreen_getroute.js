@@ -149,9 +149,6 @@ export default function ReccommendedRouteScreen_getroute({ navigation, /*route*/
     const getNearestRoutes = async (numberOfRoute, centroid1) => {
 
         let routeArray = [];
-
-
-
         const resp = await axios.get('http://secret-caverns-21869.herokuapp.com/ride');
         ridedata = resp.data;
 
@@ -163,7 +160,7 @@ export default function ReccommendedRouteScreen_getroute({ navigation, /*route*/
         //     return null;
         // }
 
-        for (let i = 0; i < ridedata; i++) {
+        for (var i = 0; i < ridedata.length; i++) {
             //searchDatabase for route's centroid +- 0.5 for less query call
             if (ridedata[i].selected == false) {
                 if (ridedata[i].centroid.latitude <= centroid1.latitude + 0.5 && ridedata[i].centroid.latitude >= centroid1.latitude - 0.5) {
