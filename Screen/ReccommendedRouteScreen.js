@@ -59,11 +59,60 @@ const route = {
     selectedDate: "2022-10-05T07:22:13.049Z"
 }
 
-//getShorestRoute return an array of coordinates that are nearest the argument coordinates which, in turn, is the shorest route to pass through.
+const getBestRoutes = (routeObjectArray, driverRoute) => {
+    console.log("Starting");
 
-const getShortestRoute = (passengerNumber, coordinates) => {
+    let tempRouteObjectArray = [...routeObjectArray];// Copy into another array to prevent altering the original array.
+    let tempRouteObject = null;
+    let returnRouteObjectArray = [];
+    const originalArrayLength = tempRouteObjectArray.length;
+    console.log("Number of route: ", originalArrayLength)
+    for (let y = 0; y < originalArrayLength; y++) {
+        let leastDist = 99999;
+        let leastDistId = null;
+        let dist = null;
+        let tempRouteName = null;
 
-    return (null);
+        for (let x = 0; x < tempRouteObjectArray.length; x++) {
+
+            //Finding the distance of driver coordinates and the given route coordinates
+            dist = Math.sqrt(Math.pow((tempRouteObjectArray[x].centroid.latitude - driverRoute.centroid.latitude), 2)
+                + Math.pow((tempRouteObjectArray[x].centroid.longitude - driverRoute.centroid.longitude), 2));
+
+            console.log("Route ID", tempRouteObjectArray[x].routeId, ": ", dist);
+            if (dist < leastDist) {
+
+                leastDist = dist;
+                tempRouteName = tempRouteObjectArray[x].routeName;
+                leastDistId = tempRouteObjectArray[x].routeId;
+                tempRouteObject = tempRouteObjectArray[x];
+
+                console.log("Has lesser dist", "Route leastDistId: ", leastDistId)
+            }
+        }
+        console.log("Final leastDistId: ", leastDistId);
+        console.log("Best route is: ", tempRouteObject.routeId, " dist: ", leastDist, "Route name: ", tempRouteName)
+
+        returnRouteObjectArray.push(
+            {
+                routeId: tempRouteObject.routeId,
+                routeName: tempRouteObject.routeName,
+                routeDescription: tempRouteObject.routeDescription,
+                start: { latitude: tempRouteObject.start.latitude, longitude: tempRouteObject.start.longitude },
+                destination: { latitude: tempRouteObject.destination.latitude, longitude: tempRouteObject.destination.longitude },
+                centroid: { latitude: tempRouteObject.centroid.latitude, longitude: tempRouteObject.centroid.longitude },
+                selected: tempRouteObject.selected,
+                bestRouteKey: y
+            }
+        )
+
+        tempRouteObjectArray = tempRouteObjectArray.filter(routeObj => routeObj.routeId !== leastDistId)
+        console.log(tempRouteObjectArray.length)
+
+
+    }
+    console.log(returnRouteObjectArray)
+    return returnRouteObjectArray;
 }
 
 export default function ReccommendedRouteScreen({ navigation, route }) {
@@ -74,61 +123,7 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
     const [selectedRoute, setSelectedRoute] = useState([]);
 
 
-    const getBestRoutes = (routeObjectArray, driverRoute) => {
-        console.log("Starting");
 
-        let tempRouteObjectArray = [...routeObjectArray];// Copy into another array to prevent altering the original array.
-        let tempRouteObject = null;
-        let returnRouteObjectArray = [];
-        const originalArrayLength = tempRouteObjectArray.length;
-        console.log("Number of route: ", originalArrayLength)
-        for (let y = 0; y < originalArrayLength; y++) {
-            let leastDist = 99999;
-            let leastDistId = null;
-            let dist = null;
-            let tempRouteName = null;
-
-            for (let x = 0; x < tempRouteObjectArray.length; x++) {
-
-                //Finding the distance of driver coordinates and the given route coordinates
-                dist = Math.sqrt(Math.pow((tempRouteObjectArray[x].centroid.latitude - driverRoute.centroid.latitude), 2)
-                    + Math.pow((tempRouteObjectArray[x].centroid.longitude - driverRoute.centroid.longitude), 2));
-
-                console.log("Route ID", tempRouteObjectArray[x].routeId, ": ", dist);
-                if (dist < leastDist) {
-
-                    leastDist = dist;
-                    tempRouteName = tempRouteObjectArray[x].routeName;
-                    leastDistId = tempRouteObjectArray[x].routeId;
-                    tempRouteObject = tempRouteObjectArray[x];
-
-                    console.log("Has lesser dist", "Route leastDistId: ", leastDistId)
-                }
-            }
-            console.log("Final leastDistId: ", leastDistId);
-            console.log("Best route is: ", tempRouteObject.routeId, " dist: ", leastDist, "Route name: ", tempRouteName)
-
-            returnRouteObjectArray.push(
-                {
-                    routeId: tempRouteObject.routeId,
-                    routeName: tempRouteObject.routeName,
-                    routeDescription: tempRouteObject.routeDescription,
-                    start: { latitude: tempRouteObject.start.latitude, longitude: tempRouteObject.start.longitude },
-                    destination: { latitude: tempRouteObject.destination.latitude, longitude: tempRouteObject.destination.longitude },
-                    centroid: { latitude: tempRouteObject.centroid.latitude, longitude: tempRouteObject.centroid.longitude },
-                    selected: tempRouteObject.selected,
-                    bestRouteKey: y
-                }
-            )
-
-            tempRouteObjectArray = tempRouteObjectArray.filter(routeObj => routeObj.routeId !== leastDistId)
-            console.log(tempRouteObjectArray.length)
-
-
-        }
-        console.log(returnRouteObjectArray)
-        return returnRouteObjectArray;
-    }
 
 
     const storeInDatabase = async (startLocation, endLocation, date, key, userID) => {

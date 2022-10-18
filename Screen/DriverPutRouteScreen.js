@@ -283,7 +283,10 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                             startLocation: startLocation,
                             endLocation: endLocation,
                             selectedDate: selectedDate.toISOString(),
-                            centroid: { latitude: startLocation.latitude, longitude: endLocation.longitude }
+                            centroid: {
+                                latitude: (startLocation.latitude + endLocation.latitude) / 2,
+                                longitude: (startLocation.longitude + endLocation.longitude) / 2
+                            }
                         })
 
                     }}
