@@ -150,7 +150,7 @@ export default function ReccommendedRouteScreen_getroute({ navigation, /*route*/
                         style={item.selected ? { backgroundColor: color.primary } : { backgroundColor: color.white }}
                         onPress={() => selectThisCard(item)} />}
                 refreshing={isRefrehing}
-                onRefresh={() => setDummyroute(dummyRoute)}
+                onRefresh={() => setDummyroute(routeArray)}
             />
             <BottomTab style={styles.bottomTab}>
                 <AppButton
