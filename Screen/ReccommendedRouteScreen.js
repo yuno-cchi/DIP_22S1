@@ -66,7 +66,7 @@ const getShortestRoute = (passengerNumber, coordinates) => {
     return (null);
 }
 
-export default function ReccommendedRouteScreen({ navigation, /*route*/ }) {
+export default function ReccommendedRouteScreen({ navigation, route }) {
 
     const [initialDummyRoute, setDummyroute] = useState(dummyRoute);
     const [isRefrehing, setRefreshing] = useState(false);
@@ -216,8 +216,8 @@ export default function ReccommendedRouteScreen({ navigation, /*route*/ }) {
         return <View><Text>Loading, please wait</Text></View>
     }
 
-    const sortedRoutes = getBestRoutes(initialDummyRoute, route)
-
+    const sortedRoutes = getBestRoutes(initialDummyRoute, route.params)
+    console.log("Route parrams", route.params.centroid)
     return (
         <View
             style={styles.container}>

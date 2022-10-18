@@ -41,6 +41,7 @@ import RiderMapScreen from "./Screen/RiderMapScreen";
 import RiderMapScreen_android from "./Screen/RiderMapScreen_android";
 import TabNavigator from "./Components/AppTabNavigator";
 import ReccommendedRouteScreen_getroute from "./Screen/ReccommendedRouteScreen_getroute";
+import ReccommendedRouteScreen from "./Screen/ReccommendedRouteScreen";
 //navigator.geolocation = require('react-native-geolocation-service');
 
 export default function App() {
@@ -57,7 +58,7 @@ export default function App() {
   }, []);
 
   //to redirect users to login / create screen if not logged in for first time, else proceed to calendar page
-  async function checkLoginState(){
+  async function checkLoginState() {
     console.log("wait");
 
     const loginState = await AsyncStorage.getItem("isLoggedIn");
@@ -86,32 +87,32 @@ export default function App() {
   }
 
   return (
-    <TabNavigator>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName={initialPage}>
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="SelectUserType" component={selectUserType} />
-          <Stack.Screen name="RiderMapScreen" component={ RiderMapScreen_android
-            // Platform.OS === "ios"
-            // ? RiderMapScreen
-            // : RiderMapScreen_android
-            } />
-          <Stack.Screen
-            name="DriverPutRoute"
-            component={
-              Platform.OS === "ios"
-                ? DriverPutRouteScreen
-                : DriverPutRouteScreen_Android
-            }
-          />
-          <Stack.Screen
-            name="ReccommendedRouteScreen"
-            component={ReccommendedRouteScreen_getroute}
-          />
-          <Stack.Screen name="CalendarScreen" component={() => { }} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </TabNavigator>
+
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName={"DriverPutRoute"}>
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="SelectUserType" component={selectUserType} />
+        <Stack.Screen name="RiderMapScreen" component={RiderMapScreen_android
+          // Platform.OS === "ios"
+          // ? RiderMapScreen
+          // : RiderMapScreen_android
+        } />
+        <Stack.Screen
+          name="DriverPutRoute"
+          component={
+            Platform.OS === "ios"
+              ? DriverPutRouteScreen
+              : DriverPutRouteScreen_Android
+          }
+        />
+        <Stack.Screen
+          name="ReccommendedRouteScreen"
+          component={ReccommendedRouteScreen}
+        />
+
+      </Stack.Navigator>
+    </NavigationContainer>
+
 
   );
 }

@@ -47,6 +47,48 @@ const getCoordinatesKey = () => {
 
 
 const storeInDatabase = (startLocation, endLocation, date, key, userID) => {
+    console.log("adding to database")
+
+    console.log("Start: ")
+    console.log(startLocation)
+
+    console.log("Destination: ")
+    console.log(endLocation)
+
+    console.log("Date: ")
+    console.log(date)
+
+    //userID has to be retrieved from the login
+    console.log("key: ") //this is automatically created so thank god
+    console.log(key)
+
+    console.log("userID: ")
+    userID = "kigali";
+    console.log(userID)
+
+    //TODO: use axios to post into database
+    axios({
+        method: 'post',
+        url: 'http://secret-caverns-21869.herokuapp.com/ride/add',
+        headers: {},
+        data: {
+            routename: userID,
+            start: startLocation,
+            destination: endLocation,
+            date: date,
+            centroid: centroid,
+            selected: false
+        }
+    }).then((response) => {
+        console.log(response);
+
+
+        navigateToRecc()
+
+
+    }, (error) => {
+        console.log(error);
+    });
 
 
 }
@@ -75,56 +117,11 @@ export default function DriverPutRouteScreen({ navigation, route }) {
     const [endDetail, setEndDetail] = useState();
 
     //Ask for userLocation on the first render
-    useEffect(() => {
-        getLiveLocation();
-    }, []);
-
-    const storeInDatabase = (startLocation, endLocation, date, key, userID) => {
-        console.log("adding to database")
-
-        console.log("Start: ")
-        console.log(startLocation)
-
-        console.log("Destination: ")
-        console.log(endLocation)
-
-        console.log("Date: ")
-        console.log(date)
-
-        //userID has to be retrieved from the login
-        console.log("key: ") //this is automatically created so thank god
-        console.log(key)
-
-        console.log("userID: ")
-        userID = "kigali";
-        console.log(userID)
-
-        //TODO: use axios to post into database
-        axios({
-            method: 'post',
-            url: 'http://secret-caverns-21869.herokuapp.com/ride/add',
-            headers: {},
-            data: {
-                routename: userID,
-                start: startLocation,
-                destination: endLocation,
-                date: date,
-                centroid: centroid,
-                selected: false
-            }
-        }).then((response) => {
-            console.log(response);
+    // useEffect(() => {
+    //     getLiveLocation();
+    // }, []);
 
 
-            navigateToRecc()
-
-
-        }, (error) => {
-            console.log(error);
-        });
-
-
-    }
 
     function navigateToRecc() {
         //alert successful and move to next page
@@ -149,7 +146,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
         setLoading(false)
 
         const userCoordinate = { latitude: location.coords.latitude, longitude: location.coords.longitude };
-        console.log(userCoordinate);
+        console.log("User coordinates:", userCoordinate);
 
     }
 
@@ -279,13 +276,14 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                 <AppButton style={styles.showRoute}
                     title="Go"
                     onPress={() => {
-                        console.log(startLocation, endLocation, selectedDate);
+                        console.log("Driver info:", startLocation, endLocation, selectedDate);
 
 
                         navigation.navigate('ReccommendedRouteScreen', {
                             startLocation: startLocation,
                             endLocation: endLocation,
-                            selectedDate: selectedDate.toISOString()
+                            selectedDate: selectedDate.toISOString(),
+                            centroid: { latitude: startLocation.latitude, longitude: endLocation.longitude }
                         })
 
                     }}

@@ -53,11 +53,61 @@ const dummyRoute = [
 
 //getShorestRoute return an array of coordinates that are nearest the argument coordinates which, in turn, is the shorest route to pass through.
 
-const getShortestRoute = (passengerNumber, coordinates) => {
+const getBestRoutes = (routeObjectArray, driverRoute) => {
+    console.log("Starting");
 
-    return (null);
+    let tempRouteObjectArray = [...routeObjectArray];// Copy into another array to prevent altering the original array.
+    let tempRouteObject = null;
+    let returnRouteObjectArray = [];
+    const originalArrayLength = tempRouteObjectArray.length;
+    console.log("Number of route: ", originalArrayLength)
+    for (let y = 0; y < originalArrayLength; y++) {
+        let leastDist = 99999;
+        let leastDistId = null;
+        let dist = null;
+        let tempRouteName = null;
+
+        for (let x = 0; x < tempRouteObjectArray.length; x++) {
+
+            //Finding the distance of driver coordinates and the given route coordinates
+            dist = Math.sqrt(Math.pow((tempRouteObjectArray[x].centroid.latitude - driverRoute.centroid.latitude), 2)
+                + Math.pow((tempRouteObjectArray[x].centroid.longitude - driverRoute.centroid.longitude), 2));
+
+            console.log("Route ID", tempRouteObjectArray[x].routeId, ": ", dist);
+            if (dist < leastDist) {
+
+                leastDist = dist;
+                tempRouteName = tempRouteObjectArray[x].routeName;
+                leastDistId = tempRouteObjectArray[x].routeId;
+                tempRouteObject = tempRouteObjectArray[x];
+
+                console.log("Has lesser dist", "Route leastDistId: ", leastDistId)
+            }
+        }
+        console.log("Final leastDistId: ", leastDistId);
+        console.log("Best route is: ", tempRouteObject.routeId, " dist: ", leastDist, "Route name: ", tempRouteName)
+
+        returnRouteObjectArray.push(
+            {
+                routeId: tempRouteObject.routeId,
+                routeName: tempRouteObject.routeName,
+                routeDescription: tempRouteObject.routeDescription,
+                start: { latitude: tempRouteObject.start.latitude, longitude: tempRouteObject.start.longitude },
+                destination: { latitude: tempRouteObject.destination.latitude, longitude: tempRouteObject.destination.longitude },
+                centroid: { latitude: tempRouteObject.centroid.latitude, longitude: tempRouteObject.centroid.longitude },
+                selected: tempRouteObject.selected,
+                bestRouteKey: y
+            }
+        )
+
+        tempRouteObjectArray = tempRouteObjectArray.filter(routeObj => routeObj.routeId !== leastDistId)
+        console.log(tempRouteObjectArray.length)
+
+
+    }
+    console.log(returnRouteObjectArray)
+    return returnRouteObjectArray;
 }
-
 export default function ReccommendedRouteScreen_getroute({ navigation, /*route*/ }) {
 
     const [initialDummyRoute, setDummyroute] = useState(dummyRoute);
@@ -73,7 +123,7 @@ export default function ReccommendedRouteScreen_getroute({ navigation, /*route*/
         selectedDate: "2022-10-05T07:22:13.049Z"
     }
 
-    const [ loading, setLoading ] = useState(true);
+    const [loading, setLoading] = useState(true);
 
     const { startLocation, endLocation, selectedDate } = route; //route has to be route.param, use const route in place for testing 
 
@@ -91,11 +141,11 @@ export default function ReccommendedRouteScreen_getroute({ navigation, /*route*/
         setDummyroute(tempRoute);
     }
 
-    
+
     useEffect(() => {
         getNearestRoutes();
     }, []);
-    
+
     const getNearestRoutes = async (numberOfRoute, centroid1) => {
 
         let routeArray = [];
@@ -115,9 +165,9 @@ export default function ReccommendedRouteScreen_getroute({ navigation, /*route*/
 
         for (let i = 0; i < ridedata; i++) {
             //searchDatabase for route's centroid +- 0.5 for less query call
-            if (ridedata[i].selected == false){
-                if (ridedata[i].centroid.latitude <= centroid1.latitude+0.5 && ridedata[i].centroid.latitude >= centroid1.latitude-0.5){
-                //if (true/*if the centroid is smaller that any of array's centroid*/) {
+            if (ridedata[i].selected == false) {
+                if (ridedata[i].centroid.latitude <= centroid1.latitude + 0.5 && ridedata[i].centroid.latitude >= centroid1.latitude - 0.5) {
+                    //if (true/*if the centroid is smaller that any of array's centroid*/) {
                     //pop the biggest
                     routeArray.push(ridedata[i]);//Push the desired route into the array
                 }
@@ -130,11 +180,7 @@ export default function ReccommendedRouteScreen_getroute({ navigation, /*route*/
     }
 
 
-    if (loading) {
-        //setRouteVisible(false);
-        console.log("ladung");
-        return <View><Text>Loading, please wait</Text></View>
-    }
+
 
     return (
         <View
