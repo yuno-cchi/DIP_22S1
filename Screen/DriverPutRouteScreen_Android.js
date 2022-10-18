@@ -250,14 +250,16 @@ export default function DriverPutRouteScreen_Android( route ) {
 
                     let tempDate = new Date(currentDate);
                     let fTime = 'Hours: ' + tempDate.getHours() + ': Minutes: ' + tempDate.getMinutes();
-                    //setText(fDate + '\n' + fTime);
+                    var dateobj = new Date(fDate + ' ' + fTime);
+                    var B = dateobj.toISOString();
                     console.log(fDate + ' , ' + fTime)
+                    console.log(B);
 
                     setTextDate(fDate);
                     setTextTime(fTime);
 
                     //format to save in the db: "yyyy/mm/dd , hh:mm"
-                    setFinalDate(fDate + ' , ' + fTime);
+                    setFinalDate(B);
 
                     console.log(show);
                 }}

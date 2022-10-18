@@ -89,7 +89,7 @@ export default function App() {
   return (
 
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={"DriverPutRoute"}>
+      <Stack.Navigator initialRouteName={"RiderMapScreen"}>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="SelectUserType" component={selectUserType} />
         <Stack.Screen name="RiderMapScreen" component={RiderMapScreen_android
