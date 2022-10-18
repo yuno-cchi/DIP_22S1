@@ -296,6 +296,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                         value={selectedDate}
                         mode={DATE_MODE}
                         onChange={(event, selectedDate1) => {
+                            console.log("ios");
                             const currentDate = selectedDate1 || selecteddate;
                             setSelectedDate(currentDate);
                             console.log(selectedDate);

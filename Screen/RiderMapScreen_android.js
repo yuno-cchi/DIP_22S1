@@ -22,7 +22,7 @@ const STROKE_WIDTH = 5;
 const STROKE_COLOR = color.danger;
 const DATE_MODE = "datetime"
 
-export default function RiderMapScreen() {
+export default function RiderMapScreen_android() {
 
     const [coordinate, updateMarker] = useState([]);
     const [startLocation, setStartLocation] = useState();
@@ -158,7 +158,7 @@ export default function RiderMapScreen() {
                         value={selectedDate}
                         mode={DATE_MODE}
                         onChange={(event, selectedDate1) => {
-                            console.log("ios rider");
+                            console.log("android rider");
                             const currentDate = selectedDate1 || selecteddate;
                             setSelectedDate(currentDate);
                             console.log(selectedDate);

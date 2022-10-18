@@ -130,7 +130,7 @@ export default function DriverPutRouteScreen_Android( route ) {
         getLiveLocation();
     }, []);
 
-    const storeInDatabase = async (startLocation, endLocation, date, key, userID) => {
+    const storeLocally = async (startLocation, endLocation, date, key, userID) => {
         console.log("adding to database")
     
         console.log("Start: ")
@@ -385,8 +385,9 @@ export default function DriverPutRouteScreen_Android( route ) {
                         // else {
                         //     storeInDatabase(startLocation, endLocation, selectedDate)
                         // }
-                        storeInDatabase(startLocation, endLocation, selectedDate)
-                        //Send the two coordiantes to the Database, then move to a new screen
+
+                        storeLocally(startLocation, endLocation, selectedDate)
+                        //Send the two coordiantes to the ReccomendedRouteScreen, then move to a new screen
                     }}
                 />
 
@@ -424,7 +425,7 @@ export default function DriverPutRouteScreen_Android( route ) {
                         //mode={DATE_MODE}
                         mode={mode}
                         onChange={(event, selectedDate1) => {
-
+                            console.log("andorid");
                             //halt display of date picker again
                             setShowDate(false)
 
