@@ -42,6 +42,7 @@ import RiderMapScreen_android from "./Screen/RiderMapScreen_android";
 import TabNavigator from "./Components/AppTabNavigator";
 import ReccommendedRouteScreen_getroute from "./Screen/ReccommendedRouteScreen_getroute";
 import ReccommendedRouteScreen from "./Screen/ReccommendedRouteScreen";
+import NewUser from "./src/newUser";
 //navigator.geolocation = require('react-native-geolocation-service');
 
 export default function App() {
@@ -64,6 +65,10 @@ export default function App() {
     const loginState = await AsyncStorage.getItem("isLoggedIn");
     const idUser = await AsyncStorage.getItem("userId");
     console.log(loginState);
+
+    //FOR DEBUG: remove the AsyncStorage variables 
+    // AsyncStorage.removeItem("isLoggedIn");
+    // AsyncStorage.removeItem("userId");
 
     if (loginState == "true") {
       console.log("User is logged in: " + idUser);
@@ -89,16 +94,16 @@ export default function App() {
   return (
 
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={"DriverPutRoute"}>
+      <Stack.Navigator initialRouteName={initialPage}>
         <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="SignUpPage" component={NewUser} />
         <Stack.Screen name="SelectUserType" component={selectUserType} />
         <Stack.Screen
           name="RiderMapScreen"
           component={
-            RiderMapScreen_android
-            // Platform.OS === "ios"
-            // ? RiderMapScreen
-            // : RiderMapScreen_android
+            Platform.OS === "ios"
+            ? RiderMapScreen
+            : RiderMapScreen_android
           }
         />
         <Stack.Screen
