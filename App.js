@@ -123,6 +123,9 @@ export default function App() {
           name="FinalDriverRouteScreen"
           component={FinalDriverRouteScreen}
         />
+        <Stack.Screen
+          name="RiderMapScreen"
+          component={RiderMapScreen} />
 
       </Stack.Navigator>
     </NavigationContainer>
