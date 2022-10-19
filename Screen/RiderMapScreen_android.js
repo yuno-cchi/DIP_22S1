@@ -14,6 +14,7 @@ import BottomTab from "../Components/BottomTab";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import axios from "axios";
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { useNavigation } from '@react-navigation/native';
 
 
 const GOOGLE_API_KEY = 'AIzaSyBYDEKY12RzWyP0ACQEpgsr4up2w3CjH88';
@@ -24,10 +25,28 @@ const DATE_MODE = "datetime"
 
 export default function RiderMapScreen_android() {
 
+    const navigation = useNavigation();
+
     const [coordinate, updateMarker] = useState([]);
     const [startLocation, setStartLocation] = useState();
     const [endLocation, setEndLocation] = useState();
-    const [selectedDate, setSelectedDate] = useState(new Date());
+    //const [selectedDate, setSelectedDate] = useState(new Date());
+
+
+    //for datetimepicker
+    const [selecteddate, setSelectedDate] = useState(null);
+    const [selectedtime, setSelectedTime] = useState(null);
+    const [selectedDate, setFinalDate] = useState(null);
+    
+    //alter modes, setShow = showtime, showDate = showdate
+    const [mode, setMode] = useState('date');
+    const [show, setShow] = useState(false);
+    const [showDate, setShowDate] = useState(true);
+
+    //for date and time display, textDate = date, textTime = textTime
+    const [textDate, setTextDate] = useState('Empty');
+    const [textTime, setTextTime] = useState('Empty');
+
     //A function to get lastest markerKey from DB
 
     const animateToLocation = (coordinates) => {
@@ -48,6 +67,12 @@ export default function RiderMapScreen_android() {
         console.log("Date: ")
         console.log(date)
 
+        //convert date to iso format
+        var dateobj =
+        new Date('October 15, 1996 05:35:32');
+ 
+        var B = dateobj.toISOString();
+
         //userID has to be retrieved from the login
         centroid = {latitude: (startLocation.latitude + endLocation.latitude) / 2.0, longitude: (startLocation.longitude + endLocation.longitude) / 2.0,};
 
@@ -59,6 +84,7 @@ export default function RiderMapScreen_android() {
         userID = await AsyncStorage.getItem("userId");
 
         console.log(userID)
+
 
         //TODO: use axios to post into database
         axios({
@@ -86,6 +112,75 @@ export default function RiderMapScreen_android() {
         });
 
 
+    }
+
+    function navigateToRecc(){
+        //alert successful and move to next page
+        navigation.navigate('ReccommendedRouteScreen', {
+            startLocation: startLocation,
+            endLocation: endLocation,
+            selectedDate: selectedDate,
+            centroid: {
+                latitude: (startLocation.latitude + endLocation.latitude) / 2, 
+                longitude: (startLocation.longitude + endLocation.longitude) / 2
+            }
+        })
+    }
+
+    //for setting time
+    const functionSetTime = () => {
+        {
+            return <DateTimePicker
+                value={new Date()}
+                mode="time"
+                onChange={(event, selectedTime) => {
+
+                    //halt display of time picker again
+                    setShow(false);
+
+                    const currentDate = selectedTime || selectedtime;
+                    //setShow(Platform.OS == 'android')a
+                    setSelectedTime(currentDate);
+                    console.log("default: " + selectedTime);
+                    console.log("blyat: " + selectedTime);
+
+                    let fDate = textDate;
+
+                    console.log("datepickerdate: " + selecteddate);
+                    console.log("datepickerdate2: " + textDate);
+
+
+                    let tempDate = new Date(currentDate);
+
+                    //'October 15, 1996 05:35:32'
+
+
+                    let fTime = ('0' + tempDate.getHours()).slice(-2) + ':' + ('0' + tempDate.getHours()).slice(-2) + ':00';
+                    //setText(fDate + '\n' + fTime);
+                    var dateobj =
+                    new Date(fDate + ' ' + fTime);
+                    var B = dateobj.toISOString();
+                    console.log(fDate + ' , ' + fTime)
+                    console.log(B);
+
+                    setTextDate(fDate);
+                    setTextTime(fTime);
+
+                    //format to save in the db: "yyyy/mm/dd , hh:mm"
+                    setFinalDate(B);
+
+                    console.log(show);
+                }}
+                minimumDate={new Date()}
+                accentColor={color.red}
+                textColor={color.medium}
+                display="default"
+                style={{
+                    width: 200,
+                    transform: [{ scale: 1.5, }],
+                }}
+            />
+        }
     }
 
 
@@ -154,18 +249,37 @@ export default function RiderMapScreen_android() {
 
             <BottomTab>
                 <View style={styles.timeContainer}>
-                    <DateTimePicker
-                        value={selectedDate}
-                        mode={DATE_MODE}
+                    {mode == "date" && showDate == true && <DateTimePicker
+                        value={new Date()}
+                        mode={mode}
                         onChange={(event, selectedDate1) => {
-                            console.log("android rider");
+                            // console.log("android rider");
+                            // const currentDate = selectedDate1 || selecteddate;
+                            // setSelectedDate(currentDate);
+                            // console.log(selectedDate);
+                            // let tempDate = new Date(currentDate);
+                            // let fDate = tempDate.getFullYear() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getDay();
+                            // let fTime = 'Hours: ' + tempDate.getHours() + ' | Minutes: ' + tempDate.getMinutes();
+                            // console.log(fDate + ' || ' + fTime)
+                            console.log("andorid");
+                            //halt display of date picker again
+                            setShowDate(false)
+
                             const currentDate = selectedDate1 || selecteddate;
+                            //setShow(Platform.OS == 'android')
                             setSelectedDate(currentDate);
-                            console.log(selectedDate);
+                            console.log("default date: " + selecteddate);
+                            console.log("chosen date: " + selectedDate1);
+
                             let tempDate = new Date(currentDate);
-                            let fDate = tempDate.getFullYear() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getDay();
-                            let fTime = 'Hours: ' + tempDate.getHours() + ' | Minutes: ' + tempDate.getMinutes();
-                            console.log(fDate + ' || ' + fTime)
+                            let fDate = tempDate.getFullYear() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getDate();
+                            //let fTime = 'Hours: ' + tempDate.getHours() + ' | Minutes: ' + tempDate.getMinutes();
+                            setTextDate(fDate);
+                            console.log("selected date: " + fDate)
+
+                            //show time and hide the dates
+                            setMode("time")
+                            setShow(true)
                         }}
                         minimumDate={new Date()}
                         accentColor={color.red}
@@ -175,7 +289,10 @@ export default function RiderMapScreen_android() {
                             width: 200,
                             transform: [{ scale: 1.5, }],
                         }}
-                    />
+                    />}
+                    {mode == "time" && show == true &&
+                        functionSetTime()
+                    }
                 </View>
                 <AppButton
                     style={styles.sendButton}

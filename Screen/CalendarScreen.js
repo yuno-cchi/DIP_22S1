@@ -8,8 +8,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import PlanList from "../Components/PlanList";
 import { FlatList } from "react-native";
 import { color } from "../Config/Color";
-//import PlannedDayDetails from "./PlannedDayDetails.js";
-//import { render } from "react-dom";
 
 const Stack = createNativeStackNavigator();
 var dataLen = Object.keys(data).length;
@@ -20,6 +18,7 @@ const CalendarNavigator = () => (
   <Stack.Navigator initialRouteName="CalendarScreen">
     <Stack.Screen name="CalendarScreen" component={CalendarScreen} />
     <Stack.Screen name="DayPlan" component={DayPlan} />
+    {/* <Stack.Screen name="DayPlan" component={PlannedRouteDetails} /> */}
   </Stack.Navigator>
 );
 
