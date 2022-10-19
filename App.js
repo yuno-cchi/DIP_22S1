@@ -89,20 +89,18 @@ export default function App() {
   return (
 
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={"DriverPutRoute"}>
+      <Stack.Navigator initialRouteName={"DriverPutRoute"} screenOptions={{
+        headerShown: true
+      }}>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="SelectUserType" component={selectUserType} />
-        <Stack.Screen name="RiderMapScreen" component={RiderMapScreen_android
-          // Platform.OS === "ios"
-          // ? RiderMapScreen
-          // : RiderMapScreen_android
+        <Stack.Screen name="RiderMapScreen" component={
+          Platform.OS === "ios" ? RiderMapScreen : RiderMapScreen_android
         } />
         <Stack.Screen
           name="DriverPutRoute"
           component={
-            Platform.OS === "ios"
-              ? DriverPutRouteScreen
-              : DriverPutRouteScreen_Android
+            Platform.OS === "ios" ? DriverPutRouteScreen : DriverPutRouteScreen_Android
           }
         />
         <Stack.Screen
@@ -112,7 +110,6 @@ export default function App() {
 
       </Stack.Navigator>
     </NavigationContainer>
-
 
   );
 }

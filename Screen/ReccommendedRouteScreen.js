@@ -117,10 +117,10 @@ const getBestRoutes = (routeObjectArray, driverRoute) => {
 
 export default function ReccommendedRouteScreen({ navigation, route }) {
 
-    const [initialDummyRoute, setDummyroute] = useState(dummyRoute);
+    const [initialDummyRoute, setDummyroute] = useState([]);
     const [isRefrehing, setRefreshing] = useState(false);
-
     const [selectedRoute, setSelectedRoute] = useState([]);
+    let selectCount = 0;
 
 
 
@@ -159,7 +159,7 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
 
 
     //const [ routeArrays, setLoadRoutes ] = useState({bestRouteKey: null, centroid: null, destination: null, routeDescription: null, routeName: null, routeId: null, selected: false, start: null});
-    const [ loading, setLoading ] = useState(true);
+    const [loading, setLoading] = useState(true);
 
     const { startLocation, endLocation, selectedDate } = route; //route has to be route.param, use const route in place for testing 
 
@@ -170,24 +170,31 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
 
     const selectThisCard = (selectedRouteId) => {
 
-        tempRoute2 = selectedRoute;
+        let tempRoute2 = selectedRoute;
         if (selectedRouteId.selected === false) {
             tempRoute2.push(initialDummyRoute.filter(prop => prop.routeId === selectedRouteId.routeId));
             setSelectedRoute(tempRoute2);
+            selectCount++;
         } else {
             tempRoute2.pop(initialDummyRoute.filter(prop => prop.routeId === selectedRouteId.routeId));
             setSelectedRoute(tempRoute2);
+            selectCount--
         }
         //console.log(selectedRouteId)
         selectedRouteId.selected = !selectedRouteId.selected;
-        tempRoute = initialDummyRoute.map(route => route.routeId !== selectedRouteId.routeId ? route : selectedRouteId);
+        let tempRoute = initialDummyRoute.map(route => route.routeId !== selectedRouteId.routeId ? route : selectedRouteId);
         setDummyroute(tempRoute);
 
     }
 
-    
+
     useEffect(() => {
-        getNearestRoutes();
+        try {
+            getNearestRoutes();
+        } catch (error) {
+
+        }
+
     }, []);
 
     const getNearestRoutes = async () => {
@@ -196,7 +203,8 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
         const resp = await axios.get('http://secret-caverns-21869.herokuapp.com/ride');
         ridedata = resp.data;
 
-        console.log(centroid);
+        //console.log(centroid);
+        //Omg Chee Hean!!!
         console.log(ridedata);
 
         for (let i = 0; i < ridedata.length; i++) {
@@ -206,8 +214,16 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
                 //     routeArray.push({centroid: ridedata[i].centroid, destination: ridedata[i].destination, routeDescription: ridedata[i].routeName, routeId: ridedata[i]._id, selected: false,
                 //     start: ridedata[i].start});
                 // }
-                routeArray.push({bestRouteKey: i, centroid: ridedata[i].centroid, destination: ridedata[i].destination, routeDescription: ridedata[i].routename, routeName: "Route " + i, routeId: ridedata[i]._id, selected: false,
-                    start: ridedata[i].start});
+                routeArray.push({
+                    bestRouteKey: i,
+                    centroid: ridedata[i].centroid,
+                    destination: ridedata[i].destination,
+                    routeDescription: ridedata[i].routename,
+                    routeName: "Route " + i,
+                    routeId: ridedata[i]._id,
+                    selected: false,
+                    start: ridedata[i].start
+                });
             }
         }
 
@@ -222,30 +238,36 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
     }
 
 
-    if (loading) {
-        //setRouteVisible(false);
-        console.log("loading");
-        return <View><Text>Loading, please wait</Text></View>
-    }
+
 
     const sortedRoutes = getBestRoutes(initialDummyRoute, route.params)
     console.log("Route parrams", route.params.centroid)
     return (
         <View
             style={styles.container}>
-            <FlatList
-                data={sortedRoutes}
-                keyExtractor={item => item.bestRouteKey}
-                renderItem={({ item }) =>
-                    <Card
-                        title={item.routeName}
-                        subTitle={item.routeDescription}
-                        route={item}
-                        style={item.selected ? { backgroundColor: color.primary } : { backgroundColor: color.white }}
-                        onPress={() => selectThisCard(item)} />}
-                refreshing={isRefrehing}
-                onRefresh={() => setDummyroute(dummyRoute)}
-            />
+            <View style={{ height: windowHeight * 0.75, width: windowWidth, backgroundColor: color.lightGray, alignItems: 'center' }}>
+                <FlatList
+                    data={sortedRoutes}
+                    keyExtractor={item => item.bestRouteKey}
+                    renderItem={({ item }) =>
+                        <Card
+                            title={item.routeName}
+                            subTitle={item.routeDescription}
+                            route={item}
+                            driverRoute={route.params}
+                            style={item.selected ? { backgroundColor: color.primary } : { backgroundColor: color.white }}
+                            onPress={() => selectThisCard(item)} />}
+                    refreshing={isRefrehing}
+                    onRefresh={() => {
+                        try {
+                            getNearestRoutes()
+                        } catch (error) {
+
+                        }
+                    }}
+                />
+            </View>
+
             <BottomTab style={styles.bottomTab}>
                 <AppButton
                     title='Confirm'
@@ -273,6 +295,7 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
 
                             }
                             console.log("Hello there")
+                            console.log(initialDummyRoute)
                         }
                     }
                 />
@@ -309,7 +332,8 @@ const styles = StyleSheet.create({
         width: "80%",
     },
     bottomTab: {
-        alignItems: "center"
+        alignItems: "center",
+        height: windowHeight * 0.25
     }
 
 })
