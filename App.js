@@ -73,7 +73,7 @@ export default function App() {
 
     if (loginState == "true") {
       console.log("User is logged in: " + idUser);
-      setInitialPage("RiderMapScreen"); //TODO: RiderMapScreen needs an android version as well
+      setInitialPage("DriverPutRoute"); //TODO: RiderMapScreen needs an android version as well, use driverputroute if debugging reccroutescreen onwards
       console.log(initialPage);
       setShow(false);
     } else {

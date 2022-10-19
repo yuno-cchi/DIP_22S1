@@ -97,7 +97,7 @@ export default function DriverPutRouteScreen_Android( route ) {
     //for datetimepicker
     const [selecteddate, setSelectedDate] = useState(null);
     const [selectedtime, setSelectedTime] = useState(null);
-    const [selectedDate, setFinalDate] = useState(null);
+    const [finalDate, setFinalDate] = useState('null');
 
     //alter modes, setShow = showtime, showDate = showdate
     const [mode, setMode] = useState('date');
@@ -130,7 +130,7 @@ export default function DriverPutRouteScreen_Android( route ) {
         getLiveLocation();
     }, []);
 
-    const storeLocally = async (startLocation, endLocation, date, key, userID) => {
+    const storeLocally = async (startLocation, endLocation, date) => {
         console.log("adding to database")
     
         console.log("Start: ")
@@ -143,8 +143,8 @@ export default function DriverPutRouteScreen_Android( route ) {
         console.log(date)
     
         
-        console.log("key: ") //this is automatically created so thank god
-        console.log(key)
+        // console.log("key: ") //this is automatically created so thank god
+        // console.log(key)
     
         //TODO: userID has to be retrieved from the login session
         console.log("userID: ")
@@ -181,16 +181,16 @@ export default function DriverPutRouteScreen_Android( route ) {
         //   }, (error) => {
         //     console.log(error);
         //   });
-        navigateToRecc()
+        navigateToRecc(date)
     
     }
 
-    function navigateToRecc(){
+    function navigateToRecc(date){
         //alert successful and move to next page
         navigation.navigate('ReccommendedRouteScreen', {
             startLocation: startLocation,
             endLocation: endLocation,
-            selectedDate: selectedDate,
+            selectedDate: date,
             centroid: {
                 latitude: (startLocation.latitude + endLocation.latitude) / 2, 
                 longitude: (startLocation.longitude + endLocation.longitude) / 2
@@ -227,6 +227,7 @@ export default function DriverPutRouteScreen_Android( route ) {
     }
 
     const functionSetTime = () => {
+        console.log("\n showing time portion")
         {
             return <DateTimePicker
                 value={new Date()}
@@ -248,12 +249,17 @@ export default function DriverPutRouteScreen_Android( route ) {
                     console.log("datepickerdate2: " + textDate);
 
 
-                    let tempDate = new Date(currentDate);
+                    let tempDate = new Date(selectedTime);
+                    console.log("date" + tempDate);
+
                     let fTime = 'Hours: ' + tempDate.getHours() + ': Minutes: ' + tempDate.getMinutes();
-                    var dateobj = new Date(fDate + ' ' + fTime);
+                    var dateobj = new Date(selectedTime);
+
+                    console.log("converted date:" + dateobj);
+
                     var B = dateobj.toISOString();
                     console.log(fDate + ' , ' + fTime)
-                    console.log(B);
+                    console.log("final date: " + B);
 
                     setTextDate(fDate);
                     setTextTime(fTime);
@@ -383,7 +389,8 @@ export default function DriverPutRouteScreen_Android( route ) {
                     //disable={buttonDisabled}
                     title="Go"
                     onPress={() => {
-                        console.log(startLocation, endLocation, selectedDate);
+                        console.log("go!");
+                        console.log(finalDate);
                         // if (startLocation == undefined && endLocation == undefined) {
                         //     console.log("missing fields");
                         // }
@@ -391,7 +398,7 @@ export default function DriverPutRouteScreen_Android( route ) {
                         //     storeInDatabase(startLocation, endLocation, selectedDate)
                         // }
 
-                        storeLocally(startLocation, endLocation, selectedDate)
+                        storeLocally(startLocation, endLocation, finalDate)
                         //Send the two coordiantes to the ReccomendedRouteScreen, then move to a new screen
                     }}
                 />

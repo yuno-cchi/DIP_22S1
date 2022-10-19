@@ -7,6 +7,7 @@ import axios from 'axios';
 import Card from "../Components/Card";
 import AppButton from "../Components/AppButton";
 import BottomTab from "../Components/BottomTab";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -122,6 +123,8 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
     const [isRefrehing, setRefreshing] = useState(false);
     const [selectedRoute, setSelectedRoute] = useState([]);
 
+    const [newDriveId, setIdapp] = useState('empty');
+
 
     //const [ routeArrays, setLoadRoutes ] = useState({bestRouteKey: null, centroid: null, destination: null, routeDescription: null, routeName: null, routeId: null, selected: false, start: null});
     const [loading, setLoading] = useState(true);
@@ -132,6 +135,121 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
         setDummyroute(initialDummyRoute.filter(route => route.routeId !== deleteRoute.routeId));
 
     }
+
+
+
+    const storeInDrive = async (start, end, date, selectedRoute) => {
+        console.log("adding to drives table")
+
+        console.log("Start: ")
+        console.log(start)
+
+        console.log("Destination: ")
+        console.log(end)
+
+        console.log("Date: ")
+        console.log(date)
+
+        console.log("waypoints: ");
+        console.log(selectedRoute);
+
+        console.log("userID: ")
+        // if (userID === null) {
+        //     userID = "user" + Math.floor(Math.random() * 100);
+        // }
+        userID = await AsyncStorage.getItem("userId");
+        console.log(userID)
+
+        console.log("centroid: ")
+        centroid = {latitude: (start.latitude + end.latitude) / 2.0, longitude: (start.longitude + end.longitude) / 2.0,};
+        console.log(centroid);
+
+
+        //define an array for storing all the selectedRoute ids
+        let selectedRideIDs = []
+
+        //getting id of route and updating selected to true
+        console.log("list all ids: ");
+        for (let x = 0; x < selectedRoute.length; x++){
+            //TODO: update 'ride' table w DriverID: drives's _id and selected: true
+            console.log(selectedRoute[x].routeId);
+
+            selectedRideIDs.push(selectedRoute[x].routeId);
+
+            // axios.put('http://secret-caverns-21869.herokuapp.com/ride/' + selectedRoute[x].routeId, {
+            //     "routename": selectedRoute[x].routeDescription,
+            // 	    "start": selectedRoute[x].start,
+            // "destination": selectedRoute[x].destination,
+            // "date": date,
+            // "centroid": selectedRoute[x].centroid,
+            // "selected": true //set selected to tru
+            //  driverID: userID
+            // })
+            // .then(response => {
+            //     console.log(response);
+            // })
+            // .catch(error => {
+            //     console.log(err);
+            // });
+        }
+
+        console.log(selectedRideIDs);
+
+
+        //TODO: use axios to post into database
+        // axios({
+        //     method: 'post',
+        //     url: 'http://secret-caverns-21869.herokuapp.com/drive/add',
+        //     headers: {},
+        //     data: {
+        //         routeUserID: userID,
+        //         start: startLocation,
+        //         destination: endLocation,
+        //         centroid: centroid,
+        //         date: date,
+        //         selected: false,
+        //         routeIdPair: []
+        //     }
+        // }).then((response) => {
+        //     console.log(response);
+
+            //idk if this works at all but to try out ltr
+            //console.log(response.data);
+            //setIdapp(response.data._id);
+
+        //     navigateToRecc() //navigate to FinalDriverRouteScreen
+
+
+        // }, (error) => {
+        //     console.log(error);
+        // });
+
+        //TODO: update 'ride' table w DriverID: drives's _id and selected: true
+        for (let x = 0; x < selectedRoute.length; x++){
+            //TODO: update 'ride' table w DriverID: drives's _id and selected: true
+            console.log(selectedRoute[x].routeId);
+
+            selectedRideIDs.push(selectedRoute[x].routeId);
+
+            // axios.put('http://secret-caverns-21869.herokuapp.com/ride/' + selectedRoute[x].routeId, {
+            //     "routename": selectedRoute[x].routeDescription,
+            // 	    "start": selectedRoute[x].start,
+            // "destination": selectedRoute[x].destination,
+            // "date": date,
+            // "centroid": selectedRoute[x].centroid,
+            // "selected": true //set selected to tru
+            //  driverID: newDriveId //if the above works at all
+            // })
+            // .then(response => {
+            //     console.log(response);
+            // })
+            // .catch(error => {
+            //     console.log(err);
+            // });
+        }
+
+    }
+
 
     const selectThisCard = (selectedRouteId) => {
 
@@ -172,6 +290,7 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
 
 
     useEffect(() => {
+        console.log("\n start of recommendedroutesscreen")
         try {
             getNearestRoutes();
         } catch (error) {
@@ -259,12 +378,15 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
                             const tempSelectedRoute = clean2DArray(selectedRoute)
                             console.log("The selected route is", JSON.stringify(startLocation) + JSON.stringify(endLocation) + JSON.stringify(selectedDate))
                             console.log("Hello there")
-                            navigation.navigate('FinalDriverRouteScreen', {
-                                startLocation: route.params.startLocation,
-                                endLocation: route.params.endLocation,
-                                selectedDate: route.params.selectedDate,
-                                waypoints: tempSelectedRoute
-                            })
+
+                            storeInDrive(route.params.startLocation, route.params.endLocation, route.params.selectedDate, tempSelectedRoute);
+
+                            // navigation.navigate('FinalDriverRouteScreen', {
+                            //     startLocation: route.params.startLocation,
+                            //     endLocation: route.params.endLocation,
+                            //     selectedDate: route.params.selectedDate,
+                            //     waypoints: tempSelectedRoute
+                            // })
 
                         }
                     }
