@@ -198,7 +198,6 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
                 //     start: ridedata[i].start});
                 // }
                 routeArray.push({
-                    bestRouteKey: i,
                     centroid: ridedata[i].centroid,
                     destination: ridedata[i].destination,
                     routeDescription: ridedata[i].routename,
