@@ -42,6 +42,7 @@ import RiderMapScreen_android from "./Screen/RiderMapScreen_android";
 import TabNavigator from "./Components/AppTabNavigator";
 import ReccommendedRouteScreen_getroute from "./Screen/ReccommendedRouteScreen_getroute";
 import ReccommendedRouteScreen from "./Screen/ReccommendedRouteScreen";
+import FinalDriverRouteScreen from "./Screen/FinalDriverRouteScreen";
 //navigator.geolocation = require('react-native-geolocation-service');
 
 export default function App() {
@@ -113,6 +114,11 @@ export default function App() {
           name="ReccommendedRouteScreen"
           component={ReccommendedRouteScreen}
         />
+        <Stack.Screen
+          name="FinalDriverRouteScreen"
+          component={FinalDriverRouteScreen}
+        />
+
       </Stack.Navigator>
     </NavigationContainer>
 

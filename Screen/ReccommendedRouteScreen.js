@@ -114,48 +114,13 @@ const getBestRoutes = (routeObjectArray, driverRoute) => {
     console.log(returnRouteObjectArray)
     return returnRouteObjectArray;
 }
+let selectCount = 0;
 
 export default function ReccommendedRouteScreen({ navigation, route }) {
 
     const [initialDummyRoute, setDummyroute] = useState([]);
     const [isRefrehing, setRefreshing] = useState(false);
     const [selectedRoute, setSelectedRoute] = useState([]);
-    let selectCount = 0;
-
-
-
-
-
-    const storeInDatabase = async (startLocation, endLocation, date, key, userID) => {
-        console.log("adding to database")
-
-        console.log("Start: ")
-        console.log(startLocation)
-
-        console.log("Destination: ")
-        console.log(endLocation)
-
-        console.log("Date: ")
-        console.log(date)
-
-        console.log("key: ") //this is automatically created so thank you
-        console.log(key)
-
-        console.log("userID: ")
-        console.log(userID)
-
-        userID = await AsyncStorage.getItem("userId");
-
-
-        centroid = { latitude: (startLocation.latitude + endLocation.latitude) / 2.0, longitude: (startLocation.longitude + endLocation.longitude) / 2.0, };
-
-        console.log("centroid coord: ")
-        console.log(centroid);
-
-        setCentroid(centroid);
-
-    }
-
 
 
     //const [ routeArrays, setLoadRoutes ] = useState({bestRouteKey: null, centroid: null, destination: null, routeDescription: null, routeName: null, routeId: null, selected: false, start: null});
@@ -178,13 +143,31 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
         } else {
             tempRoute2.pop(initialDummyRoute.filter(prop => prop.routeId === selectedRouteId.routeId));
             setSelectedRoute(tempRoute2);
-            selectCount--
+            selectCount--;
         }
         //console.log(selectedRouteId)
         selectedRouteId.selected = !selectedRouteId.selected;
         let tempRoute = initialDummyRoute.map(route => route.routeId !== selectedRouteId.routeId ? route : selectedRouteId);
         setDummyroute(tempRoute);
 
+    }
+
+    const clean2DArray = (inputArray = [0][0]) => {
+        let tempArray = []
+        for (let i = 0; i < inputArray.length; i++) {
+            tempArray.push({
+                routeId: inputArray[i][0].routeId,
+                routeName: inputArray[i][0].routeName,
+                routeDescription: inputArray[i][0].routeDescription,
+                start: { latitude: inputArray[i][0].start.latitude, longitude: inputArray[i][0].start.longitude },
+                destination: { latitude: inputArray[i][0].destination.latitude, longitude: inputArray[i][0].destination.longitude },
+                centroid: { latitude: inputArray[i][0].centroid.latitude, longitude: inputArray[i][0].centroid.longitude },
+                selected: inputArray[i][0].selected,
+                bestRouteKey: inputArray[i][0].bestRouteKey
+            }
+            )
+        }
+        return tempArray
     }
 
 
@@ -270,20 +253,25 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
 
             <BottomTab style={styles.bottomTab}>
                 <AppButton
-                    title='Confirm'
+                    title='Select'
                     style={styles.confirmButton}
                     onPress={
                         () => {
+                            const tempSelectedRoute = clean2DArray(selectedRoute)
                             console.log("The selected route is", JSON.stringify(startLocation) + JSON.stringify(endLocation) + JSON.stringify(selectedDate))
                             console.log("Hello there")
+                            navigation.navigate('FinalDriverRouteScreen', {
+                                startLocation: route.params.startLocation,
+                                endLocation: route.params.endLocation,
+                                selectedDate: route.params.selectedDate,
+                                waypoints: tempSelectedRoute
+                            })
 
-                            //Send driver's startLocation, endLocation, selectedDate to the database.
-                            //navigation.navigate('CalendarScreen')
                         }
                     }
                 />
                 <AppButton
-                    title='Route'
+                    title='Back'
                     style={styles.confirmButton}
                     onPress={
                         () => {
@@ -294,8 +282,6 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
                                 console.log(selectedRoute[x][0].routeId)
 
                             }
-                            console.log("Hello there")
-                            console.log(initialDummyRoute)
                         }
                     }
                 />
