@@ -22,13 +22,9 @@ import {
 } from "react-native";
 import Login from "./src/login";
 import { TouchableOpacity } from "react-native";
-import DriverMapScreen from "./Screen/DriverMapScreen";
-import DriverPutRouteAndroid from "./Screen/DriverPutRouteScreen_Android";
-import ReccommendedRouteScreen from "./Screen/ReccommendedRouteScreen";
 import TopTab from "./Components/TopTab";
 import SearchBar from "./Components/SearchBar";
 import TopSearchBar from "./Components/TopSearchBar";
-import DriverPutRoute from "./Screen/DriverPutRouteScreen";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { color } from "./Config/Color";
 import * as Location from "expo-location";
@@ -42,7 +38,10 @@ import DriverPutRouteScreen_Android from "./Screen/DriverPutRouteScreen_Android"
 import DriverPutRouteScreen from "./Screen/DriverPutRouteScreen";
 import selectUserType from "./src/selectUserType";
 import RiderMapScreen from "./Screen/RiderMapScreen";
+import RiderMapScreen_android from "./Screen/RiderMapScreen_android";
 import TabNavigator from "./Components/AppTabNavigator";
+import ReccommendedRouteScreen_getroute from "./Screen/ReccommendedRouteScreen_getroute";
+import ReccommendedRouteScreen from "./Screen/ReccommendedRouteScreen";
 //navigator.geolocation = require('react-native-geolocation-service');
 
 export default function App() {
@@ -59,20 +58,22 @@ export default function App() {
   }, []);
 
   //to redirect users to login / create screen if not logged in for first time, else proceed to calendar page
-  const checkLoginState = async () => {
+  async function checkLoginState() {
     console.log("wait");
 
     const loginState = await AsyncStorage.getItem("isLoggedIn");
     const idUser = await AsyncStorage.getItem("userId");
+    console.log(loginState);
 
     if (loginState == "true") {
       console.log("User is logged in: " + idUser);
-      setInitialPage("RiderMapScreen");
+      setInitialPage("RiderMapScreen"); //TODO: RiderMapScreen needs an android version as well
+      console.log(initialPage);
+      setShow(false);
     } else {
       console.log("user is not logged in");
+      setShow(false);
     }
-
-    setShow(false);
   };
 
   if (show) {
@@ -86,73 +87,33 @@ export default function App() {
   }
 
   return (
-    <TabNavigator>
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName={"DriverPutRoute"}
-          screenOptions={{ headerShown: false }}
-        >
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="SelectUserType" component={selectUserType} />
-          <Stack.Screen name="RiderMapScreen" component={RiderMapScreen} />
-          <Stack.Screen
-            name="DriverPutRoute"
-            component={
-              Platform.OS === "ios"
-                ? DriverPutRouteScreen
-                : DriverPutRouteScreen_Android
-            }
-          />
-          <Stack.Screen
-            name="ReccommendedRouteScreen"
-            component={ReccommendedRouteScreen}
-          />
-          <Stack.Screen name="CalendarScreen" component={() => {}} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </TabNavigator>
 
-    // <View style={{flex: 1, backgroundColor: 'red'}}>
-    //   <DatePicker
-    //     date={date}
-    //     //mode={DATE_MODE}
-    //     //mode="datetime"
-    //     onDateChange={setDate}
-    //     // onDateChange={(event, selectedDate) => {
-    //     //     setSelectedDate(selectedDate);
-    //     //     console.log(selectedDate);
-    //     //     const d = new Date(selectedDate);
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName={"RiderMapScreen"}>
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="SelectUserType" component={selectUserType} />
+        <Stack.Screen name="RiderMapScreen" component={RiderMapScreen_android
+          // Platform.OS === "ios"
+          // ? RiderMapScreen
+          // : RiderMapScreen_android
+        } />
+        <Stack.Screen
+          name="DriverPutRoute"
+          component={
+            Platform.OS === "ios"
+              ? DriverPutRouteScreen
+              : DriverPutRouteScreen_Android
+          }
+        />
+        <Stack.Screen
+          name="ReccommendedRouteScreen"
+          component={ReccommendedRouteScreen}
+        />
 
-    //     //     var hora = d.getUTCHours()+8;
-    //     //     if (hora >= 24){
-    //     //         hora = hora - 24
-    //     //     }
+      </Stack.Navigator>
+    </NavigationContainer>
 
-    //     //     console.log('Hour: ', hora, ' ', 'Minute: ', d.getUTCMinutes(), 'Sec: ', d.getUTCSeconds());
-    //     //     //Need to offset by -4 hours, this is UTC time
-    //     // }}
-    //     // minimumDate={new Date()}
-    //     // accentColor={color.red}
-    //     // textColor={color.medium}
-    //     // display="default"
-    //     // style={{
-    //     //     width: 200,
-    //     //     transform: [{ scale: 1.5, }],
-    //     // }}
-    // />
-    // </View>
-    /*
-    <View style={styles.container}>
-      <Login style={{ width: "100%" }} />
-      <TouchableOpacity style={styles.buttonNormal}>
-        <Text style={styles.buttonText} onPress={() => navigation.navigate("Account Creation")}>New user?</Text>
-      </TouchableOpacity>
 
-      <TouchableOpacity style={styles.buttonNormal}>
-        <Text style={styles.buttonText} onPress={() => showToast("test")}>Debug Stack crosser</Text>
-      </TouchableOpacity>
-    </View>
-    */
   );
 }
 

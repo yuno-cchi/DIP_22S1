@@ -143,7 +143,7 @@ export default function Login({ navigation }) {
             //TO TEST: retrieving username and isLoggedIn state from AsyncStorage
             
 
-            navigation.navigate('DriverRoute');
+            navigation.navigate('DriverPutRoute');
         }
     }
 

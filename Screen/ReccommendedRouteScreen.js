@@ -52,27 +52,114 @@ const dummyRoute = [
     }
 ]
 
-//getShorestRoute return an array of coordinates that are nearest the argument coordinates which, in turn, is the shorest route to pass through.
-
-const getShortestRoute = (passengerNumber, coordinates) => {
-
-    return (null);
+const route = {
+    startLocation: { latitude: 1.302127, longitude: 103.625382 },
+    endLocation: { latitude: 1.2988981, longitude: 103.8547574 },
+    centroid: { latitude: 1.30051255, longitude: 103.740097 },
+    selectedDate: "2022-10-05T07:22:13.049Z"
 }
 
-export default function ReccommendedRouteScreen({ navigation, /*route*/ }) {
+const getBestRoutes = (routeObjectArray, driverRoute) => {
+    console.log("Starting");
+
+    let tempRouteObjectArray = [...routeObjectArray];// Copy into another array to prevent altering the original array.
+    let tempRouteObject = null;
+    let returnRouteObjectArray = [];
+    const originalArrayLength = tempRouteObjectArray.length;
+    console.log("Number of route: ", originalArrayLength)
+    for (let y = 0; y < originalArrayLength; y++) {
+        let leastDist = 99999;
+        let leastDistId = null;
+        let dist = null;
+        let tempRouteName = null;
+
+        for (let x = 0; x < tempRouteObjectArray.length; x++) {
+
+            //Finding the distance of driver coordinates and the given route coordinates
+            dist = Math.sqrt(Math.pow((tempRouteObjectArray[x].centroid.latitude - driverRoute.centroid.latitude), 2)
+                + Math.pow((tempRouteObjectArray[x].centroid.longitude - driverRoute.centroid.longitude), 2));
+
+            console.log("Route ID", tempRouteObjectArray[x].routeId, ": ", dist);
+            if (dist < leastDist) {
+
+                leastDist = dist;
+                tempRouteName = tempRouteObjectArray[x].routeName;
+                leastDistId = tempRouteObjectArray[x].routeId;
+                tempRouteObject = tempRouteObjectArray[x];
+
+                console.log("Has lesser dist", "Route leastDistId: ", leastDistId)
+            }
+        }
+        console.log("Final leastDistId: ", leastDistId);
+        console.log("Best route is: ", tempRouteObject.routeId, " dist: ", leastDist, "Route name: ", tempRouteName)
+
+        returnRouteObjectArray.push(
+            {
+                routeId: tempRouteObject.routeId,
+                routeName: tempRouteObject.routeName,
+                routeDescription: tempRouteObject.routeDescription,
+                start: { latitude: tempRouteObject.start.latitude, longitude: tempRouteObject.start.longitude },
+                destination: { latitude: tempRouteObject.destination.latitude, longitude: tempRouteObject.destination.longitude },
+                centroid: { latitude: tempRouteObject.centroid.latitude, longitude: tempRouteObject.centroid.longitude },
+                selected: tempRouteObject.selected,
+                bestRouteKey: y
+            }
+        )
+
+        tempRouteObjectArray = tempRouteObjectArray.filter(routeObj => routeObj.routeId !== leastDistId)
+        console.log(tempRouteObjectArray.length)
+
+
+    }
+    console.log(returnRouteObjectArray)
+    return returnRouteObjectArray;
+}
+
+export default function ReccommendedRouteScreen({ navigation, route }) {
 
     const [initialDummyRoute, setDummyroute] = useState(dummyRoute);
     const [isRefrehing, setRefreshing] = useState(false);
 
     const [selectedRoute, setSelectedRoute] = useState([]);
 
-    const route = {
-        startLocation: { latitude: 1.302127, longitude: 103.625382 },
-        endLocation: { latitude: 1.2988981, longitude: 103.8547574 },
-        selectedDate: "2022-10-05T07:22:13.049Z"
+
+
+
+
+    const storeInDatabase = async (startLocation, endLocation, date, key, userID) => {
+        console.log("adding to database")
+
+        console.log("Start: ")
+        console.log(startLocation)
+
+        console.log("Destination: ")
+        console.log(endLocation)
+
+        console.log("Date: ")
+        console.log(date)
+
+        console.log("key: ") //this is automatically created so thank you
+        console.log(key)
+
+        console.log("userID: ")
+        console.log(userID)
+
+        userID = await AsyncStorage.getItem("userId");
+
+
+        centroid = { latitude: (startLocation.latitude + endLocation.latitude) / 2.0, longitude: (startLocation.longitude + endLocation.longitude) / 2.0, };
+
+        console.log("centroid coord: ")
+        console.log(centroid);
+
+        setCentroid(centroid);
+
     }
 
-    const { loading, setLoading } = useState(true);
+
+
+    //const [ routeArrays, setLoadRoutes ] = useState({bestRouteKey: null, centroid: null, destination: null, routeDescription: null, routeName: null, routeId: null, selected: false, start: null});
+    const [ loading, setLoading ] = useState(true);
 
     const { startLocation, endLocation, selectedDate } = route; //route has to be route.param, use const route in place for testing 
 
@@ -91,45 +178,45 @@ export default function ReccommendedRouteScreen({ navigation, /*route*/ }) {
             tempRoute2.pop(initialDummyRoute.filter(prop => prop.routeId === selectedRouteId.routeId));
             setSelectedRoute(tempRoute2);
         }
-        console.log(selectedRouteId)
+        //console.log(selectedRouteId)
         selectedRouteId.selected = !selectedRouteId.selected;
         tempRoute = initialDummyRoute.map(route => route.routeId !== selectedRouteId.routeId ? route : selectedRouteId);
         setDummyroute(tempRoute);
 
     }
 
-    /*
+    
     useEffect(() => {
         getNearestRoutes();
     }, []);
-    */
-    const getNearestRoutes = async (numberOfRoute, centroid1) => {
+
+    const getNearestRoutes = async () => {
 
         let routeArray = [];
-
-
-
         const resp = await axios.get('http://secret-caverns-21869.herokuapp.com/ride');
         ridedata = resp.data;
 
         console.log(centroid);
         console.log(ridedata);
 
-        // if (numberOfRoute > 4) {
-        //     console.log("Exceed route limit")
-        //     return null;
-        // }
+        for (let i = 0; i < ridedata.length; i++) {
+            console.log("inside now")
+            if (ridedata[i].selected == false) {
+                // if (ridedata[i].centroid.latitude <= centroid1.latitude + 0.5 && ridedata[i].centroid.latitude >= centroid1.latitude - 0.5) {
+                //     routeArray.push({centroid: ridedata[i].centroid, destination: ridedata[i].destination, routeDescription: ridedata[i].routeName, routeId: ridedata[i]._id, selected: false,
+                //     start: ridedata[i].start});
+                // }
+                routeArray.push({bestRouteKey: i, centroid: ridedata[i].centroid, destination: ridedata[i].destination, routeDescription: ridedata[i].routename, routeName: "Route " + i, routeId: ridedata[i]._id, selected: false,
+                    start: ridedata[i].start});
+            }
+        }
 
-        // for (let i = 0; i < numberOfRoute; i++) {
-        //     //searchDatabase for route's centroid +- 0.5 for less query call
+        console.log("route from db: ");
+        console.log(routeArray);
+        setDummyroute(routeArray);
 
-
-
-        //     if (true/*if the centroid is smaller that any of array's centroid*/) {
-        //         //pop the biggest
-        //         routeArray.push()//Push the desired route into the array
-        //     }
-        // }
+        console.log("routeArrays: ");
+        console.log(initialDummyRoute);
 
         setLoading(false);
     }
@@ -141,12 +228,14 @@ export default function ReccommendedRouteScreen({ navigation, /*route*/ }) {
         return <View><Text>Loading, please wait</Text></View>
     }
 
+    const sortedRoutes = getBestRoutes(initialDummyRoute, route.params)
+    console.log("Route parrams", route.params.centroid)
     return (
         <View
             style={styles.container}>
             <FlatList
-                data={initialDummyRoute}
-                keyExtractor={item => item.routeId}
+                data={sortedRoutes}
+                keyExtractor={item => item.bestRouteKey}
                 renderItem={({ item }) =>
                     <Card
                         title={item.routeName}
@@ -177,10 +266,11 @@ export default function ReccommendedRouteScreen({ navigation, /*route*/ }) {
                     onPress={
                         () => {
                             console.log("There are: ", selectedRoute.length, "routes")
-                            console.log("Selected route: ", selectedRoute)
+                            console.log("Selected route: ", selectedRoute[0])
                             console.log("The selected route is/are")
                             for (let x = 0; x < selectedRoute.length; x++) {
-                                console.log(selectedRoute[x].routeId)
+                                console.log(selectedRoute[x][0].routeId)
+
                             }
                             console.log("Hello there")
                         }
