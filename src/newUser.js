@@ -21,15 +21,14 @@ import {
 } from 'react-native';
 import styles from '../assets/styles/styles.js'
 import IsValidString from './IsValidString';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import showToast from './showToast.js';
-import { useNavigation } from '@react-navigation/native';
 import { Logs } from 'expo'
 
 Logs.enableExpoCliLogging();
 
-export default function NewUser() {
-    const navigation = useNavigation();
+export default function NewUser({ route, navigation }) {
+
+    const userParams = route.params;
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -171,18 +170,9 @@ export default function NewUser() {
             setPasswordErrorMessage("");
             setPasswordConfirmErrorMessage("");
             setEmailErrorMessage("");
-
-            // TODO: account creation
-            // placeholder for actual login
-            toastmessage += "Valid -- user: " 
-            toastmessage += username;
-            toastmessage += " pass: "
-            toastmessage += password;
-
             addUserToDb(username, password, email);
-
-            showToast(toastmessage);
-            toastmessage = "";
+            userParams.username = username;
+            navigation.navigate("TypeSelect", userParams);
         } else {
             onChangeUser(username);
             onChangePass(password);
@@ -212,12 +202,6 @@ export default function NewUser() {
 
     async function addUserToDb(username, password, email){
         console.log("load");
-        
-        console.log(username)
-        console.log(password)
-        console.log(email)
-        
-
         axios({
             method: 'post',
             url: 'http://secret-caverns-21869.herokuapp.com/user/add',
@@ -230,43 +214,14 @@ export default function NewUser() {
             }
           }).then((response) => {
             console.log(response);
-           
 
-            getDetails(username);
+            //TODO: log user into the app
+            navigation.navigate("TypeSelect", userParams);
 
 
           }, (error) => {
             console.log(error);
-          });
-    }
-
-    async function getDetails(username1){
-
-        const resp = await axios.get('http://secret-caverns-21869.herokuapp.com/user');
-        userdata = resp.data;
-
-        console.log(userdata);
-
-        for (i = 0; i < userdata.length; i++){
-            if(username1 == userdata[i].username){
-
-                console.log(userdata[i]._id);
-
-                await AsyncStorage.setItem("isLoggedIn", "true")
-                await AsyncStorage.setItem("userId", (userdata[i]._id).toString());
-
-                //TODO: log user into the app by redirecting user to main page
-                const loginstate = await AsyncStorage.getItem("isLoggedIn")
-                console.log(loginstate)
-                
-                navigateToHome();
-            }
-        }
-    }
-
-    function navigateToHome(){
-        //alert successful and move to next page (supposed to be selectUserType)
-        navigation.navigate('DriverPutRoute')
+          });;
     }
 
     return (
@@ -303,7 +258,6 @@ export default function NewUser() {
                   secureTextEntry={true}
                />
             </View>
-            <Text>DEBUG -- Entered: {password}</Text>
             <Text style={styles.errorText}>{passwordErrorMessage}</Text>
             <Text>Confirm Password:</Text>
             <View style={styles.inputView}>
@@ -316,12 +270,9 @@ export default function NewUser() {
                 />
             </View>
             <Text style={styles.errorText}>{passwordConfirmErrorMessage}</Text>
-            <Text>DEBUG -- Entered :{passwordConfirm}</Text>
             <TouchableOpacity style={styles.buttonNormal} onPress={(event) => sendIt()}>
                     <Text style={styles.buttonText}>Create Account</Text>
             </TouchableOpacity>
-        </View>
+        </View>   
     );
-
-
 }

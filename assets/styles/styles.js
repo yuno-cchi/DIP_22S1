@@ -24,11 +24,11 @@ export default StyleSheet.create({
         //backgroundColor: "#f5f5f5",
         justifyContent: "center",
         alignItems: "center",
-        width: "100%",
+        width:"100%",
     },
 
     inputView: {
-        marginTop: 10,
+        marginTop:10,
         backgroundColor: "#ffcccc",
         borderRadius: 5,
         width: "70%",
@@ -44,17 +44,18 @@ export default StyleSheet.create({
     },
 
     logoView: {
-
+        width:400,
+        height:200,
         marginBottom: 10,
     },
 
     textLinks: {
         fontSize: 15,
-        marginBottom: 5,
+        marginBottom:5,
         alignContent: "center",
         justifyContent: "center",
     },
-
+    
     buttonNormal: {
         backgroundColor: "#e76850",
         borderRadius: 30,
@@ -63,6 +64,25 @@ export default StyleSheet.create({
         marginBottom: 20,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+
+    iconButtonBig: {
+        //backgroundColor: "#e76850", //debug
+        width: 150,
+        height: 180,
+        marginLeft: 10,
+        marginRight: 10,
+    },
+
+    iconButtonText: {
+        textAlign:'center',
+        textAlignVertical:'center',
+    },
+
+    buttonIcon: {
+        height: 150,
+        width: 150,
+        marginTop: 10
     },
 
     buttonDisabled: {
@@ -77,15 +97,15 @@ export default StyleSheet.create({
     },
 
     buttonText: {
-        marginTop: 30,
-        height: 50,
-        color: "#f5f5f5",
+        marginTop:30,
+        height:50,
+        color:"#f5f5f5",
         alignContent: "center",
         justifyContent: "center",
     },
 
     errorText: {
-        color: "#ff0000",
-        fontStyle: 'italic',
+        color:"#ff0000",
+        fontStyle:'italic',
     }
 })

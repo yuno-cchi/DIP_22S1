@@ -14,100 +14,98 @@
 
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 import {
     Text,
-    View,
+    View, 
     Image,
     TextInput,
     TouchableOpacity,
     ToastAndroid,
     Alert,
-    Platform,
-    StyleSheet
+    Platform, 
 } from "react-native";
 import styles from '../assets/styles/styles.js';
 import IsValidString from './IsValidString.js';
-import { useNavigation } from '@react-navigation/native';
 
-var userdata; //global var for getting user cred.
-async function callUsers(username, password) {
-
-    console.log("input username:" + username);
-    console.log("input password:" + password)
-
-    const resp = await axios.get('http://secret-caverns-21869.herokuapp.com/user');
-    userdata = resp.data;
-    console.log(userdata);
-    var message;
-
-    //AUTHENTICATION STARTS HERE:
-    //start matching username
-    for (var x = 0; x < userdata.length; x++) {
-        //if username matches
-        if (username == userdata[x].username) {
-
-            console.log("username matched!");
-
-            //match password
-            for (var i = 0; i < userdata.length; i++) {
-                //if password also matches
-                if (password == userdata[x].password) {
-                    console.log("password matched!");
-
-                    message = "Welcome Back!";
-                    if (Platform.OS == 'android') {
-                    } else { // we're only making an iOS and Android app idt we need alerts for web or windows
-                        alert(message);
-                    }
-
-
-                    //TO TEST: react-native AsyncStorage for username and isLoggedIn state
-                    await AsyncStorage.setItem("isLoggedIn", "true")
-                    await AsyncStorage.setItem("userId", (userdata[x]._id).toString());
-
-                    const loggedState = await AsyncStorage.getItem("isLoggedIn");
-                    const userid = await AsyncStorage.getItem("userId");
-                    console.log(loggedState);
-                    console.log("userID: " + userid);
-
-                    return;
-                }
-                else if (i == userdata.length - 1 && userdata[i].password != password) {
-
-                    message = '(Password) Username invalid / User does not exist!'
-                    if (Platform.OS == 'android') {
-                        ToastAndroid.show(message, ToastAndroid.LONG);
-                    } else { // we're only making an iOS and Android app idt we need alerts for web or windows
-                        alert(message);
-                    }
-                    return;
-                }
-            }
-        }
-        else if (x == userdata.length - 1 && userdata[x].username != username) {
-
-            message = 'Username invalid / User does not exist!'
-            if (Platform.OS == 'android') {
-                ToastAndroid.show(message, ToastAndroid.LONG);
-            } else { // we're only making an iOS and Android app idt we need alerts for web or windows
-                alert(message);
-            }
-            return;
-        }
-    }
-}
 
 export default function Login({ navigation }) {
-    //const navigation = useNavigation();
-
-    const [user, setUser] = useState("");
+    const [user, setUser] = useState("");;
     const [pass, setPass] = useState("");
 
+    const userParams = {
+        username: null,
+        userType: null,
+    };
+
+    var userdata; //global var for getting user cred.
+    async function callUsers(username, password){
+
+        console.log("input username:" + username);
+        console.log("input password:" + password)
+
+        const resp = await axios.get('http://secret-caverns-21869.herokuapp.com/user');
+        userdata = resp.data;
+        console.log(userdata);
+        var message;
+
+        //AUTHENTICATION STARTS HERE:
+        //start matching username
+        for (var x = 0; x < userdata.length; x++){
+            //if username matches
+            if (username == userdata[x].username){
+                
+                console.log("username matched!");
+
+                //match password
+                for(var i = 0; i < userdata.length; i++){
+                    //if password also matches
+                    if(password == userdata[x].password){
+                        console.log("password matched!");
+
+                        message = "Welcome Back!";
+                        if(Platform.OS == 'android') {
+                            ToastAndroid.show(message, ToastAndroid.LONG);
+                        } else { // we're only making an iOS and Android app idt we need alerts for web or windows
+                            alert(message);
+                        }
+
+                        userParams.username = username;
+                        navigation.navigate("TypeSelect", userParams);
+                        sessionStorage.setItem("isLoggedIn", true); //setlogin state to true, set to false once logged out
+                        sessionStorage.setItem("usernameStorage", username); //store username in sessionStorage,
+                        var s = sessionStorage.getItem("isLoggedIn");
+                        console.log(s);
+                        return;
+                    }
+                    else if (i == userdata.length-1 && userdata[i].password != password){
+                        
+                        message = '(Password) Username invalid / User does not exist!'
+                        if(Platform.OS == 'android') {
+                            ToastAndroid.show(message, ToastAndroid.LONG);
+                        } else { // we're only making an iOS and Android app idt we need alerts for web or windows
+                            alert(message);
+                        }
+                        return;
+                    }
+                }
+            }
+            else if(x == userdata.length-1 && userdata[x].username != username){
+                
+                message = 'Username invalid / User does not exist!'
+                if(Platform.OS == 'android') {
+                    ToastAndroid.show(message, ToastAndroid.LONG);
+                } else { // we're only making an iOS and Android app idt we need alerts for web or windows
+                    alert(message);
+                }
+                return;
+            }
+        }
+    }
+
     const showToast = (message) => {
-        if (Platform.OS == 'android') {
+        if(Platform.OS == 'android') {
             ToastAndroid.show(message, ToastAndroid.LONG);
         } else { // we're only making an iOS and Android app idt we need alerts for web or windows
             Alert.alert(message);
@@ -125,14 +123,14 @@ export default function Login({ navigation }) {
         var passToValidate = enteredPass;
 
         var errorToastMessage = ""
-        if (!userToValidate) { // an empty string is falsy
+        if(!userToValidate) { // an empty string is falsy
             errorToastMessage += "Empty or invalid username; ";
         }
-        if (!passToValidate) { // an empty string is falsy
+        if(!passToValidate) { // an empty string is falsy
             errorToastMessage += "Empty password;"
         }
-
-        if (errorToastMessage) { // if the error message is NOT an empty string, there is an error, so we print it out
+ 
+        if(errorToastMessage) { // if the error message is NOT an empty string, there is an error, so we print it out
             showToast(errorToastMessage);
         } else { // otherwise we attempt a log-in
             //showToast("WIP: Login Function; entered username: ("+ userToValidate + "); entered password: (" + passToValidate +"); "); //comment this out once we implement logins
@@ -142,62 +140,44 @@ export default function Login({ navigation }) {
             //axios.post('http//localhost:5000/users/add', userToValidate, passToValidate).then(res => console.log(res.data));
 
             callUsers(userToValidate, passToValidate);
-
-            //TO TEST: retrieving username and isLoggedIn state from AsyncStorage
-            
-
-            navigation.navigate('DriverPutRoute');
         }
     }
 
     return (
-        // login stuff goes HERE
-        <View style={styles.container}>
-            <Image style={localStyles.imageStyle} source={require("../assets/img/AppLogo.jpg")} />
-            <StatusBar style="auto" />
+            <View style={styles.container}>
+                <Image style={styles.logoView} source={require("../assets/img/logo.png")}/>
+                <StatusBar style="auto"/>
 
-            <View style={styles.inputView}>
-                <TextInput
-                    style={styles.TextInput}
-                    placeholder="username"
-                    placeholderTextColor="#fef2f0"
-                    onChangeText={(user) => setUser(user)}
-                />
-            </View>
+                <View style={styles.inputView}>
+                    <TextInput
+                        style={styles.TextInput}
+                        placeholder="username"
+                        placeholderTextColor="#fef2f0"
+                        onChangeText={(user) => setUser(user)} 
+                    />
+                </View>
 
-            <View style={styles.inputView}>
-                <TextInput
-                    style={styles.TextInput}
-                    placeholder="password"
-                    placeholderTextColor="#fef2f0"
-                    secureTextEntry={true}
-                    onChangeText={(pass) => setPass(pass)}
-                />
-            </View>
+                <View style={styles.inputView}>
+                    <TextInput
+                        style={styles.TextInput}
+                        placeholder="password"
+                        placeholderTextColor="#fef2f0"
+                        secureTextEntry={true}
+                        onChangeText={(pass) => setPass(pass)}
+                    />
+                </View>
 
-            <TouchableOpacity>
-                <Text style={styles.textLinks} onPress={(event) => showToast("we're probably not gonna implement this any time soon hehe >:)")}>Forgot Password?</Text>
-            </TouchableOpacity>
+                <TouchableOpacity>
+                    <Text style={styles.textLinks} onPress={(event) => showToast("we're probably not gonna implement this any time soon hehe >:)")}>Forgot Password?</Text> 
+                </TouchableOpacity>
 
-            <TouchableOpacity style={styles.buttonNormal} onPress={(event) => loginEvent(user, pass)}>
-                <Text style={styles.buttonText}>Log in</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.buttonNormal} onPress={(event) => {navigation.navigate('SignUpPage')}}>
-                <Text style={styles.buttonText}>Register</Text>
-            </TouchableOpacity>
-
-
-
-        </View>
-
-    )
+                <TouchableOpacity style={styles.buttonNormal} onPress={(event) => loginEvent(user,pass)}>
+                    <Text style={styles.buttonText}>Log in</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonNormal}>
+                    <Text style={styles.buttonText} onPress={(event) => navigation.navigate("AccountCreation", userParams)}>New user?</Text>
+                </TouchableOpacity>
+            </View> 
+    );
 }
-
-const localStyles = StyleSheet.create({
-    imageStyle: {
-        width: 400,
-        height: 300
-    }
-})
 
