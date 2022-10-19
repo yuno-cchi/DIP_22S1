@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { View, StyleSheet, Text, Button, Platform } from 'react-native';
+import { View, StyleSheet, Text, Button, Platform, Dimensions } from 'react-native';
 import BottomTab from '../Components/BottomTab';
 import AppButton from '../Components/AppButton';
 import MapView from 'react-native-maps';
@@ -26,8 +26,10 @@ const ANIMATE_SPEED = 1000;
 const ANIMATE_ZOOM = 1;
 const INITIAL_POINT = null;
 const STROKE_WIDTH = 5;
-const STROKE_COLOR = color.danger;
-const DATE_MODE = "datetime"
+const STROKE_COLOR = 'blue';
+const DATE_MODE = "datetime";
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 console.log("loading")
 
@@ -272,7 +274,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                 />
 
             </View>
-            <BottomTab style={{ alignItems: 'center' }}>
+            <BottomTab style={{ alignItems: 'center', height: windowHeight * 0.17 }}>
                 <AppButton style={styles.showRoute}
                     title="Go"
                     onPress={() => {

@@ -23,11 +23,14 @@ import styles from '../assets/styles/styles.js'
 import IsValidString from './IsValidString';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import showToast from './showToast.js';
+import { useNavigation } from '@react-navigation/native';
 import { Logs } from 'expo'
 
 Logs.enableExpoCliLogging();
 
 export default function NewUser() {
+    const navigation = useNavigation();
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
@@ -209,6 +212,12 @@ export default function NewUser() {
 
     async function addUserToDb(username, password, email){
         console.log("load");
+        
+        console.log(username)
+        console.log(password)
+        console.log(email)
+        
+
         axios({
             method: 'post',
             url: 'http://secret-caverns-21869.herokuapp.com/user/add',
@@ -221,8 +230,6 @@ export default function NewUser() {
             }
           }).then((response) => {
             console.log(response);
-
-
            
 
             getDetails(username);
@@ -243,15 +250,23 @@ export default function NewUser() {
         for (i = 0; i < userdata.length; i++){
             if(username1 == userdata[i].username){
 
-                console.log(userdata[x]._id);
+                console.log(userdata[i]._id);
 
                 await AsyncStorage.setItem("isLoggedIn", "true")
-                await AsyncStorage.setItem("userId", (userdata[x]._id).toString());
+                await AsyncStorage.setItem("userId", (userdata[i]._id).toString());
 
                 //TODO: log user into the app by redirecting user to main page
-
+                const loginstate = await AsyncStorage.getItem("isLoggedIn")
+                console.log(loginstate)
+                
+                navigateToHome();
             }
         }
+    }
+
+    function navigateToHome(){
+        //alert successful and move to next page (supposed to be selectUserType)
+        navigation.navigate('DriverPutRoute')
     }
 
     return (

@@ -30,6 +30,7 @@ import {
 } from "react-native";
 import styles from '../assets/styles/styles.js';
 import IsValidString from './IsValidString.js';
+import { useNavigation } from '@react-navigation/native';
 
 var userdata; //global var for getting user cred.
 async function callUsers(username, password) {
@@ -100,6 +101,8 @@ async function callUsers(username, password) {
 }
 
 export default function Login({ navigation }) {
+    //const navigation = useNavigation();
+
     const [user, setUser] = useState("");
     const [pass, setPass] = useState("");
 
@@ -180,7 +183,7 @@ export default function Login({ navigation }) {
                 <Text style={styles.buttonText}>Log in</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.buttonNormal} onPress={(event) => { }}>
+            <TouchableOpacity style={styles.buttonNormal} onPress={(event) => {navigation.navigate('SignUpPage')}}>
                 <Text style={styles.buttonText}>Register</Text>
             </TouchableOpacity>
 

@@ -17,7 +17,7 @@ const GOOGLE_MAPS_APIKEY = 'AIzaSyBYDEKY12RzWyP0ACQEpgsr4up2w3CjH88';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-export default function Card({ title, subTitle, onPress, route, style, ...otherProps }) {
+export default function Card({ title, subTitle, onPress, driverRoute, route, style, ...otherProps }) {
 
 
 
@@ -36,6 +36,7 @@ export default function Card({ title, subTitle, onPress, route, style, ...otherP
                     zoomEnabled={false}
                     rotateEnabled={false}
                     scrollEnabled={false}>
+
                     <MapViewDirections
                         origin={route.start}
                         destination={route.destination}
@@ -43,6 +44,17 @@ export default function Card({ title, subTitle, onPress, route, style, ...otherP
                         apikey={GOOGLE_MAPS_APIKEY}
                         optimizeWaypoints={true}
                         strokeColor="red"
+                    >
+
+                    </MapViewDirections>
+
+                    <MapViewDirections
+                        origin={driverRoute.startLocation}
+                        destination={driverRoute.endLocation}
+                        strokeWidth={5}
+                        apikey={GOOGLE_MAPS_APIKEY}
+                        optimizeWaypoints={true}
+                        strokeColor="blue"
                     >
 
                     </MapViewDirections>
