@@ -74,7 +74,7 @@ export default function App() {
       console.log("user is not logged in");
       setShow(false);
     }
-  };
+  }
 
   if (show) {
     //setRouteVisible(false);
@@ -87,33 +87,35 @@ export default function App() {
   }
 
   return (
-
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName={"RiderMapScreen"}>
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="SelectUserType" component={selectUserType} />
-        <Stack.Screen name="RiderMapScreen" component={RiderMapScreen_android
-          // Platform.OS === "ios"
-          // ? RiderMapScreen
-          // : RiderMapScreen_android
-        } />
-        <Stack.Screen
-          name="DriverPutRoute"
-          component={
-            Platform.OS === "ios"
-              ? DriverPutRouteScreen
-              : DriverPutRouteScreen_Android
-          }
-        />
-        <Stack.Screen
-          name="ReccommendedRouteScreen"
-          component={ReccommendedRouteScreen}
-        />
-
-      </Stack.Navigator>
-    </NavigationContainer>
-
-
+    <TabNavigator>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName={"RiderMapScreen"}>
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="SelectUserType" component={selectUserType} />
+          <Stack.Screen
+            name="RiderMapScreen"
+            component={
+              RiderMapScreen_android
+              // Platform.OS === "ios"
+              // ? RiderMapScreen
+              // : RiderMapScreen_android
+            }
+          />
+          <Stack.Screen
+            name="DriverPutRoute"
+            component={
+              Platform.OS === "ios"
+                ? DriverPutRouteScreen
+                : DriverPutRouteScreen_Android
+            }
+          />
+          <Stack.Screen
+            name="ReccommendedRouteScreen"
+            component={ReccommendedRouteScreen}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </TabNavigator>
   );
 }
 
