@@ -176,53 +176,40 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
 
             selectedRideIDs.push(selectedRoute[x].routeId);
 
-            // axios.put('http://secret-caverns-21869.herokuapp.com/ride/' + selectedRoute[x].routeId, {
-            //     "routename": selectedRoute[x].routeDescription,
-            // 	    "start": selectedRoute[x].start,
-            // "destination": selectedRoute[x].destination,
-            // "date": date,
-            // "centroid": selectedRoute[x].centroid,
-            // "selected": true //set selected to tru
-            //  driverID: userID
-            // })
-            // .then(response => {
-            //     console.log(response);
-            // })
-            // .catch(error => {
-            //     console.log(err);
-            // });
         }
 
         console.log(selectedRideIDs);
 
 
         //TODO: use axios to post into database
-        // axios({
-        //     method: 'post',
-        //     url: 'http://secret-caverns-21869.herokuapp.com/drive/add',
-        //     headers: {},
-        //     data: {
-        //         routeUserID: userID,
-        //         start: startLocation,
-        //         destination: endLocation,
-        //         centroid: centroid,
-        //         date: date,
-        //         selected: false,
-        //         routeIdPair: []
-        //     }
-        // }).then((response) => {
-        //     console.log(response);
+        axios({
+            method: 'post',
+            url: 'http://secret-caverns-21869.herokuapp.com/drive/add',
+            headers: {},
+            data: {
+                routeUserID: userID,
+                start: startLocation,
+                destination: endLocation,
+                centroid: centroid,
+                date: date,
+                selected: false,
+                routeIdPair: selectedRideIDs
+            }
+        }).then((response) => {
+            console.log(response);
 
-            //idk if this works at all but to try out ltr
-            //console.log(response.data);
-            //setIdapp(response.data._id);
+           // idk if this works at all but to try out ltr
+            console.log(response.data);
+            setIdapp(response.data._id);
 
-        //     navigateToRecc() //navigate to FinalDriverRouteScreen
+            
+
+            // navigateToRecc() //navigate to FinalDriverRouteScreen
 
 
-        // }, (error) => {
-        //     console.log(error);
-        // });
+        }, (error) => {
+            console.log(error);
+        });
 
         //TODO: update 'ride' table w DriverID: drives's _id and selected: true
         for (let x = 0; x < selectedRoute.length; x++){
@@ -231,14 +218,14 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
 
             selectedRideIDs.push(selectedRoute[x].routeId);
 
-            // axios.put('http://secret-caverns-21869.herokuapp.com/ride/' + selectedRoute[x].routeId, {
-            //     "routename": selectedRoute[x].routeDescription,
-            // 	    "start": selectedRoute[x].start,
-            // "destination": selectedRoute[x].destination,
-            // "date": date,
-            // "centroid": selectedRoute[x].centroid,
-            // "selected": true //set selected to tru
-            //  driverID: newDriveId //if the above works at all
+             // axios.put('http://secret-caverns-21869.herokuapp.com/ride/' + selectedRoute[x].routeId, {
+            //     routename: selectedRoute[x].routeDescription,
+            //     start: selectedRoute[x].start,
+            //     destination: selectedRoute[x].destination,
+            //     date: date,
+            //     centroid: selectedRoute[x].centroid,
+            //     selected: true, //set selected to tru
+            //     driverID: userID
             // })
             // .then(response => {
             //     console.log(response);
