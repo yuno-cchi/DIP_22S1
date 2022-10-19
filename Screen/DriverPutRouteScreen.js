@@ -232,7 +232,6 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                         console.log(coordinates);
                         animateToLocation(coordinates);
                     }}
-                    on
                     fetchDetails={true}
                     query={{
                         key: GOOGLE_API_KEY,
@@ -384,21 +383,22 @@ const styles = StyleSheet.create({
     },
     startTextBox: {
         container: {
-            position: 'absolute',
-            width: 300,
+            alignItems: 'center',
+            width: windowWidth * 0.8,
             height: 200,
             top: 0,
-            right: 20,
+            left: 40
+
 
         },
     },
     endTextBox: {
         container: {
-            position: 'absolute',
-            width: 300,
+            alignItems: 'center',
+            width: windowWidth * 0.8,
             height: 200,
             top: 60,
-            right: 20,
+            left: 40
 
         },
     },
