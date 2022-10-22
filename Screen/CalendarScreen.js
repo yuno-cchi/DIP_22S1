@@ -8,11 +8,32 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import PlanList from "../Components/PlanList";
 import { FlatList } from "react-native";
 import { color } from "../Config/Color";
+import axios from "axios";
 
 const Stack = createNativeStackNavigator();
 var dataLen = Object.keys(data).length;
 var dayDataLen = Object.keys(mydata).length;
 var selectedday;
+
+//const axios = require("axios");
+//let ridedata;
+// This is the second configuration option
+// const ridedata = async () => {
+//   return await axios.get("http://secret-caverns-21869.herokuapp.com/drive");
+// };
+//let resp;
+let ridedata;
+
+// async function getdata() {
+//   resp = await axios.get("http://secret-caverns-21869.herokuapp.com/drive");
+// }
+
+const resp = axios.get("http://secret-caverns-21869.herokuapp.com/drive");
+
+function passindata(getdata) {
+  ridedata = resp;
+  return ridedata;
+}
 
 const CalendarNavigator = () => (
   <Stack.Navigator initialRouteName="CalendarScreen">
@@ -24,9 +45,11 @@ const CalendarNavigator = () => (
 
 function DayPlan({ navigation }) {
   var displayPlan = [];
+  // console.log("loop", Object.values(mydata)[i].date.slice(0, 10));
+  console.log();
+  let childkey = Object.values(mydata);
 
   for (let i = 0; i < dayDataLen; i++) {
-    console.log("loop", Object.values(mydata)[i].date.slice(0, 10));
     let thisRoute = Object.values(mydata)[i];
     if (
       Object.values(selectedday)[4] ==
@@ -36,6 +59,7 @@ function DayPlan({ navigation }) {
         <View>
           <PlanList
             title={thisRoute.date}
+            keyExtractor={(thisRoute) => thisRoute.date}
             user="User"
             style={
               Object.values(mydata)[i].selected
@@ -47,8 +71,17 @@ function DayPlan({ navigation }) {
         </View>
       );
     }
+
+    if (!displayPlan) {
+      displayPlan.push(
+        <View>
+          <Text>No data</Text>
+        </View>
+      );
+    }
   }
-  console.log("display?", displayPlan);
+  passindata;
+  console.log("ride data !", resp);
   return (
     <View style={styles.plan}>
       <View style={styles.component}>{displayPlan}</View>
@@ -62,31 +95,23 @@ function MarkCalender() {
 
 function CalendarScreen({ navigation }) {
   let today = new Date();
-  let maxPlanning = new Date(
-    today.getFullYear(),
-    today.getMonth() + 1,
-    today.getDate()
-  );
-  //const [pickday, setPickday] = useState(0);
+  let tryPlanning = new Date();
+  tryPlanning.setMonth(tryPlanning.getMonth() + 1);
+
   return (
     <View style={styles.container}>
       <Calendar
-        minDate={today}
-        maxDate={maxPlanning}
-        // Handler which gets executed on day press. Default = undefined
+        //minDate={today}
+        //maxDate={tryPlanning}
         onDayPress={(day) => {
           //setPickday(day);
           selectedday = day;
-          console.log("my picked date in the functionm", selectedday);
           navigation.push("DayPlan");
         }}
-        // Handler which gets executed on day long press. Default = undefined
         onDayLongPress={(day) => {
           console.log("selected day", day);
         }}
-        // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
         monthFormat={"MM"}
-        // Handler which gets executed when visible month changes in calendar. Default = undefined
         onMonthChange={(month) => {
           console.log("month changed", month);
           console.log(data);
@@ -94,8 +119,6 @@ function CalendarScreen({ navigation }) {
         // Hide month navigation arrows. Default = false
         hideArrows={false}
         hideExtraDays={true}
-        // If hideArrows = false and hideExtraDays = false do not switch month when tapping on greyed out
-        // day from another month that is visible in calendar page. Default = false
         disableMonthChange={false}
         // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday
         firstDay={7}
@@ -146,12 +169,12 @@ const styles = StyleSheet.create({
     justifyContent: "start",
     alignItems: "center",
     marginTop: 10,
-    //margin: 10,
   },
   component: {
     height: "15%",
     backgroundColor: "powerblue",
   },
+  noplan: {},
 });
 
 export default CalendarNavigator;

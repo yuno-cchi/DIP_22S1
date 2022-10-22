@@ -112,11 +112,7 @@ export default function ReccommendedRouteScreen_getroute({ navigation, /*route*/
 
     const [initialDummyRoute, setDummyroute] = useState(dummyRoute);
     const [isRefrehing, setRefreshing] = useState(false);
-
     const [selectedRoute, setSelectedRoute] = useState([]);
-
-
-
     const route = {
         startLocation: { latitude: 1.302127, longitude: 103.625382 },
         endLocation: { latitude: 1.2988981, longitude: 103.8547574 },

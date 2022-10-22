@@ -13,21 +13,20 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => (
-  <NavigationContainer>
-    <Tab.Navigator
-      initialRouteName="DriverPutRoute"
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <Tab.Screen name="DriverPutRoute" component={DriverPutRouteScreen} />
-      <Tab.Screen name="Account" component={MyAccountScreen} />
-      {/* <Tab.Screen name="RiderMap" component={RiderMapScreen} /> */}
-      {/* <Tab.Screen name="DriverMap" component={CheeHeanDomain} /> */}
-      {/* <Tab.Screen name="DriverMap" component={DriverMapScreen} /> */}
-      <Tab.Screen name="Calendar" component={CalendarScreen} />
-    </Tab.Navigator>
-  </NavigationContainer>
+  //<NavigationContainer>
+  <Tab.Navigator
+    initialRouteName="DriverMap"
+    screenOptions={{
+      headerShown: false,
+    }}
+  >
+    <Tab.Screen name="Account" component={MyAccountScreen} />
+    <Tab.Screen name="DriverMap" component={DriverPutRouteScreen} />
+    {/* <Tab.Screen name="DriverMap" component={CheeHeanDomain} /> */}
+    {/* <Tab.Screen name="DriverMap" component={DriverMapScreen} /> */}
+    <Tab.Screen name="Calendar" component={CalendarScreen} />
+  </Tab.Navigator>
+  //</NavigationContainer>
 );
 
 export default TabNavigator;

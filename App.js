@@ -67,7 +67,7 @@ export default function App() {
     const idUser = await AsyncStorage.getItem("userId");
     console.log(loginState);
 
-    //FOR DEBUG: remove the AsyncStorage variables 
+    //FOR DEBUG: remove the AsyncStorage variables
     // AsyncStorage.removeItem("isLoggedIn");
     // AsyncStorage.removeItem("userId");
 
@@ -93,41 +93,37 @@ export default function App() {
   }
 
   return (
-
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={initialPage}>
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="SignUpPage" component={NewUser} />
-        <Stack.Screen name="SelectUserType" component={selectUserType} />
-        <Stack.Screen
-          name="RiderMapScreen"
-          component={
-            Platform.OS === "ios"
-              ? RiderMapScreen
-              : RiderMapScreen_android
-          }
-        />
-        <Stack.Screen
-          name="DriverPutRoute"
-          component={
-            Platform.OS === "ios"
-              ? DriverPutRouteScreen
-              : DriverPutRouteScreen_Android
-          }
-        />
-        <Stack.Screen
-          name="ReccommendedRouteScreen"
-          component={ReccommendedRouteScreen}
-        />
-        <Stack.Screen
-          name="FinalDriverRouteScreen"
-          component={FinalDriverRouteScreen}
-        />
-
-
-      </Stack.Navigator>
+      <TabNavigator>
+        <Stack.Navigator initialRouteName="DriverPutRoute">
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="SignUpPage" component={NewUser} />
+          <Stack.Screen name="SelectUserType" component={selectUserType} />
+          <Stack.Screen
+            name="RiderMapScreen"
+            component={
+              Platform.OS === "ios" ? RiderMapScreen : RiderMapScreen_android
+            }
+          />
+          <Stack.Screen
+            name="DriverPutRoute"
+            component={
+              Platform.OS === "ios"
+                ? DriverPutRouteScreen
+                : DriverPutRouteScreen_Android
+            }
+          />
+          <Stack.Screen
+            name="ReccommendedRouteScreen"
+            component={ReccommendedRouteScreen}
+          />
+          <Stack.Screen
+            name="FinalDriverRouteScreen"
+            component={FinalDriverRouteScreen}
+          />
+        </Stack.Navigator>
+      </TabNavigator>
     </NavigationContainer>
-
   );
 }
 
