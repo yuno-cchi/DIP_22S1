@@ -15,20 +15,24 @@ var dataLen = Object.keys(data).length;
 var dayDataLen = Object.keys(mydata).length;
 var selectedday;
 
-//const axios = require("axios");
-//let ridedata;
-// This is the second configuration option
-// const ridedata = async () => {
-//   return await axios.get("http://secret-caverns-21869.herokuapp.com/drive");
-// };
-//let resp;
-let ridedata;
+let drivedata;
 
-// async function getdata() {
-//   resp = await axios.get("http://secret-caverns-21869.herokuapp.com/drive");
-// }
+//const resp = axios.get("http://secret-caverns-21869.herokuapp.com/drive");
 
-const resp = axios.get("http://secret-caverns-21869.herokuapp.com/drive");
+async function axiosTest() {
+  return await axios
+    .get("http://secret-caverns-21869.herokuapp.com/drive")
+    .then(function (response) {
+      console.log("my data!!!", response.data);
+      drivedata = response.data;
+      return response.data;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+
+//ridedata = axiosTest();
 
 function passindata(getdata) {
   ridedata = resp;
@@ -80,8 +84,8 @@ function DayPlan({ navigation }) {
       );
     }
   }
-  passindata;
-  console.log("ride data !", resp);
+  axiosTest();
+  console.log("ride data !", drivedata);
   return (
     <View style={styles.plan}>
       <View style={styles.component}>{displayPlan}</View>
