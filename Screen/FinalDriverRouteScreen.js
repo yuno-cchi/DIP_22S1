@@ -7,37 +7,67 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import AppButton from '../Components/AppButton';
 import { color } from '../Config/Color';
 import BottomTab from '../Components/BottomTab';
+import axios from "axios";
 
+const storeInDatabase = async (
+    startLocation,
+    endLocation,
+    date,
+    userID = null,
+    description = ""
+) => {
+    console.log("adding to database");
 
-const storeInDatabase = async (startLocation, endLocation, date, key, userID) => {
-    console.log("adding to database")
+    console.log("Start: ");
+    console.log(startLocation);
 
-    console.log("Start: ")
-    console.log(startLocation)
+    console.log("Destination: ");
+    console.log(endLocation);
 
-    console.log("Destination: ")
-    console.log(endLocation)
+    console.log("Date: ");
+    console.log(date);
 
-    console.log("Date: ")
-    console.log(date)
+    //userID has to be retrieved from the login
+    centroid = {
+        latitude: (startLocation.latitude + endLocation.latitude) / 2.0,
+        longitude: (startLocation.longitude + endLocation.longitude) / 2.0,
+    };
 
-    console.log("key: ") //this is automatically created so thank you
-    console.log(key)
-
-    console.log("userID: ")
-    console.log(userID)
+    console.log("userID: ");
+    // if (userID === null) {
+    //     userID = "user" + Math.floor(Math.random() * 100);
+    // }
 
     userID = await AsyncStorage.getItem("userId");
 
+    console.log(userID);
 
-    centroid = { latitude: (startLocation.latitude + endLocation.latitude) / 2.0, longitude: (startLocation.longitude + endLocation.longitude) / 2.0, };
+    axios({
+        method: "post",
+        url: "http://secret-caverns-21869.herokuapp.com/ride/add",
+        headers: {},
+        data: {
+            routename: userID,
+            start: startLocation,
+            destination: endLocation,
+            centroid: centroid,
+            date: date,
+            selected: false,
+            userID: null,
+            routeDescription: description
 
-    console.log("centroid coord: ")
-    console.log(centroid);
+        },
+    }).then(
+        (response) => {
+            console.log(response);
 
-    setCentroid(centroid);
-
-}
+            navigateToRecc();
+        },
+        (error) => {
+            console.log(error);
+        }
+    );
+};
 
 
 const GOOGLE_API_KEY = 'AIzaSyBYDEKY12RzWyP0ACQEpgsr4up2w3CjH88';
@@ -65,14 +95,12 @@ const getWaypoints = (routeParams) => {
     return tempWaypoints
 }
 
-const showStopMarkers = () => {
-
-}
-
 
 export default function FinalDriverRouteScreen({ navigation, route }) {
 
     const dataObj = route.params
+    let distance = 0;
+    let duration = 0;
 
     return (
         <View style={styles.container}>
@@ -90,6 +118,12 @@ export default function FinalDriverRouteScreen({ navigation, route }) {
                     strokeColor={STROKE_COLOR}
                     waypoints={getWaypoints(route.params.waypoints)}
                     optimizeWaypoints={true}
+                    onReady={result => {
+                        console.log(`Distance: ${result.distance} km`)
+                        console.log(`Duration: ${result.duration} min.`)
+                        distance = result.distance;
+                        duration = result.duration;
+                    }}
                 />
                 {route.params.startLocation &&
                     <Marker
@@ -127,8 +161,14 @@ export default function FinalDriverRouteScreen({ navigation, route }) {
 
             <BottomTab style={styles.bottomTab}>
                 <AppButton
-                    title={'COnfirm'}
-                    onPress={() => console.log(route.params)} />
+                    title={'Confirm'}
+                    onPress={() => {
+                        description = "Distance: " + distance + " Time: " + duration
+                        console.log(description)
+
+                        //storeInDatabase(start, end,dataObj.date,dataObj.userID,distance,duration) 
+
+                    }} />
             </BottomTab>
 
 

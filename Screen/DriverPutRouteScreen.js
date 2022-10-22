@@ -205,6 +205,10 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                     apikey={GOOGLE_API_KEY}
                     strokeWidth={STROKE_WIDTH}
                     strokeColor={STROKE_COLOR}
+                    onReady={result => {
+                        console.log(`Distance: ${result.distance} km`)
+                        console.log(`Duration: ${result.duration} min.`)
+                    }}
                 />
                 {startLocation &&
                     <Marker
@@ -232,7 +236,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                         console.log(coordinates);
                         animateToLocation(coordinates);
                     }}
-                    fetchDetails={true}
+                    onfetchDetails={true}
                     query={{
                         key: GOOGLE_API_KEY,
                         language: 'en',
@@ -259,7 +263,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                         animateToLocation(coordinates);
 
                     }}
-
+                    onfetchDetails={true}
                     query={{
                         key: GOOGLE_API_KEY,
                         language: 'en',
@@ -383,6 +387,7 @@ const styles = StyleSheet.create({
     },
     startTextBox: {
         container: {
+            position: 'absolute', //Has to be absolute
             alignItems: 'center',
             width: windowWidth * 0.8,
             height: 200,
@@ -394,6 +399,7 @@ const styles = StyleSheet.create({
     },
     endTextBox: {
         container: {
+            position: 'absolute',
             alignItems: 'center',
             width: windowWidth * 0.8,
             height: 200,
