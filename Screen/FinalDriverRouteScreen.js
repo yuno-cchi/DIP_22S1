@@ -7,12 +7,13 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import AppButton from '../Components/AppButton';
 import { color } from '../Config/Color';
 import BottomTab from '../Components/BottomTab';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 const storeInDatabase = async (
     startLocation,
     endLocation,
-    date,
+    date = null,
     userID = null,
     description = ""
 ) => {
@@ -27,8 +28,10 @@ const storeInDatabase = async (
     console.log("Date: ");
     console.log(date);
 
+    console.log("Route description: ", description)
+
     //userID has to be retrieved from the login
-    centroid = {
+    let centroid = {
         latitude: (startLocation.latitude + endLocation.latitude) / 2.0,
         longitude: (startLocation.longitude + endLocation.longitude) / 2.0,
     };
@@ -61,7 +64,6 @@ const storeInDatabase = async (
         (response) => {
             console.log(response);
 
-            navigateToRecc();
         },
         (error) => {
             console.log(error);
@@ -128,14 +130,16 @@ export default function FinalDriverRouteScreen({ navigation, route }) {
                 {route.params.startLocation &&
                     <Marker
                         title="Start"
-                        description='yeah'
+                        description=''
                         coordinate={route.params.startLocation}
+
                     />}
                 {route.params.endLocation &&
                     <Marker
                         title="End"
-                        description='qwe'
+                        description=''
                         coordinate={route.params.endLocation}
+
                     />}
 
                 {route.params.waypoints.map(marker => (
@@ -143,13 +147,13 @@ export default function FinalDriverRouteScreen({ navigation, route }) {
                         <Marker
                             coordinate={marker.start}
                             title={marker.title}
-                            key={marker.bestRouteKey}
+
                             pinColor={color.secondary}
                         />
                         <Marker
                             coordinate={marker.destination}
                             title={marker.title}
-                            key={marker.bestRouteKey * 2}
+
                             pinColor={color.secondary}
                         />
                     </>
@@ -163,10 +167,18 @@ export default function FinalDriverRouteScreen({ navigation, route }) {
                 <AppButton
                     title={'Confirm'}
                     onPress={() => {
-                        description = "Distance: " + distance + " Time: " + duration
-                        console.log(description)
+                        let description = "Distance: " + distance + "km" + " Time: " + duration + "min"
+                        console.log("Console log: ", route.params.startLocation,
+                            route.params.endLocation,
+                            route.params.selectedDate,
+                            route.params.userId,
+                            description)
 
-                        //storeInDatabase(start, end,dataObj.date,dataObj.userID,distance,duration) 
+                        // storeInDatabase(route.params.startLocation,
+                        //     route.params.endLocation,
+                        //     route.params.date,
+                        //     route.params.userID,
+                        //     description)
 
                     }} />
             </BottomTab>

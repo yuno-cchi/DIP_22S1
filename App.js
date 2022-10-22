@@ -43,6 +43,7 @@ import TabNavigator from "./Components/AppTabNavigator";
 import ReccommendedRouteScreen_getroute from "./Screen/ReccommendedRouteScreen_getroute";
 import ReccommendedRouteScreen from "./Screen/ReccommendedRouteScreen";
 import FinalDriverRouteScreen from "./Screen/FinalDriverRouteScreen";
+import DrivingNavigationScreen from "./Screen/DrivingNavigationScreen";
 import NewUser from "./src/newUser";
 //navigator.geolocation = require('react-native-geolocation-service');
 
@@ -95,7 +96,7 @@ export default function App() {
   return (
 
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={"DriverPutRoute"}>
+      <Stack.Navigator initialRouteName={"DrivingNavigationScreen"}>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="SignUpPage" component={NewUser} />
         <Stack.Screen name="SelectUserType" component={selectUserType} />
@@ -123,7 +124,10 @@ export default function App() {
           name="FinalDriverRouteScreen"
           component={FinalDriverRouteScreen}
         />
-
+        <Stack.Screen
+          name="DrivingNavigationScreen"
+          component={DrivingNavigationScreen}
+        />
 
       </Stack.Navigator>
     </NavigationContainer>

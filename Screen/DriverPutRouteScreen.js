@@ -227,14 +227,16 @@ export default function DriverPutRouteScreen({ navigation, route }) {
             <View style={styles.locationTextBoxContainer}>
                 <GooglePlacesAutocomplete
                     GooglePlacesDetailsQuery={{ fields: "geometry" }}
+                    fetchDetails={true}
                     styles={styles.endTextBox}
                     placeholder='End Location'
                     onPress={(data, details) => {
-                        // 'details' is provided when fetchDetails = true
+                        // 'details' is provided when onfetchDetails = true
                         coordinates = { latitude: details.geometry.location.lat, longitude: details.geometry.location.lng }
                         setEndLocation(coordinates);
                         console.log(coordinates);
                         animateToLocation(coordinates);
+
                     }}
                     onfetchDetails={true}
                     query={{
@@ -242,9 +244,8 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                         language: 'en',
                         components: 'country:sg'
                     }}
-                    nearbyPlacesAPI="GoogleReverseGeocodingQuery" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+                    nearbyPlacesAPI="GooglePlacesSearch" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
                     GooglePlacesSearchQuery={{
-                        // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
                         rankby: 'distance',
                     }}
                     enablePoweredByContainer={false}
@@ -256,7 +257,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                     styles={styles.startTextBox}
                     placeholder='Start Location'
                     onPress={(data, details) => {
-                        // 'details' is provided when fetchDetails = true
+                        // 'details' is provided when onfetchDetails = true
                         coordinates = { latitude: details.geometry.location.lat, longitude: details.geometry.location.lng }
                         setStartLocation(coordinates);
                         console.log(coordinates);
@@ -287,6 +288,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                         navigation.navigate('ReccommendedRouteScreen', {
                             startLocation: startLocation,
                             endLocation: endLocation,
+                            userId: 1234,
                             selectedDate: selectedDate.toISOString(),
                             centroid: {
                                 latitude: (startLocation.latitude + endLocation.latitude) / 2,
