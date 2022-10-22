@@ -22,6 +22,7 @@ import {
 import styles from '../assets/styles/styles.js'
 import IsValidString from './IsValidString';
 import showToast from './showToast.js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Logs } from 'expo'
 
 Logs.enableExpoCliLogging();
@@ -214,6 +215,8 @@ export default function NewUser({ route, navigation }) {
             }
           }).then((response) => {
             console.log(response);
+
+            //TODO: add user to asyncstorage
 
             //TODO: log user into the app
             navigation.navigate("TypeSelect", userParams);

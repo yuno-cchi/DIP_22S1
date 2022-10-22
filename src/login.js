@@ -27,6 +27,7 @@ import {
     Platform, 
 } from "react-native";
 import styles from '../assets/styles/styles.js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import IsValidString from './IsValidString.js';
 
 
@@ -72,11 +73,24 @@ export default function Login({ navigation }) {
                         }
 
                         userParams.username = username;
-                        navigation.navigate("TypeSelect", userParams);
-                        sessionStorage.setItem("isLoggedIn", true); //setlogin state to true, set to false once logged out
-                        sessionStorage.setItem("usernameStorage", username); //store username in sessionStorage,
-                        var s = sessionStorage.getItem("isLoggedIn");
-                        console.log(s);
+
+                        console.log(userdata[i]._id);
+
+                        AsyncStorage.setItem("isLoggedIn", "true");
+                        AsyncStorage.setItem("userId", userdata[i]._id);
+
+
+
+                        //navigation.navigate("TypeSelect", userParams); //ACTUAL
+                        navigation.navigate("DriverPutRoute", userParams); //FOR DEBUGGING
+
+                        
+
+                        // sessionStorage.setItem("isLoggedIn", true); //setlogin state to true, set to false once logged out
+                        // sessionStorage.setItem("usernameStorage", username); //store username in sessionStorage,
+
+                        //var s = sessionStorage.getItem("isLoggedIn");
+                        //console.log(s);
                         return;
                     }
                     else if (i == userdata.length-1 && userdata[i].password != password){
@@ -175,7 +189,7 @@ export default function Login({ navigation }) {
                     <Text style={styles.buttonText}>Log in</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonNormal}>
-                    <Text style={styles.buttonText} onPress={(event) => navigation.navigate("AccountCreation", userParams)}>New user?</Text>
+                    <Text style={styles.buttonText} onPress={(event) => navigation.navigate("SignUpPage", userParams)}>New user?</Text>
                 </TouchableOpacity>
             </View> 
     );
