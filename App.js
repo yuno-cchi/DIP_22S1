@@ -43,6 +43,7 @@ import TabNavigator from "./Components/AppTabNavigator";
 import ReccommendedRouteScreen_getroute from "./Screen/ReccommendedRouteScreen_getroute";
 import ReccommendedRouteScreen from "./Screen/ReccommendedRouteScreen";
 import FinalDriverRouteScreen from "./Screen/FinalDriverRouteScreen";
+import DrivingNavigationScreen from "./Screen/DrivingNavigationScreen";
 import NewUser from "./src/newUser";
 //navigator.geolocation = require('react-native-geolocation-service');
 
@@ -73,7 +74,7 @@ export default function App() {
 
     if (loginState == "true") {
       console.log("User is logged in: " + idUser);
-      setInitialPage("RiderMapScreen"); //TODO: RiderMapScreen needs an android version as well
+      setInitialPage("DriverPutRoute"); //TODO: RiderMapScreen needs an android version as well, use driverputroute if debugging reccroutescreen onwards
       console.log(initialPage);
       setShow(false);
     } else {
@@ -94,35 +95,33 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <TabNavigator>
-        <Stack.Navigator initialRouteName="DriverPutRoute">
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="SignUpPage" component={NewUser} />
-          <Stack.Screen name="SelectUserType" component={selectUserType} />
-          <Stack.Screen
-            name="RiderMapScreen"
-            component={
-              Platform.OS === "ios" ? RiderMapScreen : RiderMapScreen_android
-            }
-          />
-          <Stack.Screen
-            name="DriverPutRoute"
-            component={
-              Platform.OS === "ios"
-                ? DriverPutRouteScreen
-                : DriverPutRouteScreen_Android
-            }
-          />
-          <Stack.Screen
-            name="ReccommendedRouteScreen"
-            component={ReccommendedRouteScreen}
-          />
-          <Stack.Screen
-            name="FinalDriverRouteScreen"
-            component={FinalDriverRouteScreen}
-          />
-        </Stack.Navigator>
-      </TabNavigator>
+      <Stack.Navigator initialRouteName={initialPage}>
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="SignUpPage" component={NewUser} />
+        <Stack.Screen name="SelectUserType" component={selectUserType} />
+        <Stack.Screen
+          name="RiderMapScreen"
+          component={
+            Platform.OS === "ios" ? RiderMapScreen : RiderMapScreen_android
+          }
+        />
+        <Stack.Screen
+          name="DriverPutRoute"
+          component={
+            Platform.OS === "ios"
+              ? DriverPutRouteScreen
+              : DriverPutRouteScreen_Android
+          }
+        />
+        <Stack.Screen
+          name="ReccommendedRouteScreen"
+          component={ReccommendedRouteScreen}
+        />
+        <Stack.Screen
+          name="FinalDriverRouteScreen"
+          component={FinalDriverRouteScreen}
+        />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }

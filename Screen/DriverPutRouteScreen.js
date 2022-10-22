@@ -276,8 +276,32 @@ export default function DriverPutRouteScreen({ navigation, route }) {
           enablePoweredByContainer={false}
         />
       </View>
-      <BottomTab style={styles.timeContainer}>
-        <View style={styles.flextime}>
+      <BottomTab style={{ alignItems: "center", height: windowHeight * 0.17 }}>
+        <AppButton
+          style={styles.showRoute}
+          title="Go"
+          onPress={() => {
+            console.log(
+              "Driver info:",
+              startLocation,
+              endLocation,
+              selectedDate
+            );
+
+            navigation.navigate("ReccommendedRouteScreen", {
+              startLocation: startLocation,
+              endLocation: endLocation,
+              selectedDate: selectedDate.toISOString(),
+              centroid: {
+                latitude: (startLocation.latitude + endLocation.latitude) / 2,
+                longitude:
+                  (startLocation.longitude + endLocation.longitude) / 2,
+              },
+            });
+          }}
+        />
+
+        <View style={styles.timeContainer}>
           <DateTimePicker
             value={selectedDate}
             mode={DATE_MODE}
@@ -307,7 +331,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
             display="default"
             style={{
               width: 200,
-              transform: [{ scale: 1.2 }],
+              transform: [{ scale: 1.5 }],
             }}
           />
         </View>
@@ -424,15 +448,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  //   timeContainer: {
-  //     position: "absolute",
-  //     left: 0,
-  //     top: 10,
-  //     width: 300,
-  //     height: 100,
-  //     justifyContent: "center",
-  //     alignItems: "center",
-  //   },
+  timeContainer: {
+    position: "absolute",
+    left: 0,
+    top: 10,
+    width: 300,
+    height: 100,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   androidTimeContainer: {
     position: "absolute",
     left: 0,
@@ -441,24 +465,5 @@ const styles = StyleSheet.create({
     height: 100,
     justifyContent: "center",
     alignItems: "center",
-  },
-  timeContainer: {
-    flexDirection: "row",
-    height: 150,
-    //justifyContent: "center",
-    //alignItems: "center",
-  },
-  flextime: {
-    flex: 2,
-    alignItems: "center",
-    justifyContent: "center",
-
-    //alignItems: "center",
-  },
-  flexbtn: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    //alignItems: "right",
   },
 });

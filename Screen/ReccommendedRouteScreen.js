@@ -7,6 +7,7 @@ import axios from 'axios';
 import Card from "../Components/Card";
 import AppButton from "../Components/AppButton";
 import BottomTab from "../Components/BottomTab";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -66,7 +67,7 @@ const getBestRoutes = (routeObjectArray, driverRoute) => {
     let tempRouteObject = null;
     let returnRouteObjectArray = [];
     const originalArrayLength = tempRouteObjectArray.length;
-    console.log("Number of route: ", originalArrayLength)
+    //console.log("Number of route: ", originalArrayLength)
     for (let y = 0; y < originalArrayLength; y++) {
         let leastDist = 99999;
         let leastDistId = null;
@@ -79,7 +80,7 @@ const getBestRoutes = (routeObjectArray, driverRoute) => {
             dist = Math.sqrt(Math.pow((tempRouteObjectArray[x].centroid.latitude - driverRoute.centroid.latitude), 2)
                 + Math.pow((tempRouteObjectArray[x].centroid.longitude - driverRoute.centroid.longitude), 2));
 
-            console.log("Route ID", tempRouteObjectArray[x].routeId, ": ", dist);
+            //console.log("Route ID", tempRouteObjectArray[x].routeId, ": ", dist);
             if (dist < leastDist) {
 
                 leastDist = dist;
@@ -87,11 +88,11 @@ const getBestRoutes = (routeObjectArray, driverRoute) => {
                 leastDistId = tempRouteObjectArray[x].routeId;
                 tempRouteObject = tempRouteObjectArray[x];
 
-                console.log("Has lesser dist", "Route leastDistId: ", leastDistId)
+                //console.log("Has lesser dist", "Route leastDistId: ", leastDistId)
             }
         }
-        console.log("Final leastDistId: ", leastDistId);
-        console.log("Best route is: ", tempRouteObject.routeId, " dist: ", leastDist, "Route name: ", tempRouteName)
+        // console.log("Final leastDistId: ", leastDistId);
+        // console.log("Best route is: ", tempRouteObject.routeId, " dist: ", leastDist, "Route name: ", tempRouteName)
 
         returnRouteObjectArray.push(
             {
@@ -122,6 +123,8 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
     const [isRefrehing, setRefreshing] = useState(false);
     const [selectedRoute, setSelectedRoute] = useState([]);
 
+    const [newDriveId, setIdapp] = useState('empty');
+
 
     //const [ routeArrays, setLoadRoutes ] = useState({bestRouteKey: null, centroid: null, destination: null, routeDescription: null, routeName: null, routeId: null, selected: false, start: null});
     const [loading, setLoading] = useState(true);
@@ -132,6 +135,108 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
         setDummyroute(initialDummyRoute.filter(route => route.routeId !== deleteRoute.routeId));
 
     }
+
+
+
+    const storeInDrive = async (start, end, date, selectedRoute) => {
+        console.log("adding to drives table")
+
+        console.log("Start: ")
+        console.log(start)
+
+        console.log("Destination: ")
+        console.log(end)
+
+        console.log("Date: ")
+        console.log(date)
+
+        console.log("waypoints: ");
+        console.log(selectedRoute);
+
+        console.log("userID: ")
+        // if (userID === null) {
+        //     userID = "user" + Math.floor(Math.random() * 100);
+        // }
+        userID = await AsyncStorage.getItem("userId");
+        console.log(userID)
+
+        console.log("centroid: ")
+        centroid = { latitude: (start.latitude + end.latitude) / 2.0, longitude: (start.longitude + end.longitude) / 2.0, };
+        console.log(centroid);
+
+
+        //define an array for storing all the selectedRoute ids
+        let selectedRideIDs = []
+
+        //getting id of route and updating selected to true
+        console.log("list all ids: ");
+        for (let x = 0; x < selectedRoute.length; x++) {
+            //TODO: update 'ride' table w DriverID: drives's _id and selected: true
+            console.log(selectedRoute[x].routeId);
+
+            selectedRideIDs.push(selectedRoute[x].routeId);
+
+        }
+
+        console.log(selectedRideIDs);
+
+
+        //TODO: use axios to post into database
+        axios({
+            method: 'post',
+            url: 'http://secret-caverns-21869.herokuapp.com/drive/add',
+            headers: {},
+            data: {
+                routeUserID: userID,
+                start: startLocation,
+                destination: endLocation,
+                centroid: centroid,
+                date: date,
+                selected: false,
+                routeIdPair: selectedRideIDs
+            }
+        }).then((response) => {
+            console.log(response);
+
+            // idk if this works at all but to try out ltr
+            console.log(response.data);
+            setIdapp(response.data._id);
+
+
+
+            // navigateToRecc() //navigate to FinalDriverRouteScreen
+
+
+        }, (error) => {
+            console.log(error);
+        });
+
+        //TODO: update 'ride' table w DriverID: drives's _id and selected: true
+        for (let x = 0; x < selectedRoute.length; x++) {
+            //TODO: update 'ride' table w DriverID: drives's _id and selected: true
+            console.log(selectedRoute[x].routeId);
+
+            selectedRideIDs.push(selectedRoute[x].routeId);
+
+            // axios.put('http://secret-caverns-21869.herokuapp.com/ride/' + selectedRoute[x].routeId, {
+            //     routename: selectedRoute[x].routeDescription,
+            //     start: selectedRoute[x].start,
+            //     destination: selectedRoute[x].destination,
+            //     date: date,
+            //     centroid: selectedRoute[x].centroid,
+            //     selected: true, //set selected to tru
+            //     driverID: userID
+            // })
+            // .then(response => {
+            //     console.log(response);
+            // })
+            // .catch(error => {
+            //     console.log(err);
+            // });
+        }
+
+    }
+
 
     const selectThisCard = (selectedRouteId) => {
 
@@ -172,6 +277,7 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
 
 
     useEffect(() => {
+        console.log("\n start of recommendedroutesscreen")
         try {
             getNearestRoutes();
         } catch (error) {
@@ -186,12 +292,11 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
         const resp = await axios.get('http://secret-caverns-21869.herokuapp.com/ride');
         ridedata = resp.data;
 
-        //console.log(centroid);
-        //Omg Chee Hean!!!
-        console.log(ridedata);
+
+        // console.log(ridedata);
 
         for (let i = 0; i < ridedata.length; i++) {
-            console.log("inside now")
+            //console.log("inside now")
             if (ridedata[i].selected == false) {
                 // if (ridedata[i].centroid.latitude <= centroid1.latitude + 0.5 && ridedata[i].centroid.latitude >= centroid1.latitude - 0.5) {
                 //     routeArray.push({centroid: ridedata[i].centroid, destination: ridedata[i].destination, routeDescription: ridedata[i].routeName, routeId: ridedata[i]._id, selected: false,
@@ -209,12 +314,12 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
             }
         }
 
-        console.log("route from db: ");
-        console.log(routeArray);
+        // console.log("route from db: ");
+        // console.log(routeArray);
         setDummyroute(routeArray);
 
-        console.log("routeArrays: ");
-        console.log(initialDummyRoute);
+        // console.log("routeArrays: ");
+        // console.log(initialDummyRoute);
 
         setLoading(false);
     }
@@ -223,7 +328,7 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
 
 
     const sortedRoutes = getBestRoutes(initialDummyRoute, route.params)
-    console.log("Route parrams", route.params.centroid)
+    //console.log("Route parrams", route.params.centroid)
     return (
         <View
             style={styles.container}>
@@ -257,12 +362,16 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
                     onPress={
                         () => {
                             const tempSelectedRoute = clean2DArray(selectedRoute)
-                            console.log("The selected route is", JSON.stringify(startLocation) + JSON.stringify(endLocation) + JSON.stringify(selectedDate))
-                            console.log("Hello there")
+                            // console.log("The selected route is", route.params.selectedDate)
+                            // console.log("Hello there")
+
+
+
                             navigation.navigate('FinalDriverRouteScreen', {
                                 startLocation: route.params.startLocation,
                                 endLocation: route.params.endLocation,
                                 selectedDate: route.params.selectedDate,
+                                userId: route.params.userId,
                                 waypoints: tempSelectedRoute
                             })
 
@@ -274,13 +383,14 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
                     style={styles.confirmButton}
                     onPress={
                         () => {
-                            console.log("There are: ", selectedRoute.length, "routes")
-                            console.log("Selected route: ", selectedRoute[0])
-                            console.log("The selected route is/are")
-                            for (let x = 0; x < selectedRoute.length; x++) {
-                                console.log(selectedRoute[x][0].routeId)
+                            // console.log("There are: ", selectedRoute.length, "routes")
+                            // console.log("Selected route: ", selectedRoute[0])
+                            // console.log("The selected route is/are")
+                            // for (let x = 0; x < selectedRoute.length; x++) {
+                            //     console.log(selectedRoute[x][0].routeId)
 
-                            }
+                            // }
+                            navigation.navigate('DriverPutRoute')
                         }
                     }
                 />
