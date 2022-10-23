@@ -16,18 +16,31 @@ const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 export default function PlanList({
-  title,
+  start,
+  destination,
   user,
-  onPress,
   style,
+  price,
+  onPress,
   ...otherProps
 }) {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={[styles.card, style]} {...otherProps}>
         <View style={styles.wraptext}>
-          <AppText style={styles.title}>{title}</AppText>
-          <AppText style={styles.subTitle}>{user}</AppText>
+          <View style={styles.topcontainer}>
+            <View style={styles.mylocation}>
+              <AppText style={styles.title}>{start}</AppText>
+              <AppText style={styles.title}>{destination}</AppText>
+            </View>
+          </View>
+
+          <View style={styles.botcontainer}>
+            <AppText style={styles.subTitle}>{user}</AppText>
+            <AppText style={[styles.subTitle, { marginLeft: "auto" }]}>
+              {price}
+            </AppText>
+          </View>
         </View>
       </View>
     </TouchableOpacity>
@@ -37,7 +50,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: color.lightGray,
     width: windowWidth * 0.9,
-    height: windowHeight * 0.15,
+    height: windowHeight * 0.18,
     marginTop: 15,
     borderRadius: 10,
   },
@@ -52,7 +65,7 @@ const styles = StyleSheet.create({
   },
   subTitle: {
     color: color.green,
-    fontWeight: "150",
+    fontWeight: "120",
     marginTop: 2,
     marginLeft: 5,
   },
@@ -71,5 +84,17 @@ const styles = StyleSheet.create({
   },
   wraptext: {
     padding: "5%",
+  },
+  topcontainer: {
+    height: "80%",
+  },
+  botcontainer: {
+    flexDirection: "row",
+    height: "20%",
+  },
+  mylocation: {
+    width: "85%",
+    //flexDirection: "row",
+    marginLeft: "auto",
   },
 });

@@ -1,4 +1,4 @@
-import React, { ReactNode, SyntheticEvent, useState } from "react";
+import React, { ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 import data from "./calendarData.json";
@@ -9,34 +9,43 @@ import PlanList from "../Components/PlanList";
 import { FlatList } from "react-native";
 import { color } from "../Config/Color";
 import axios from "axios";
+//import drivedata from "./GetDriveData";
 
 const Stack = createNativeStackNavigator();
 var dataLen = Object.keys(data).length;
 var dayDataLen = Object.keys(mydata).length;
 var selectedday;
-
 let drivedata;
 
-//const resp = axios.get("http://secret-caverns-21869.herokuapp.com/drive");
-
-async function axiosTest() {
-  return await axios
-    .get("http://secret-caverns-21869.herokuapp.com/drive")
+async function axiosTest(displayPlan, selectedday) {
+  await axios
+    .get("http://secret-caverns-21869.herokuapp.com/ride")
     .then(function (response) {
-      console.log("my data!!!", response.data);
-      drivedata = response.data;
-      return response.data;
+      for (let i = 0; i < dayDataLen; i++) {
+        let thisRoute = response.data[i];
+        console.log("selected date", Object.values(selectedday)[4]);
+        //has to use [4] to get date string
+        if (Object.values(selectedday)[4] == thisRoute.date.slice(0, 10)) {
+          console.log("display in loop ", thisRoute.routename);
+
+          displayPlan.push(
+            <View>
+              <PlanList
+                title={thisRoute.date}
+                key={thisRoute.routename}
+                user={thisRoute.routename}
+                //style={thisRoute.selected}
+              />
+            </View>
+          );
+        }
+
+        //console.log("in display", displayPlan);
+      }
     })
     .catch(function (error) {
       console.log(error);
     });
-}
-
-//ridedata = axiosTest();
-
-function passindata(getdata) {
-  ridedata = resp;
-  return ridedata;
 }
 
 const CalendarNavigator = () => (
@@ -47,50 +56,120 @@ const CalendarNavigator = () => (
   </Stack.Navigator>
 );
 
-function DayPlan({ navigation }) {
-  var displayPlan = [];
-  // console.log("loop", Object.values(mydata)[i].date.slice(0, 10));
-  console.log();
-  let childkey = Object.values(mydata);
+function showDayPlan(displayPlan) {
+  console.log("inside showdayplan", displayPlan);
 
-  for (let i = 0; i < dayDataLen; i++) {
-    let thisRoute = Object.values(mydata)[i];
-    if (
-      Object.values(selectedday)[4] ==
-      Object.values(mydata)[i].date.slice(0, 10)
-    ) {
-      displayPlan.push(
-        <View>
-          <PlanList
-            title={thisRoute.date}
-            keyExtractor={(thisRoute) => thisRoute.date}
-            user="User"
-            style={
-              Object.values(mydata)[i].selected
-                ? { backgroundColor: color.primary }
-                : { backgroundColor: color.white }
-            }
-            //onPress={}
-          />
-        </View>
-      );
-    }
-
-    if (!displayPlan) {
-      displayPlan.push(
-        <View>
-          <Text>No data</Text>
-        </View>
-      );
-    }
-  }
-  axiosTest();
-  console.log("ride data !", drivedata);
   return (
     <View style={styles.plan}>
       <View style={styles.component}>{displayPlan}</View>
     </View>
   );
+}
+
+function DayPlan({ navigation }) {
+  let displayPlan = [];
+  const [forDisplay, setForDisplay] = useState();
+  const [isLoading, setLoading] = useState(true);
+  //axiosTest(displayPlan, selectedday);
+  console.log("start");
+
+  useEffect(() => {
+    axios
+      .get("http://secret-caverns-21869.herokuapp.com/ride")
+      .then((response) => {
+        //console.log("resp", response.data.length);
+        for (let i = 0; i < response.data.length; i++) {
+          let thisRoute = response.data[i];
+          //has to use [4] to get date string
+          console.log("this date?", response.data[i]);
+          if (Object.values(selectedday)[4] === thisRoute.date.slice(0, 10)) {
+            console.log("select", Object.values(selectedday)[4]);
+            console.log("route ", thisRoute.date.slice(0, 10));
+            displayPlan.push(
+              <View>
+                <PlanList
+                  start={thisRoute.start.latitude}
+                  destination={thisRoute.destination.latitude}
+                  key={thisRoute._id}
+                  user={thisRoute.routename}
+                  price="$15"
+                  style={
+                    thisRoute.selected
+                      ? { backgroundColor: color.primary }
+                      : { backgroundColor: color.white }
+                  }
+                />
+              </View>
+            );
+          }
+
+          console.log("in display", displayPlan);
+          setForDisplay(displayPlan);
+          console.log("for display?", forDisplay);
+
+          setTimeout(() => {
+            setLoading(false);
+          }, 300);
+        }
+      });
+  }, []);
+
+  if (isLoading) {
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          height: "100%",
+          padding: 30,
+          justifyContent: "center",
+          alignContent: "center",
+        }}
+      >
+        <Text>Loading...</Text>
+      </View>
+    );
+  } else {
+    console.log("can display?", forDisplay);
+    console.log("can load?", isLoading);
+    return (
+      <View style={styles.plan}>
+        {/* <Text>done</Text> */}
+        <View style={styles.component}>{forDisplay}</View>
+      </View>
+    );
+  }
+
+  // setTimeout(() => {
+  //   setShowPlan(true);
+  //   console.log("my displayplan after 2s,", displayPlan);
+  //   // return (
+  //   //   <View style={styles.plan}>
+  //   //     <View style={styles.component}>{displayPlan}</View>
+  //   //   </View>
+  //   // );
+  // }, 2000);
+
+  // useEffect(() => {
+  //   console.log("use effect");
+  //   showDayPlan();
+  // }, [showPlan]);
+  // }
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     console.log("useeffect now", displayPlan);
+
+  //     if (displayPlan != null) {
+  //       setShowPlan(true);
+  //     }
+  //     //console.log("i suppose to be end ", displayPlan);
+  //     return (
+  //       <View style={styles.plan}>
+  //         <View style={styles.component}>{displayPlan}</View>
+  //       </View>
+  //     );
+  //   }, 2000);
+  // }, [showPlan]);
 }
 
 function MarkCalender() {
