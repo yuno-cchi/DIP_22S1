@@ -34,6 +34,17 @@ export default function PlanList({
               <AppText style={styles.title}>{destination}</AppText>
             </View>
           </View>
+          <View style={styles.image}>
+            {/* <Image source={require("./pic/pulse.png")} /> */}
+            <Image source={require("./pic/Arrow.png")} />
+          </View>
+          {/* </View> */}
+          <View
+            style={{
+              borderBottomColor: "black",
+              borderBottomWidth: 1,
+            }}
+          />
 
           <View style={styles.botcontainer}>
             <AppText style={styles.subTitle}>{user}</AppText>
@@ -96,5 +107,11 @@ const styles = StyleSheet.create({
     width: "85%",
     //flexDirection: "row",
     marginLeft: "auto",
+  },
+  image: {
+    flex: 1,
+    width: 20,
+    height: 40,
+    resizeMode: "contain",
   },
 });

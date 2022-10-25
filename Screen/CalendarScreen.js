@@ -1,5 +1,5 @@
 import React, { ReactNode, SyntheticEvent, useEffect, useState } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, ScrollView } from "react-native";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 import data from "./calendarData.json";
 import mydata from "./dayTripData.json";
@@ -9,6 +9,7 @@ import PlanList from "../Components/PlanList";
 import { FlatList } from "react-native";
 import { color } from "../Config/Color";
 import axios from "axios";
+import mydates from "./GetDriveData";
 //import drivedata from "./GetDriveData";
 
 const Stack = createNativeStackNavigator();
@@ -61,7 +62,9 @@ function showDayPlan(displayPlan) {
 
   return (
     <View style={styles.plan}>
-      <View style={styles.component}>{displayPlan}</View>
+      <ScrollView>
+        <View style={styles.component}>{displayPlan}</View>
+      </ScrollView>
     </View>
   );
 }
@@ -71,7 +74,7 @@ function DayPlan({ navigation }) {
   const [forDisplay, setForDisplay] = useState();
   const [isLoading, setLoading] = useState(true);
   //axiosTest(displayPlan, selectedday);
-  console.log("start");
+  console.log("can i get my dates?", mydates);
 
   useEffect(() => {
     axios
@@ -130,7 +133,6 @@ function DayPlan({ navigation }) {
     );
   } else {
     console.log("can display?", forDisplay);
-    console.log("can load?", isLoading);
     return (
       <View style={styles.plan}>
         {/* <Text>done</Text> */}
@@ -203,7 +205,6 @@ function CalendarScreen({ navigation }) {
         hideArrows={false}
         hideExtraDays={true}
         disableMonthChange={false}
-        // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday
         firstDay={7}
         // Handler which gets executed when press arrow icon left. It receive a callback can go back month
         onPressArrowLeft={(subtractMonth) => subtractMonth()}
@@ -211,7 +212,7 @@ function CalendarScreen({ navigation }) {
         onPressArrowRight={(addMonth) => addMonth()}
         // Disable all touch events for disabled days. can be override with disableTouchEvent in markedDates
         disableAllTouchEventsForDisabledDays={false}
-        enableSwipeMonths={true}
+        enableSwipeMonths={false}
         theme={{
           backgroundColor: "#ffffff",
           calendarBackground: "#ffffff",
@@ -236,6 +237,12 @@ function CalendarScreen({ navigation }) {
           textDayHeaderFontSize: 14,
         }}
         markedDates={data}
+        // markedDates={{
+        //   "2022-10-16": { startingDay: true, color: "green" },
+        //   "2022-10-17": { marked: "true" },
+        //   "2020-01-18": { color: "green" },
+        //   "2022-10-19": { endingDay: true, color: "gray" },
+        // }}
         markingType={"period"}
       ></Calendar>
     </View>
@@ -252,6 +259,7 @@ const styles = StyleSheet.create({
     justifyContent: "start",
     alignItems: "center",
     marginTop: 10,
+    marginBottom: 10,
   },
   component: {
     height: "15%",
