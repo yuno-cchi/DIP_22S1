@@ -29,14 +29,14 @@ export default function PlanList({
       <View style={[styles.card, style]} {...otherProps}>
         <View style={styles.wraptext}>
           <View style={styles.topcontainer}>
+            <View style={styles.image}>
+              {/* <Image source={require("./pic/pulse.png")} /> */}
+              <Image source={require("./pic/Arrow.png")} />
+            </View>
             <View style={styles.mylocation}>
               <AppText style={styles.title}>{start}</AppText>
               <AppText style={styles.title}>{destination}</AppText>
             </View>
-          </View>
-          <View style={styles.image}>
-            {/* <Image source={require("./pic/pulse.png")} /> */}
-            <Image source={require("./pic/Arrow.png")} />
           </View>
           {/* </View> */}
           <View
@@ -109,9 +109,9 @@ const styles = StyleSheet.create({
     marginLeft: "auto",
   },
   image: {
-    flex: 1,
+    //flex: 1,
     width: 20,
-    height: 40,
+    height: 20,
     resizeMode: "contain",
   },
 });
