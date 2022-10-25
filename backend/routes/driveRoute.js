@@ -20,13 +20,13 @@ router.route('/add').post((req, res) => {
   const newRide = new Drive({ routename: routename, start: start, destination: destination, date: date, price: price, centroid: centroid, selected: selected, routeIdPair: routeIdPair});
 
   newRide.save()
-    .then(() => res.json('ride added!'))
+    .then(response => res.json(response))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
 
 router.route('/update/:id').post((req, res) => {
-  Ride.findById(req.params.id)
+  Drive.findById(req.params.id)
     .then(driver => {
       driver.routename = req.body.routename;
       driver.start = req.body.start;
@@ -47,7 +47,7 @@ router.route('/update/:id').post((req, res) => {
 
 
 router.route('/:id').delete((req, res) => {
-  Ride.findByIdAndDelete(req.params.id)
+  Drive.findByIdAndDelete(req.params.id)
     .then(() => res.json('ride deleted.'))
     .catch(err => res.status(400).json('Error: ' + err));
 });

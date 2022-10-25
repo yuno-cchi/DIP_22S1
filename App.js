@@ -65,6 +65,10 @@ export default function App() {
   async function checkLoginState() {
     console.log("wait");
 
+
+    AsyncStorage.removeItem("isLoggedIn");
+    AsyncStorage.removeItem("userId");
+
     const loginState = await AsyncStorage.getItem("isLoggedIn");
     const idUser = await AsyncStorage.getItem("userId");
     console.log(loginState);
@@ -75,10 +79,11 @@ export default function App() {
 
     if (loginState == "true") {
       console.log("User is logged in: " + idUser);
-      setInitialPage("DriverPutRoute"); //TODO: RiderMapScreen needs an android version as well, use driverputroute if debugging reccroutescreen onwards
+      setInitialPage("RiderMapScreen"); //TODO: RiderMapScreen needs an android version as well, use driverputroute if debugging reccroutescreen onwards
       console.log(initialPage);
       setShow(false);
     } else {
+      setInitialPage("Login");
       console.log("user is not logged in");
       setShow(false);
     }
@@ -86,7 +91,8 @@ export default function App() {
 
   if (show) {
     //setRouteVisible(false);
-    console.log("attenzione");
+    console.log("attenzioni");
+    console.log(initialPage);
     return (
       <View>
         <Text>Loading, please wait</Text>
@@ -97,7 +103,10 @@ export default function App() {
   return (
     <NavigationContainer>
       <TabNavigator>
-        <Stack.Navigator initialRouteName={RiderMapScreen}>
+        <Stack.Navigator initialRouteName={initialPage}
+        screenOptions={{
+          headerShown: false,
+        }}>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="SignUpPage" component={NewUser} />
           <Stack.Screen name="SelectUserType" component={selectUserType} />
