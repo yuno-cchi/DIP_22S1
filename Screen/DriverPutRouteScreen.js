@@ -26,6 +26,7 @@ import DateTimePicker, {
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import axios from "axios";
+import HeaderTab from "../Components/HeaderTab";
 
 // DateTimePickerAndroid.open(params: AndroidNativeProps);
 // DateTimePickerAndroid.dismiss(model: AndroidNativeProps['mode']);
@@ -220,66 +221,69 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                     <Marker title="End" description="qwe" coordinate={endLocation} />
                 )}
             </MapView>
+            <HeaderTab>
 
-            <View style={styles.locationTextBoxContainer}>
-                <GooglePlacesAutocomplete
-                    GooglePlacesDetailsQuery={{ fields: "geometry" }}
-                    styles={styles.endTextBox}
-                    placeholder="End Location"
-                    onPress={(data, details) => {
-                        // 'details' is provided when fetchDetails = true
-                        coordinates = {
-                            latitude: details.geometry.location.lat,
-                            longitude: details.geometry.location.lng,
-                        };
-                        setEndLocation(coordinates);
-                        console.log(coordinates);
-                        animateToLocation(coordinates);
-                    }}
-                    fetchDetails={true}
-                    query={{
-                        key: GOOGLE_API_KEY,
-                        language: "en",
-                        components: "country:sg",
-                    }}
-                    nearbyPlacesAPI="GoogleReverseGeocodingQuery" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
-                    GooglePlacesSearchQuery={{
-                        // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
-                        rankby: "distance",
-                    }}
-                    enablePoweredByContainer={false}
-                />
-                <GooglePlacesAutocomplete
-                    GooglePlacesDetailsQuery={{ fields: "geometry" }}
-                    fetchDetails={true}
-                    styles={styles.startTextBox}
-                    placeholder="Start Location"
-                    onPress={(data, details) => {
-                        // 'details' is provided when fetchDetails = true
-                        coordinates = {
-                            latitude: details.geometry.location.lat,
-                            longitude: details.geometry.location.lng,
-                        };
-                        setStartLocation(coordinates);
-                        console.log(coordinates);
-                        animateToLocation(coordinates);
-                    }}
-                    query={{
-                        key: GOOGLE_API_KEY,
-                        language: "en",
-                        components: "country:sg",
-                    }}
-                    nearbyPlacesAPI="GooglePlacesSearch" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
-                    GooglePlacesSearchQuery={{
-                        rankby: "distance",
-                    }}
-                    enablePoweredByContainer={false}
-                />
-            </View>
+
+                <View style={styles.locationTextBoxContainer}>
+                    <GooglePlacesAutocomplete
+                        GooglePlacesDetailsQuery={{ fields: "geometry" }}
+                        styles={styles.endTextBox}
+                        placeholder="End Location"
+                        onPress={(data, details) => {
+                            // 'details' is provided when fetchDetails = true
+                            coordinates = {
+                                latitude: details.geometry.location.lat,
+                                longitude: details.geometry.location.lng,
+                            };
+                            setEndLocation(coordinates);
+                            console.log(coordinates);
+                            animateToLocation(coordinates);
+                        }}
+                        fetchDetails={true}
+                        query={{
+                            key: GOOGLE_API_KEY,
+                            language: "en",
+                            components: "country:sg",
+                        }}
+                        nearbyPlacesAPI="GoogleReverseGeocodingQuery" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+                        GooglePlacesSearchQuery={{
+                            // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+                            rankby: "distance",
+                        }}
+                        enablePoweredByContainer={false}
+                    />
+                    <GooglePlacesAutocomplete
+                        GooglePlacesDetailsQuery={{ fields: "geometry" }}
+                        fetchDetails={true}
+                        styles={styles.startTextBox}
+                        placeholder="Start Location"
+                        onPress={(data, details) => {
+                            // 'details' is provided when fetchDetails = true
+                            coordinates = {
+                                latitude: details.geometry.location.lat,
+                                longitude: details.geometry.location.lng,
+                            };
+                            setStartLocation(coordinates);
+                            console.log(coordinates);
+                            animateToLocation(coordinates);
+                        }}
+                        query={{
+                            key: GOOGLE_API_KEY,
+                            language: "en",
+                            components: "country:sg",
+                        }}
+                        nearbyPlacesAPI="GooglePlacesSearch" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+                        GooglePlacesSearchQuery={{
+                            rankby: "distance",
+                        }}
+                        enablePoweredByContainer={false}
+                    />
+                </View>
+            </HeaderTab>
             <BottomTab style={{ alignItems: "center", height: windowHeight * 0.17 }}>
                 <AppButton
                     style={styles.showRoute}
-                    title="Go"
+                    title="Drive"
                     onPress={() => {
                         console.log(
                             "Driver info:",
@@ -362,7 +366,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
           />
         </View> */}
             </BottomTab>
-        </View>
+        </View >
     );
 }
 
@@ -373,7 +377,7 @@ const styles = StyleSheet.create({
     showRoute: {
         position: "absolute",
         bottom: 40,
-        width: 80,
+        width: 100,
         right: 20,
         height: 80,
     },

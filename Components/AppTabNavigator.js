@@ -15,7 +15,7 @@ const Tab = createBottomTabNavigator();
 const TabNavigator = () => (
   //<NavigationContainer>
   <Tab.Navigator
-    initialRouteName="DriverMap"
+    initialRouteName="Calendar"
     screenOptions={{
       headerShown: false,
     }}

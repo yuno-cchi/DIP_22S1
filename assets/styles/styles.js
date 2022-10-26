@@ -20,15 +20,15 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
 
     container: {
-        marginTop: "10%",
+        marginTop: "50%",
         //backgroundColor: "#f5f5f5",
         justifyContent: "center",
         alignItems: "center",
-        width:"100%",
+        width: "100%",
     },
 
     inputView: {
-        marginTop:10,
+        marginTop: 10,
         backgroundColor: "#ffcccc",
         borderRadius: 5,
         width: "70%",
@@ -44,18 +44,18 @@ export default StyleSheet.create({
     },
 
     logoView: {
-        width:400,
-        height:200,
+        width: 400,
+        height: 200,
         marginBottom: 10,
     },
 
     textLinks: {
         fontSize: 15,
-        marginBottom:5,
+        marginBottom: 5,
         alignContent: "center",
         justifyContent: "center",
     },
-    
+
     buttonNormal: {
         backgroundColor: "#e76850",
         borderRadius: 30,
@@ -75,8 +75,8 @@ export default StyleSheet.create({
     },
 
     iconButtonText: {
-        textAlign:'center',
-        textAlignVertical:'center',
+        textAlign: 'center',
+        textAlignVertical: 'center',
     },
 
     buttonIcon: {
@@ -97,15 +97,15 @@ export default StyleSheet.create({
     },
 
     buttonText: {
-        marginTop:30,
-        height:50,
-        color:"#f5f5f5",
+        marginTop: 30,
+        height: 50,
+        color: "#f5f5f5",
         alignContent: "center",
         justifyContent: "center",
     },
 
     errorText: {
-        color:"#ff0000",
-        fontStyle:'italic',
+        color: "#ff0000",
+        fontStyle: 'italic',
     }
 })

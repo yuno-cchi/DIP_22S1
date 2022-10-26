@@ -35,7 +35,7 @@ async function axiosTest(displayPlan, selectedday) {
                 title={thisRoute.date}
                 key={thisRoute.routename}
                 user={thisRoute.routename}
-                //style={thisRoute.selected}
+              //style={thisRoute.selected}
               />
             </View>
           );
@@ -175,7 +175,7 @@ function DayPlan({ navigation }) {
 }
 
 function MarkCalender() {
-  for (let i = 0; i < dayDataLen; i++) {}
+  for (let i = 0; i < dayDataLen; i++) { }
 }
 
 function CalendarScreen({ navigation }) {

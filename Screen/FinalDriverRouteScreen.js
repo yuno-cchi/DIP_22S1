@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet, Dimensions, Text } from 'react-native';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { Marker } from 'react-native-maps';
@@ -100,7 +100,6 @@ const getWaypoints = (routeParams) => {
 
 export default function FinalDriverRouteScreen({ navigation, route }) {
 
-    const dataObj = route.params;
     let distance = 0;
     let duration = 0;
     const routeDestination = route.params.endLocation;
@@ -119,7 +118,7 @@ export default function FinalDriverRouteScreen({ navigation, route }) {
                     apikey={GOOGLE_API_KEY}
                     strokeWidth={STROKE_WIDTH}
                     strokeColor={STROKE_COLOR}
-                    waypoints={routeWaypoints}
+                    waypoints={getWaypoints(routeWaypoints)}
                     optimizeWaypoints={true}
                     onReady={result => {
                         console.log(`Distance: ${result.distance} km`)
@@ -130,18 +129,17 @@ export default function FinalDriverRouteScreen({ navigation, route }) {
                 />
                 {route.params.startLocation &&
                     <Marker
-                        title="Start"
-                        description=''
                         coordinate={route.params.startLocation}
+                        pinColor={color.primary}
 
-                    />}
+                    ><Text style={{ fontSize: 20, fontWeight: '900', color: color.primary, textShadowRadius: 5, shadowColor: color.primary, shadowOpacity: 0.5 }}>{"Start"}</Text></Marker>
+                }
                 {route.params.endLocation &&
                     <Marker
-                        title="End"
-                        description=''
                         coordinate={route.params.endLocation}
-
-                    />}
+                        pinColor={color.primary}
+                    ><Text style={{ fontSize: 20, fontWeight: '900', color: color.primary, textShadowRadius: 5, shadowColor: color.primary, shadowOpacity: 0.5 }}>{"End"}</Text></Marker>
+                }
 
                 {route.params.waypoints.map(marker => (
                     <>
@@ -167,7 +165,7 @@ export default function FinalDriverRouteScreen({ navigation, route }) {
             <BottomTab style={styles.bottomTab}>
                 <AppButton
                     title={'Confirm'}
-                    onPress={confirmDriverAlert}/>
+                    onPress={() => { console.log(route.params) }} />
             </BottomTab>
 
 
@@ -175,40 +173,40 @@ export default function FinalDriverRouteScreen({ navigation, route }) {
 
 
 
-        </View>
+        </View >
     );
 }
 
 const confirmDriverAlert = () =>
-  Alert.alert(
-    "All Set!",
-    "You have successfully confirmed your NyMe Ride! We will be notifying your riders.",
-    [
-      {
-        text: "Ok",
-        onPress: () => {
-            let description = "Distance: " + distance + "km" + " Time: " + duration + "min"
-            console.log("Console log: ", route.params.startLocation,
-                route.params.endLocation,
-                route.params.selectedDate,
-                route.params.userId,
-                description)
+    Alert.alert(
+        "All Set!",
+        "You have successfully confirmed your NyMe Ride! We will be notifying your riders.",
+        [
+            {
+                text: "Ok",
+                onPress: () => {
+                    let description = "Distance: " + distance + "km" + " Time: " + duration + "min"
+                    console.log("Console log: ", route.params.startLocation,
+                        route.params.endLocation,
+                        route.params.selectedDate,
+                        route.params.userId,
+                        description)
 
-            // storeInDatabase(route.params.startLocation,
-            //     route.params.endLocation,
-            //     route.params.date,
-            //     route.params.userID,
-            //     description)
+                    // storeInDatabase(route.params.startLocation,
+                    //     route.params.endLocation,
+                    //     route.params.date,
+                    //     route.params.userID,
+                    //     description)
 
-        },
-        style: "default",
-      },
-    ],
-    {
-      cancelable: false,
-    })
+                },
+                style: "default",
+            },
+        ],
+        {
+            cancelable: false,
+        })
 
-    
+
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',

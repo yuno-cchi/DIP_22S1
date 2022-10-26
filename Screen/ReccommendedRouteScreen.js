@@ -213,7 +213,7 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
     }
 
     //TODO: update 'ride' table w DriverID: drives's _id and selected: true
-    async function updateRideTable(selectedRideIDs, driveID){
+    async function updateRideTable(selectedRideIDs, driveID) {
         //const resp = await axios.get('http://secret-caverns-21869.herokuapp.com/drive');
 
         for (let x = 0; x < selectedRideIDs.length; x++) {
@@ -232,23 +232,23 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
                 selected: true, //set selected to tru
                 driverID: driveID
             })
-            .then(response => {
-                console.log(response);
+                .then(response => {
+                    console.log(response);
 
 
-                //navigate to FinalDriverRouteScreen
-                // navigation.navigate('FinalDriverRouteScreen', {
-                //     startLocation: route.params.startLocation,
-                //     endLocation: route.params.endLocation,
-                //     selectedDate: route.params.selectedDate,
-                //     userId: route.params.userId,
-                //     waypoints: tempSelectedRoute
-                // })
-            
-            })
-            .catch(error => {
-                console.log(err);
-            });
+                    //navigate to FinalDriverRouteScreen
+                    // navigation.navigate('FinalDriverRouteScreen', {
+                    //     startLocation: route.params.startLocation,
+                    //     endLocation: route.params.endLocation,
+                    //     selectedDate: route.params.selectedDate,
+                    //     userId: route.params.userId,
+                    //     waypoints: tempSelectedRoute
+                    // })
+
+                })
+                .catch(error => {
+                    console.log(err);
+                });
         }
 
     }
@@ -381,17 +381,17 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
                             // console.log("The selected route is", route.params.selectedDate)
                             // console.log("Hello there")
                             console.log(tempSelectedRoute)
-                            
-                            storeInDrive(route.params.startLocation, route.params.endLocation, route.params.selectedDate, tempSelectedRoute)
+
+                            //storeInDrive(route.params.startLocation, route.params.endLocation, route.params.selectedDate, tempSelectedRoute)
 
 
-                            // navigation.navigate('FinalDriverRouteScreen', {
-                            //     startLocation: route.params.startLocation,
-                            //     endLocation: route.params.endLocation,
-                            //     selectedDate: route.params.selectedDate,
-                            //     userId: route.params.userId,
-                            //     waypoints: tempSelectedRoute
-                            // })
+                            navigation.navigate('FinalDriverRouteScreen', {
+                                startLocation: route.params.startLocation,
+                                endLocation: route.params.endLocation,
+                                selectedDate: route.params.selectedDate,
+                                userId: route.params.userId,
+                                waypoints: tempSelectedRoute
+                            })
 
                         }
                     }

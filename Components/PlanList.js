@@ -31,7 +31,7 @@ export default function PlanList({
           <View style={styles.topcontainer}>
             <View style={styles.image}>
               {/* <Image source={require("./pic/pulse.png")} /> */}
-              <Image source={require("./pic/Arrow.png")} />
+              {/* <Image source={require("./pic/Arrow.png")} /> */}
             </View>
             <View style={styles.mylocation}>
               <AppText style={styles.title}>{start}</AppText>

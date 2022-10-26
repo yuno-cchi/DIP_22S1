@@ -45,11 +45,8 @@ import ReccommendedRouteScreen from "./Screen/ReccommendedRouteScreen";
 import FinalDriverRouteScreen from "./Screen/FinalDriverRouteScreen";
 import DrivingNavigationScreen from "./Screen/DrivingNavigationScreen";
 import NewUser from "./src/newUser";
-<<<<<<< Updated upstream
+import CalendarScreen from "./Screen/CalendarScreen";
 //import TabNavigator from "./Components/AppTabNavigator";
-=======
-import SelectUserType from "./src/selectUserType";
->>>>>>> Stashed changes
 //navigator.geolocation = require('react-native-geolocation-service');
 
 export default function App() {
@@ -106,41 +103,11 @@ export default function App() {
 
   return (
     <NavigationContainer>
-<<<<<<< Updated upstream
-      <TabNavigator>
-        <Stack.Navigator initialRouteName={initialPage}
+      {/* <TabNavigator> */}
+      <Stack.Navigator initialRouteName={"DriverPutRoute"}
         screenOptions={{
           headerShown: false,
         }}>
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="SignUpPage" component={NewUser} />
-          <Stack.Screen name="SelectUserType" component={selectUserType} />
-          <Stack.Screen
-            name="RiderMapScreen"
-            component={
-              Platform.OS === "ios" ? RiderMapScreen : RiderMapScreen_android
-            }
-          />
-          <Stack.Screen
-            name="DriverPutRoute"
-            component={
-              Platform.OS === "ios"
-                ? DriverPutRouteScreen
-                : DriverPutRouteScreen_Android
-            }
-          />
-          <Stack.Screen
-            name="ReccommendedRouteScreen"
-            component={ReccommendedRouteScreen}
-          />
-          <Stack.Screen
-            name="FinalDriverRouteScreen"
-            component={FinalDriverRouteScreen}
-          />
-        </Stack.Navigator>
-      </TabNavigator>
-=======
-      <Stack.Navigator initialRouteName={"DrivingNavigationScreen"}>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="SignUpPage" component={NewUser} />
         <Stack.Screen name="SelectUserType" component={selectUserType} />
@@ -167,15 +134,11 @@ export default function App() {
           component={FinalDriverRouteScreen}
         />
         <Stack.Screen
-          name="TypeSelect"
-          component={selectUserType}
-        />
-        <Stack.Screen
-          name="DrivingNavigationScreen"
-          component={DrivingNavigationScreen}
+          name="CalendarScreen"
+          component={CalendarScreen}
         />
       </Stack.Navigator>
->>>>>>> Stashed changes
+      {/* </TabNavigator> */}
     </NavigationContainer>
   );
 }

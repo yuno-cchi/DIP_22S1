@@ -26,23 +26,28 @@ export default function SelectUserType({ route, navigation }) {
 
     const userParams = route.params;
     const selectUserType = (userType) => {
-        userParams.userType=userType
-        navigation.navigate("DebugViewer", userParams);
+        userParams.userType = userType
+        if (userType === "rider") {
+            navigation.navigate("RiderMapScreen", userParams);
+        } else {
+            navigation.navigate("DriverPutRoute", userParams);
+        }
+
     }
 
     return (
         <View style={styles.container}>
             <Text>Today I am:</Text>
 
-            <View style={{height:35}}/>
+            <View style={{ height: 35 }} />
 
-            <View style={{flexDirection:"row"}}>
+            <View style={{ flexDirection: "row" }}>
                 <TouchableOpacity style={styles.iconButtonBig} onPress={(event) => selectUserType("rider")}>
-                    <Image style={styles.buttonIcon} source={require("../assets/img/rider.png")}/>
+                    <Image style={styles.buttonIcon} source={require("../assets/img/rider.png")} />
                     <Text style={styles.iconButtonText}>Riding</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.iconButtonBig} onPress={(event) => selectUserType("driver")}>
-                    <Image style={styles.buttonIcon} source={require("../assets/img/driver.png")}/>
+                    <Image style={styles.buttonIcon} source={require("../assets/img/driver.png")} />
                     <Text style={styles.iconButtonText}>Driving</Text>
                 </TouchableOpacity>
             </View>
