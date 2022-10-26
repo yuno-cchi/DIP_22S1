@@ -27,11 +27,12 @@ export default function SelectUserType({ route, navigation }) {
     const userParams = route.params;
     const selectUserType = (userType) => {
         userParams.userType=userType
-        navigation.navigate("DebugViewer", userParams);
+        navigation.navigate("DriverPutRoute", userParams);
     }
 
     return (
         <View style={styles.container}>
+            <View style={{height:90}} />
             <Text>Today I am:</Text>
 
             <View style={{height:35}}/>
