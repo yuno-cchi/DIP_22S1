@@ -199,10 +199,9 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
             console.log(response);
             console.log(response.data);
 
-            // TO TEST
             console.log(response.data._id);
 
-            //updateRideTable(selectedRideIDs, response.data._id)
+            updateRideTable(selectedRoute, selectedRideIDs, response.data._id, userID)
 
             // navigateToRecc() //navigate to FinalDriverRouteScreen
 
@@ -212,22 +211,23 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
         })
     }
 
-    //TODO: update 'ride' table w DriverID: drives's _id and selected: true
-    async function updateRideTable(selectedRideIDs, driveID){
+    //update 'ride' table w DriverID: drives's _id and selected: true
+    async function updateRideTable(selectedRoute, selectedRideIDs, driveID, driveruserID){
         //const resp = await axios.get('http://secret-caverns-21869.herokuapp.com/drive');
 
         for (let x = 0; x < selectedRideIDs.length; x++) {
             //TODO: update 'ride' table w DriverID: drives's _id and selected: true
+            console.log("updating ride table:")
             console.log(selectedRideIDs[x]);
             console.log(driveID);
 
 
             //once my new drive id has been retrieved, i can run a for loop here
-            axios.put('http://secret-caverns-21869.herokuapp.com/ride/' + selectedRoute[x].routeId, {
+            axios.post('http://secret-caverns-21869.herokuapp.com/ride/update/' + selectedRideIDs[x], {
                 routename: selectedRoute[x].routeDescription,
                 start: selectedRoute[x].start,
                 destination: selectedRoute[x].destination,
-                date: date,
+                date: selectedRoute[x].date,
                 centroid: selectedRoute[x].centroid,
                 selected: true, //set selected to tru
                 driverID: driveID
@@ -237,13 +237,13 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
 
 
                 //navigate to FinalDriverRouteScreen
-                // navigation.navigate('FinalDriverRouteScreen', {
-                //     startLocation: route.params.startLocation,
-                //     endLocation: route.params.endLocation,
-                //     selectedDate: route.params.selectedDate,
-                //     userId: route.params.userId,
-                //     waypoints: tempSelectedRoute
-                // })
+                navigation.navigate('FinalDriverRouteScreen', {
+                    startLocation: route.params.startLocation,
+                    endLocation: route.params.endLocation,
+                    selectedDate: route.params.selectedDate,
+                    userId: driveruserID,
+                    waypoints: selectedRoute
+                })
             
             })
             .catch(error => {
