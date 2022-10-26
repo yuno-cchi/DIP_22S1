@@ -107,8 +107,8 @@ function DayPlan({ navigation }) {
             displayPlan.push(
               <View>
                 <PlanList
-                  start={thisRoute.start.latitude}
-                  destination={thisRoute.destination.latitude}
+                  start={thisRoute.startName}
+                  destination={thisRoute.destinationName}
                   key={thisRoute._id}
                   user={thisRoute.routename}
                   price="$15"

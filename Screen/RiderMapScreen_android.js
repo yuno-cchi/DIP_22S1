@@ -28,6 +28,9 @@ export default function RiderMapScreen_android() {
     const navigation = useNavigation();
 
     const [coordinate, updateMarker] = useState([]);
+
+    const [startLocationName, setStartLocationName] = useState();
+    const [endLocationName, setEndLocationName] = useState();
     const [startLocation, setStartLocation] = useState();
     const [endLocation, setEndLocation] = useState();
     //const [selectedDate, setSelectedDate] = useState(new Date());
@@ -55,7 +58,7 @@ export default function RiderMapScreen_android() {
             , ANIMATE_SPEED);
     }
 
-    const storeInDatabase = async (startLocation, endLocation, date, key, userID) => {
+    const storeInDatabase = async (startLocation, endLocation, date, startName, endName) => {
         console.log("adding to database")
 
         console.log("Start: ")
@@ -93,7 +96,9 @@ export default function RiderMapScreen_android() {
             headers: {},
             data: {
                 routename: userID,
+                startName: startName,
                 start: startLocation,
+                destinationName: endName,
                 destination: endLocation,
                 centroid: centroid,
                 date: date,
@@ -201,7 +206,9 @@ export default function RiderMapScreen_android() {
                         // 'details' is provided when fetchDetails = true
                         coordinates = { latitude: details.geometry.location.lat, longitude: details.geometry.location.lng }
                         setEndLocation(coordinates);
+                        setEndLocationName(data.description);
                         console.log(coordinates);
+                        console.log(data.description);
                         animateToLocation(coordinates);
                     }}
                     on
@@ -228,7 +235,9 @@ export default function RiderMapScreen_android() {
                         // 'details' is provided when fetchDetails = true
                         coordinates = { latitude: details.geometry.location.lat, longitude: details.geometry.location.lng }
                         setStartLocation(coordinates);
+                        setStartLocationName(data.description);
                         console.log(coordinates);
+                        console.log(data.description);
                         animateToLocation(coordinates);
 
                     }}
@@ -299,7 +308,7 @@ export default function RiderMapScreen_android() {
                     thisColor={color.danger}
                     title="Send"
                     onPress={() => {
-                        storeInDatabase(startLocation, endLocation, selectedDate, null, null);
+                        storeInDatabase(startLocation, endLocation, selectedDate, startLocationName, endLocationName);
                     }} />
             </BottomTab>
 

@@ -29,6 +29,8 @@ export default function RiderMapScreen({ route, navigation }) {
   const [coordinate, updateMarker] = useState([]);
   const [startLocation, setStartLocation] = useState();
   const [endLocation, setEndLocation] = useState();
+  const [startLocationName, setStartLocationName] = useState();
+  const [endLocationName, setEndLocationName] = useState();
   const [selectedDate, setSelectedDate] = useState(new Date());
   //A function to get lastest markerKey from DB
 
@@ -45,8 +47,8 @@ export default function RiderMapScreen({ route, navigation }) {
     startLocation,
     endLocation,
     date,
-    key,
-    userID
+    startName,
+    endName
   ) => {
     console.log("adding to database");
 
@@ -81,7 +83,9 @@ export default function RiderMapScreen({ route, navigation }) {
       headers: {},
       data: {
         routename: userID,
+        startName: startName,
         start: startLocation,
+        destinationName: endName,
         destination: endLocation,
         centroid: centroid,
         date: date,
@@ -138,7 +142,9 @@ export default function RiderMapScreen({ route, navigation }) {
                 longitude: details.geometry.location.lng,
               };
               setEndLocation(coordinates);
+              setEndLocationName(data.description);
               console.log(coordinates);
+              console.log(data.description);
               animateToLocation(coordinates);
             }}
             on
@@ -167,7 +173,9 @@ export default function RiderMapScreen({ route, navigation }) {
                 longitude: details.geometry.location.lng,
               };
               setStartLocation(coordinates);
+              setStartLocationName(data.description);
               console.log(coordinates);
+              console.log(data.description);
               animateToLocation(coordinates);
             }}
             query={{
@@ -230,8 +238,8 @@ export default function RiderMapScreen({ route, navigation }) {
                   startLocation,
                   endLocation,
                   selectedDate,
-                  null,
-                  null
+                  startLocationName,
+                  endLocationName
                 );
               }}
             />

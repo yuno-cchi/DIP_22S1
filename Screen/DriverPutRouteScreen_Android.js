@@ -111,6 +111,9 @@ export default function DriverPutRouteScreen_Android( route ) {
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
 
+    const [startLocationName, setStartLocationName] = useState();
+    const [endLocationName, setEndLocationName] = useState();
+
     const [startLocation, setStartLocation] = useState();
     const [endLocation, setEndLocation] = useState();
     const [centroidLocation, setCentroid] = useState();
@@ -130,7 +133,7 @@ export default function DriverPutRouteScreen_Android( route ) {
         getLiveLocation();
     }, []);
 
-    const storeLocally = async (startLocation, endLocation, date) => {
+    const storeLocally = async (startLocation, endLocation, date, startName, endName) => {
         console.log("adding to database")
     
         console.log("Start: ")
@@ -188,6 +191,8 @@ export default function DriverPutRouteScreen_Android( route ) {
     function navigateToRecc(date){
         //alert successful and move to next page
         navigation.navigate('ReccommendedRouteScreen', {
+            startName: startLocationName,
+            endName: endLocationName, 
             startLocation: startLocation,
             endLocation: endLocation,
             selectedDate: date,
@@ -325,6 +330,7 @@ export default function DriverPutRouteScreen_Android( route ) {
                         // 'details' is provided when fetchDetails = true
                         coordinates = { latitude: details.geometry.location.lat, longitude: details.geometry.location.lng }
                         setEndLocation(coordinates);
+                        setEndLocationName(data.description);
                         console.log(coordinates);
                         animateToLocation(coordinates);
 
@@ -354,6 +360,7 @@ export default function DriverPutRouteScreen_Android( route ) {
                         // 'details' is provided when fetchDetails = true
                         coordinates = { latitude: details.geometry.location.lat, longitude: details.geometry.location.lng }
                         setStartLocation(coordinates);
+                        setStartLocationName(data.description);
                         console.log(coordinates);
                         animateToLocation(coordinates);
 
@@ -398,7 +405,7 @@ export default function DriverPutRouteScreen_Android( route ) {
                         //     storeInDatabase(startLocation, endLocation, selectedDate)
                         // }
 
-                        storeLocally(startLocation, endLocation, finalDate)
+                        storeLocally(startLocation, endLocation, finalDate, startLocationName, endLocationName)
                         //Send the two coordiantes to the ReccomendedRouteScreen, then move to a new screen
                     }}
                 />
