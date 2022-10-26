@@ -38,6 +38,8 @@ const styles = StyleSheet.create({
     color: color.white,
     fontWeight: "bold",
     textTransform: "uppercase",
-    alignSelf: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center'
   },
 });

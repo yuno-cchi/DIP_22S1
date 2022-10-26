@@ -81,8 +81,7 @@ export default function Login({ navigation }) {
 
 
 
-                        //navigation.navigate("TypeSelect", userParams); //ACTUAL
-                        navigation.navigate("DriverPutRoute", userParams); //FOR DEBUGGING
+                        navigation.navigate("TypeSelect", userParams);
 
                         
 
