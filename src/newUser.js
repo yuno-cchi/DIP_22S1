@@ -229,6 +229,7 @@ export default function NewUser({ route, navigation }) {
 
     return (
         <View style={styles.container}>
+            <View style={{height:90}} />
             <Text>Enter e-mail Address</Text>
 	        <View style={styles.inputView}>
 	    	    <TextInput

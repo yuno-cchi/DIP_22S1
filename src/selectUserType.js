@@ -37,6 +37,7 @@ export default function SelectUserType({ route, navigation }) {
 
     return (
         <View style={styles.container}>
+            <View style={{ height: 90 }} />
             <Text>Today I am:</Text>
 
             <View style={{ height: 35 }} />
