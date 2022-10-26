@@ -100,10 +100,11 @@ const getWaypoints = (routeParams) => {
 
 export default function FinalDriverRouteScreen({ navigation, route }) {
 
-    const dataObj = route.params
+    const dataObj = route.params;
     let distance = 0;
     let duration = 0;
-
+    const routeDestination = route.params.endLocation;
+    const routeWaypoints = route.params.waypoints;
     return (
         <View style={styles.container}>
             <MapView
@@ -118,7 +119,7 @@ export default function FinalDriverRouteScreen({ navigation, route }) {
                     apikey={GOOGLE_API_KEY}
                     strokeWidth={STROKE_WIDTH}
                     strokeColor={STROKE_COLOR}
-                    waypoints={getWaypoints(route.params.waypoints)}
+                    waypoints={routeWaypoints}
                     optimizeWaypoints={true}
                     onReady={result => {
                         console.log(`Distance: ${result.distance} km`)
