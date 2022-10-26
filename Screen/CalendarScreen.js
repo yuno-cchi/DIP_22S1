@@ -18,37 +18,6 @@ var dayDataLen = Object.keys(mydata).length;
 var selectedday;
 let drivedata;
 
-async function axiosTest(displayPlan, selectedday) {
-  await axios
-    .get("http://secret-caverns-21869.herokuapp.com/ride")
-    .then(function (response) {
-      for (let i = 0; i < dayDataLen; i++) {
-        let thisRoute = response.data[i];
-        console.log("selected date", Object.values(selectedday)[4]);
-        //has to use [4] to get date string
-        if (Object.values(selectedday)[4] == thisRoute.date.slice(0, 10)) {
-          console.log("display in loop ", thisRoute.routename);
-
-          displayPlan.push(
-            <View>
-              <PlanList
-                title={thisRoute.date}
-                key={thisRoute.routename}
-                user={thisRoute.routename}
-                //style={thisRoute.selected}
-              />
-            </View>
-          );
-        }
-
-        //console.log("in display", displayPlan);
-      }
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-}
-
 const CalendarNavigator = () => (
   <Stack.Navigator initialRouteName="CalendarScreen">
     <Stack.Screen name="CalendarScreen" component={CalendarScreen} />
@@ -57,50 +26,22 @@ const CalendarNavigator = () => (
   </Stack.Navigator>
 );
 
-function showDayPlan(displayPlan) {
-  console.log("inside showdayplan", displayPlan);
-
-  return (
-    <View style={styles.plan}>
-      <ScrollView>
-        <View style={styles.component}>{displayPlan}</View>
-      </ScrollView>
-    </View>
-  );
-}
-
-
 function DayPlan({ navigation }) {
   let displayPlan = [];
   const [forDisplay, setForDisplay] = useState();
   const [isLoading, setLoading] = useState(true);
   //axiosTest(displayPlan, selectedday);
-  console.log("can i get my dates?", mydates);
-
-
-  //set to store date no duplicate
-  const [getDbDate, setDbDates] = useState(new Set());
-
-  //object array for post process
-
+  //console.log("can i get my dates?", mydates);
 
   useEffect(() => {
-
-    let dateColect = new Set();
-    let returnRouteObjectArray = [];
-
     axios
       .get("http://secret-caverns-21869.herokuapp.com/ride")
       .then((response) => {
         //console.log("resp", response.data.length);
         for (let i = 0; i < response.data.length; i++) {
           let thisRoute = response.data[i];
-
-          dateColect.add(thisRoute.date.slice(0, 10));
-
-          //setDbDates()
-          //has to use [4] to get date string
           console.log("this date?", response.data[i]);
+
           if (Object.values(selectedday)[4] === thisRoute.date.slice(0, 10)) {
             console.log("select", Object.values(selectedday)[4]);
             console.log("route ", thisRoute.date.slice(0, 10));
@@ -121,8 +62,7 @@ function DayPlan({ navigation }) {
               </View>
             );
           }
-
-          console.log("in display", displayPlan);
+          //console.log("in display", displayPlan);
           setForDisplay(displayPlan);
           console.log("for display?", forDisplay);
 
@@ -130,14 +70,6 @@ function DayPlan({ navigation }) {
             setLoading(false);
           }, 300);
         }
-
-        let arr = Array.from(dateColect);
-        arr = arr.map(i => i + ": { 'marked': true, 'selectedColor': 'blue'}")
-        
-        console.log(JSON.stringify(arr));
-
-        setGetDates(JSON.stringify(arr));
-
       });
   }, []);
 
@@ -164,42 +96,6 @@ function DayPlan({ navigation }) {
       </View>
     );
   }
-
-  // setTimeout(() => {
-  //   setShowPlan(true);
-  //   console.log("my displayplan after 2s,", displayPlan);
-  //   // return (
-  //   //   <View style={styles.plan}>
-  //   //     <View style={styles.component}>{displayPlan}</View>
-  //   //   </View>
-  //   // );
-  // }, 2000);
-
-  // useEffect(() => {
-  //   console.log("use effect");
-  //   showDayPlan();
-  // }, [showPlan]);
-  // }
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     console.log("useeffect now", displayPlan);
-
-  //     if (displayPlan != null) {
-  //       setShowPlan(true);
-  //     }
-  //     //console.log("i suppose to be end ", displayPlan);
-  //     return (
-  //       <View style={styles.plan}>
-  //         <View style={styles.component}>{displayPlan}</View>
-  //       </View>
-  //     );
-  //   }, 2000);
-  // }, [showPlan]);
-}
-
-function MarkCalender() {
-  for (let i = 0; i < dayDataLen; i++) {}
 }
 
 function CalendarScreen({ navigation }) {
@@ -207,16 +103,11 @@ function CalendarScreen({ navigation }) {
   let tryPlanning = new Date();
   tryPlanning.setMonth(tryPlanning.getMonth() + 1);
 
-
   const [isLoading, setLoading] = useState(true);
   const [getDates, setGetDates] = useState([]);
 
-
-
   useEffect(() => {
-
     let dateColect = new Set();
-    let returnRouteObjectArray = [];
 
     axios
       .get("http://secret-caverns-21869.herokuapp.com/ride")
@@ -224,43 +115,28 @@ function CalendarScreen({ navigation }) {
         //console.log("resp", response.data.length);
         for (let i = 0; i < response.data.length; i++) {
           let thisRoute = response.data[i];
+          let myDate = thisRoute.date.slice(0, 10);
 
-          dateColect.add(thisRoute.date.slice(0, 10));
-
-          //setDbDates()
-          //has to use [4] to get date string
-          console.log("this date?", response.data[i]);
-          
+          dateColect.add(myDate);
+          console.log("this date?", dateColect);
 
           setTimeout(() => {
             setLoading(false);
           }, 300);
         }
 
-        console.log(dateColect)
+        console.log(dateColect);
         let arr = Array.from(dateColect);
         //obj = Object.assign({arr}, "{'marked': true, 'selectedColor': 'blue'}");
-        obj = {};
-        arr.forEach((elem,i)=>{
-          //obj[{${arr[i]}] = "{'marked': true, 'selectedColor': 'blue'}" 
-          obj[`${arr[i]}`]= {'marked': true, 'selectedColor': 'blue'} 
+        let obj = {};
+        arr.forEach((elem, i) => {
+          //obj[{${arr[i]}] = "{'marked': true, 'selectedColor': 'blue'}"
+          obj[`${arr[i]}`] = { marked: true, selectedColor: "blue" };
         });
 
-        console.log("dd",obj)
-        let addedarr = [];
-
-        // for (var i = 0 ; i < arr.length; i++){
-        //     addedarr.push({ arr[i]: {'marked': true, 'selectedColor': 'blue'}})
-        // }
-
-        // arr = JSON.stringify(arr)
-        //dateColect = dateColect.map(i => i + ": {'marked': true, 'selectedColor': 'blue'}")
-
-        
-        //console.log(JSON.stringify(arr));
+        console.log("dd", obj);
 
         setGetDates(obj);
-
       });
   }, []);
 
