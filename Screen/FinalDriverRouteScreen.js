@@ -166,21 +166,7 @@ export default function FinalDriverRouteScreen({ navigation, route }) {
             <BottomTab style={styles.bottomTab}>
                 <AppButton
                     title={'Confirm'}
-                    onPress={() => {
-                        let description = "Distance: " + distance + "km" + " Time: " + duration + "min"
-                        console.log("Console log: ", route.params.startLocation,
-                            route.params.endLocation,
-                            route.params.selectedDate,
-                            route.params.userId,
-                            description)
-
-                        // storeInDatabase(route.params.startLocation,
-                        //     route.params.endLocation,
-                        //     route.params.date,
-                        //     route.params.userID,
-                        //     description)
-
-                    }} />
+                    onPress={confirmDriverAlert}/>
             </BottomTab>
 
 
@@ -192,6 +178,36 @@ export default function FinalDriverRouteScreen({ navigation, route }) {
     );
 }
 
+const confirmDriverAlert = () =>
+  Alert.alert(
+    "All Set!",
+    "You have successfully confirmed your NyMe Ride! We will be notifying your riders.",
+    [
+      {
+        text: "Ok",
+        onPress: () => {
+            let description = "Distance: " + distance + "km" + " Time: " + duration + "min"
+            console.log("Console log: ", route.params.startLocation,
+                route.params.endLocation,
+                route.params.selectedDate,
+                route.params.userId,
+                description)
+
+            // storeInDatabase(route.params.startLocation,
+            //     route.params.endLocation,
+            //     route.params.date,
+            //     route.params.userID,
+            //     description)
+
+        },
+        style: "default",
+      },
+    ],
+    {
+      cancelable: false,
+    })
+
+    
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
