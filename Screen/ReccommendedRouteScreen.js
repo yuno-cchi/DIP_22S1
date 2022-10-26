@@ -197,11 +197,12 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
             }
         }).then((response) => {
             console.log(response);
+            console.log(response.data);
 
-            // idk if this works at all but to try out ltr
+            // TO TEST
             console.log(response.data._id);
 
-            updateRideTable(selectedRideIDs, response.data._id)
+            //updateRideTable(selectedRideIDs, response.data._id)
 
             // navigateToRecc() //navigate to FinalDriverRouteScreen
 
@@ -213,7 +214,7 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
 
     //TODO: update 'ride' table w DriverID: drives's _id and selected: true
     async function updateRideTable(selectedRideIDs, driveID){
-        const resp = await axios.get('http://secret-caverns-21869.herokuapp.com/drive');
+        //const resp = await axios.get('http://secret-caverns-21869.herokuapp.com/drive');
 
         for (let x = 0; x < selectedRideIDs.length; x++) {
             //TODO: update 'ride' table w DriverID: drives's _id and selected: true
@@ -235,6 +236,7 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
                 console.log(response);
 
 
+                //navigate to FinalDriverRouteScreen
                 // navigation.navigate('FinalDriverRouteScreen', {
                 //     startLocation: route.params.startLocation,
                 //     endLocation: route.params.endLocation,

@@ -8,7 +8,7 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/add').post((req, res) => {
-  const routename = req.body.routename;
+  const routeUserID = req.body.routeUserID;
   const start = req.body.start;
   const destination = req.body.destination;
   const date = req.body.date;
@@ -17,7 +17,7 @@ router.route('/add').post((req, res) => {
   const selected = req.body.selected;
   const routeIdPair = req.body.routeIdPair;
 
-  const newRide = new Drive({ routename: routename, start: start, destination: destination, date: date, price: price, centroid: centroid, selected: selected, routeIdPair: routeIdPair});
+  const newRide = new Drive({ routeUserID: routeUserID, start: start, destination: destination, date: date, price: price, centroid: centroid, selected: selected, routeIdPair: routeIdPair});
 
   newRide.save()
     .then(response => res.json(response))
@@ -28,7 +28,7 @@ router.route('/add').post((req, res) => {
 router.route('/update/:id').post((req, res) => {
   Drive.findById(req.params.id)
     .then(driver => {
-      driver.routename = req.body.routename;
+      driver.routeUserID = req.body.routeUserID;
       driver.start = req.body.start;
       driver.destination = req.body.destination;
       driver.date = req.body.date;
