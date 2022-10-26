@@ -1,5 +1,5 @@
 import { React, useState } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, Dimensions } from "react-native";
 
 import MapView, { Marker } from "react-native-maps";
 
@@ -14,19 +14,28 @@ import BottomTab from "../Components/BottomTab";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import axios from "axios";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import HeaderTab from "../Components/HeaderTab";
+import MapViewDirections from "react-native-maps-directions";
 
 const GOOGLE_API_KEY = "AIzaSyBYDEKY12RzWyP0ACQEpgsr4up2w3CjH88";
 const ANIMATE_SPEED = 1000;
 const STROKE_WIDTH = 5;
 const STROKE_COLOR = color.danger;
 const DATE_MODE = "datetime";
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
-export default function RiderMapScreen() {
+export default function RiderMapScreen({ route, navigation }) {
   const [coordinate, updateMarker] = useState([]);
   const [startLocation, setStartLocation] = useState();
   const [endLocation, setEndLocation] = useState();
   const [selectedDate, setSelectedDate] = useState(new Date());
   //A function to get lastest markerKey from DB
+
+  const navigateCalendar = () => {
+    navigation.navigate("CalendarScreen", route.params)
+  }
+
 
   const animateToLocation = (coordinates) => {
     mapViewRef.animateToRegion(coordinates, ANIMATE_SPEED);
@@ -83,7 +92,7 @@ export default function RiderMapScreen() {
       (response) => {
         console.log(response);
 
-        navigateToRecc();
+        navigateCalendar();
       },
       (error) => {
         console.log(error);
@@ -93,6 +102,7 @@ export default function RiderMapScreen() {
 
   return (
     <View style={styles.container}>
+
       <MapView
         ref={(map) => {
           mapViewRef = map;
@@ -100,70 +110,80 @@ export default function RiderMapScreen() {
         style={{ ...StyleSheet.absoluteFill }}
         showsUserLocation={true}
         showsPointsOfInterest={true}
-      />
-      <CircularButton
-        name="user"
-        onPress={() => {
-          console.log("user pressed");
-        }}
-        style={styles.dashButton}
-      />
-      <View style={styles.locationTextBoxContainer}>
-        <GooglePlacesAutocomplete
-          GooglePlacesDetailsQuery={{ fields: "geometry" }}
-          styles={styles.endTextBox}
-          placeholder="End Location"
-          onPress={(data, details) => {
-            // 'details' is provided when fetchDetails = true
-            coordinates = {
-              latitude: details.geometry.location.lat,
-              longitude: details.geometry.location.lng,
-            };
-            setEndLocation(coordinates);
-            console.log(coordinates);
-            animateToLocation(coordinates);
-          }}
-          on
-          fetchDetails={true}
-          query={{
-            key: GOOGLE_API_KEY,
-            language: "en",
-            components: "country:sg",
-          }}
-          nearbyPlacesAPI="GoogleReverseGeocodingQuery" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
-          GooglePlacesSearchQuery={{
-            // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
-            rankby: "distance",
-          }}
-          enablePoweredByContainer={false}
+      >
+        <MapViewDirections
+          origin={startLocation}
+          destination={endLocation}
+          apikey={GOOGLE_API_KEY}
+          strokeWidth={STROKE_WIDTH}
+          strokeColor={STROKE_COLOR}
         />
-        <GooglePlacesAutocomplete
-          GooglePlacesDetailsQuery={{ fields: "geometry" }}
-          fetchDetails={true}
-          styles={styles.startTextBox}
-          placeholder="Start Location"
-          onPress={(data, details) => {
-            // 'details' is provided when fetchDetails = true
-            coordinates = {
-              latitude: details.geometry.location.lat,
-              longitude: details.geometry.location.lng,
-            };
-            setStartLocation(coordinates);
-            console.log(coordinates);
-            animateToLocation(coordinates);
-          }}
-          query={{
-            key: GOOGLE_API_KEY,
-            language: "en",
-            components: "country:sg",
-          }}
-          nearbyPlacesAPI="GooglePlacesSearch" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
-          GooglePlacesSearchQuery={{
-            rankby: "distance",
-          }}
-          enablePoweredByContainer={false}
-        />
-      </View>
+        {startLocation && (
+          <Marker title="Start" description="yeah" coordinate={startLocation} />
+        )}
+        {endLocation && (
+          <Marker title="End" description="qwe" coordinate={endLocation} />
+        )}
+      </MapView>
+      <HeaderTab>
+        <View style={styles.locationTextBoxContainer}>
+          <GooglePlacesAutocomplete
+            GooglePlacesDetailsQuery={{ fields: "geometry" }}
+            styles={styles.endTextBox}
+            placeholder="End Location"
+            onPress={(data, details) => {
+              // 'details' is provided when fetchDetails = true
+              coordinates = {
+                latitude: details.geometry.location.lat,
+                longitude: details.geometry.location.lng,
+              };
+              setEndLocation(coordinates);
+              console.log(coordinates);
+              animateToLocation(coordinates);
+            }}
+            on
+            fetchDetails={true}
+            query={{
+              key: GOOGLE_API_KEY,
+              language: "en",
+              components: "country:sg",
+            }}
+            nearbyPlacesAPI="GoogleReverseGeocodingQuery" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+            GooglePlacesSearchQuery={{
+              // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+              rankby: "distance",
+            }}
+            enablePoweredByContainer={false}
+          />
+          <GooglePlacesAutocomplete
+            GooglePlacesDetailsQuery={{ fields: "geometry" }}
+            fetchDetails={true}
+            styles={styles.startTextBox}
+            placeholder="Start Location"
+            onPress={(data, details) => {
+              // 'details' is provided when fetchDetails = true
+              coordinates = {
+                latitude: details.geometry.location.lat,
+                longitude: details.geometry.location.lng,
+              };
+              setStartLocation(coordinates);
+              console.log(coordinates);
+              animateToLocation(coordinates);
+            }}
+            query={{
+              key: GOOGLE_API_KEY,
+              language: "en",
+              components: "country:sg",
+            }}
+            nearbyPlacesAPI="GooglePlacesSearch" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+            GooglePlacesSearchQuery={{
+              rankby: "distance",
+            }}
+            enablePoweredByContainer={false}
+          />
+        </View>
+
+      </HeaderTab>
 
       <BottomTab>
         <View style={styles.timeContainer}>
@@ -196,8 +216,7 @@ export default function RiderMapScreen() {
               display="default"
               style={{
                 width: 200,
-
-                transform: [{ scale: 1.2 }],
+                transform: [{ scale: 1.5 }],
               }}
             />
           </View>
@@ -205,7 +224,7 @@ export default function RiderMapScreen() {
             <AppButton
               style={styles.sendButton}
               thisColor={color.danger}
-              title="Send"
+              title="Ride"
               onPress={() => {
                 storeInDatabase(
                   startLocation,
@@ -248,10 +267,11 @@ const styles = StyleSheet.create({
   },
   sendButton: {
     position: "absolute",
-    //smarginVertical: 15,
+    bottom: 40,
     width: 100,
     right: 20,
-    top: 30,
+    height: 80,
+    top: 20
   },
   locationTextBoxContainer: {
     top: 50,
@@ -260,20 +280,22 @@ const styles = StyleSheet.create({
   },
   startTextBox: {
     container: {
-      position: "absolute",
-      width: 300,
+      position: 'absolute',
+      alignItems: "center",
+      width: windowWidth * 0.8,
       height: 200,
       top: 0,
-      right: 20,
+      left: 40,
     },
   },
   endTextBox: {
     container: {
-      position: "absolute",
-      width: 300,
+      position: 'absolute',
+      alignItems: "center",
+      width: windowWidth * 0.8,
       height: 200,
       top: 60,
-      right: 20,
+      left: 40,
     },
   },
   timeContainer: {

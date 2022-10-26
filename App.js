@@ -45,6 +45,7 @@ import ReccommendedRouteScreen from "./Screen/ReccommendedRouteScreen";
 import FinalDriverRouteScreen from "./Screen/FinalDriverRouteScreen";
 import DrivingNavigationScreen from "./Screen/DrivingNavigationScreen";
 import NewUser from "./src/newUser";
+//import TabNavigator from "./Components/AppTabNavigator";
 import SelectUserType from "./src/selectUserType";
 //navigator.geolocation = require('react-native-geolocation-service');
 
@@ -102,16 +103,19 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={"Login"}>
-        <Stack.Screen name="Login" component={Login} options={{headerShown:false}}/>
-        <Stack.Screen name="SignUpPage" component={NewUser} options={{headerShown:false}} />
-        <Stack.Screen name="SelectUserType" component={selectUserType}  options={{headerShown:false}}/>
+      {/* <TabNavigator> */}
+      <Stack.Navigator initialRouteName={"Login"}
+        screenOptions={{
+          headerShown: false,
+        }}>
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="SignUpPage" component={NewUser} />
+        <Stack.Screen name="SelectUserType" component={selectUserType} />
         <Stack.Screen
           name="RiderMapScreen"
           component={
             Platform.OS === "ios" ? RiderMapScreen : RiderMapScreen_android
           }
-          options={{headerShown:false}}
         />
         <Stack.Screen
           name="DriverPutRoute"
@@ -120,31 +124,17 @@ export default function App() {
               ? DriverPutRouteScreen
               : DriverPutRouteScreen_Android
           }
-          options = {{
-            headerShown:false,
-          }}
         />
         <Stack.Screen
           name="ReccommendedRouteScreen"
           component={ReccommendedRouteScreen}
-          options={{headerShown:false}}
         />
         <Stack.Screen
           name="FinalDriverRouteScreen"
           component={FinalDriverRouteScreen}
-          options={{headerShown:false}}
-        />
-        <Stack.Screen
-          name="TypeSelect"
-          component={selectUserType}
-          options={{headerShown:false}}
-        />
-        <Stack.Screen
-          name="DrivingNavigationScreen"
-          component={DrivingNavigationScreen}
-          options={{headerShown:false}}
         />
       </Stack.Navigator>
+      {/* </TabNavigator> */}
     </NavigationContainer>
   );
 }
