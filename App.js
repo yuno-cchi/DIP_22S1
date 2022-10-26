@@ -103,38 +103,38 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <TabNavigator>
-        <Stack.Navigator initialRouteName={initialPage}
-          screenOptions={{
-            headerShown: false,
-          }}>
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="SignUpPage" component={NewUser} />
-          <Stack.Screen name="SelectUserType" component={selectUserType} />
-          <Stack.Screen
-            name="RiderMapScreen"
-            component={
-              Platform.OS === "ios" ? RiderMapScreen : RiderMapScreen_android
-            }
-          />
-          <Stack.Screen
-            name="DriverPutRoute"
-            component={
-              Platform.OS === "ios"
-                ? DriverPutRouteScreen
-                : DriverPutRouteScreen_Android
-            }
-          />
-          <Stack.Screen
-            name="ReccommendedRouteScreen"
-            component={ReccommendedRouteScreen}
-          />
-          <Stack.Screen
-            name="FinalDriverRouteScreen"
-            component={FinalDriverRouteScreen}
-          />
-        </Stack.Navigator>
-      </TabNavigator>
+      {/* <TabNavigator> */}
+      <Stack.Navigator initialRouteName={"Login"}
+        screenOptions={{
+          headerShown: false,
+        }}>
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="SignUpPage" component={NewUser} />
+        <Stack.Screen name="SelectUserType" component={selectUserType} />
+        <Stack.Screen
+          name="RiderMapScreen"
+          component={
+            Platform.OS === "ios" ? RiderMapScreen : RiderMapScreen_android
+          }
+        />
+        <Stack.Screen
+          name="DriverPutRoute"
+          component={
+            Platform.OS === "ios"
+              ? DriverPutRouteScreen
+              : DriverPutRouteScreen_Android
+          }
+        />
+        <Stack.Screen
+          name="ReccommendedRouteScreen"
+          component={ReccommendedRouteScreen}
+        />
+        <Stack.Screen
+          name="FinalDriverRouteScreen"
+          component={FinalDriverRouteScreen}
+        />
+      </Stack.Navigator>
+      {/* </TabNavigator> */}
     </NavigationContainer>
   );
 }

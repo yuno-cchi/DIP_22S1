@@ -18,9 +18,11 @@ import {
     Text,
     View,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    StyleSheet
 } from "react-native";
 import styles from '../assets/styles/styles.js'
+import { color } from '../Config/Color.js';
 
 export default function SelectUserType({ route, navigation }) {
 
@@ -38,11 +40,11 @@ export default function SelectUserType({ route, navigation }) {
     return (
         <View style={styles.container}>
             <View style={{ height: 90 }} />
-            <Text>Today I am:</Text>
+            <Text style={localStyles.fontStyle}>Today I am</Text>
 
             <View style={{ height: 35 }} />
 
-            <View style={{ flexDirection: "row" }}>
+            <View style={{ flexDirection: "row", marginHorizontal: 5 }}>
                 <TouchableOpacity style={styles.iconButtonBig} onPress={(event) => selectUserType("rider")}>
                     <Image style={styles.buttonIcon} source={require("../assets/img/rider.png")} />
                     <Text style={styles.iconButtonText}>Riding</Text>
@@ -55,3 +57,11 @@ export default function SelectUserType({ route, navigation }) {
         </View>
     );
 }
+
+const localStyles = StyleSheet.create({
+    fontStyle: {
+        fontSize: 50,
+
+        color: color.primary
+    }
+})

@@ -77,6 +77,7 @@ export default StyleSheet.create({
     iconButtonText: {
         textAlign: 'center',
         textAlignVertical: 'center',
+        fontSize: 30
     },
 
     buttonIcon: {
