@@ -103,7 +103,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <TabNavigator>
-        <Stack.Navigator initialRouteName={initialPage}
+        {/* <Stack.Navigator initialRouteName={initialPage} */}
+        <Stack.Navigator initialRouteName={"CalendarScreen"}
         screenOptions={{
           headerShown: false,
         }}>
