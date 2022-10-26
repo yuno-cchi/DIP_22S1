@@ -79,7 +79,7 @@ function DayPlan({ navigation }) {
 
 
   //set to store date no duplicate
-  const [getDbDate, setDbDates] = useState(new Set());
+
 
   //object array for post process
 
