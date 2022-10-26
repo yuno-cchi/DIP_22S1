@@ -158,7 +158,7 @@ export default function Login({ navigation }) {
 
     return (
             <View style={styles.container}>
-                <View style={{height:90}} />
+                <View style={{ height : Platform.OS === 'ios' ? 0 : 90 }} />
                 <Image style={styles.logoView} source={require("../assets/img/logo.png")}/>
                 <StatusBar style="auto"/>
 
