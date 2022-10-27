@@ -44,6 +44,7 @@ import ReccommendedRouteScreen_getroute from "./Screen/ReccommendedRouteScreen_g
 import ReccommendedRouteScreen from "./Screen/ReccommendedRouteScreen";
 import FinalDriverRouteScreen from "./Screen/FinalDriverRouteScreen";
 import DrivingNavigationScreen from "./Screen/DrivingNavigationScreen";
+import CalendarScreen from "./Screen/CalendarScreen";
 import NewUser from "./src/newUser";
 //import TabNavigator from "./Components/AppTabNavigator";
 import SelectUserType from "./src/selectUserType";
@@ -57,6 +58,32 @@ export default function App() {
   const [initialPage, setInitialPage] = useState("Login");
 
   const Stack = createNativeStackNavigator();
+
+  const CalendarScreenTabNavigator = ({ navigation, route }) => {
+    return
+    <Tab.Navigator>
+      <Tab.Screen name="CalendarScreen" component={CalendarScreen} />
+      <Tab.Screen name="PutRouteScreen" component={() => PutRouteScreenSelector(route)} />
+    </Tab.Navigator>
+  }
+
+  const PutRouteScreenSelector = (route) => {
+    if (Platform.OS === 'ios') {
+      if (route.params.userType === 'rider') {
+        return RiderMapScreen
+      } else {
+        return DriverPutRouteScreen
+      }
+    }
+    else {
+      if (route.params.userType === 'rider') {
+        return RiderMapScreen_android
+      } else {
+        return DriverPutRouteScreen_Android
+      }
+    }
+
+  }
 
   useEffect(() => {
     checkLoginState();

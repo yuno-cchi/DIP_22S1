@@ -30,9 +30,9 @@ export default function SelectUserType({ route, navigation }) {
     const selectUserType = (userType) => {
         userParams.userType = userType
         if (userType === "rider") {
-            navigation.navigate("RiderMapScreen", userParams);
+            navigation.navigate("RiderMapScreen", [...userParams, userType]);
         } else {
-            navigation.navigate("DriverPutRoute", userParams);
+            navigation.navigate("DriverPutRoute", [...userParams, userType]);
         }
 
     }

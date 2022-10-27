@@ -262,14 +262,22 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
     const selectThisCard = (selectedRouteId) => {
 
         let tempRoute2 = selectedRoute;
-        if (selectedRouteId.selected === false) {
+        if (selectedRouteId.selected === false && selectCount < 3) {
             tempRoute2.push(initialDummyRoute.filter(prop => prop.routeId === selectedRouteId.routeId));
             setSelectedRoute(tempRoute2);
             selectCount++;
-        } else {
+        } else if (selectedRouteId.selected === true) {
             tempRoute2.pop(initialDummyRoute.filter(prop => prop.routeId === selectedRouteId.routeId));
             setSelectedRoute(tempRoute2);
             selectCount--;
+        } else {
+            Alert.alert(
+                "Alert",
+                "You've reached the limit!",
+                [
+                    { text: "OK", onPress: () => console.log("OK Pressed") }
+                ]
+            );
         }
         //console.log(selectedRouteId)
         selectedRouteId.selected = !selectedRouteId.selected;
