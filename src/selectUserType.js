@@ -21,6 +21,7 @@ import {
     TouchableOpacity,
     StyleSheet
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import styles from '../assets/styles/styles.js'
 import { color } from '../Config/Color.js';
 
@@ -28,14 +29,14 @@ export default function SelectUserType({ route, navigation }) {
 
     const userParams = route.params;
     const selectUserType = (userType) => {
-        userParams.userType = userType
         if (userType === "rider") {
-            navigation.navigate("RiderMapScreen", [...userParams, userType]);
+            navigation.navigate("CalendarScreenTabNavigator_Rider", userParams);
         } else {
-            navigation.navigate("DriverPutRoute", [...userParams, userType]);
+            navigation.navigate("CalendarScreenTabNavigator_Driver", userParams);
         }
 
     }
+
 
     return (
         <View style={styles.container}>

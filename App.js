@@ -33,6 +33,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import DatePicker from "react-native-date-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from "@react-navigation/native";
 import DriverPutRouteScreen_Android from "./Screen/DriverPutRouteScreen_Android";
 import DriverPutRouteScreen from "./Screen/DriverPutRouteScreen";
@@ -44,10 +45,13 @@ import ReccommendedRouteScreen_getroute from "./Screen/ReccommendedRouteScreen_g
 import ReccommendedRouteScreen from "./Screen/ReccommendedRouteScreen";
 import FinalDriverRouteScreen from "./Screen/FinalDriverRouteScreen";
 import DrivingNavigationScreen from "./Screen/DrivingNavigationScreen";
+import CalendarScreenTabNavigator from "./Screen/CalendarScreen";
 import CalendarScreen from "./Screen/CalendarScreen";
 import NewUser from "./src/newUser";
 //import TabNavigator from "./Components/AppTabNavigator";
 import SelectUserType from "./src/selectUserType";
+import CalendarScreenTabNavigator_Driver from "./Screen/CalendarScreen_Driver";
+import CalendarScreenTabNavigator_Rider from "./Screen/CalendarScreen_Rider";
 //navigator.geolocation = require('react-native-geolocation-service');
 
 export default function App() {
@@ -59,31 +63,9 @@ export default function App() {
 
   const Stack = createNativeStackNavigator();
 
-  const CalendarScreenTabNavigator = ({ navigation, route }) => {
-    return
-    <Tab.Navigator>
-      <Tab.Screen name="CalendarScreen" component={CalendarScreen} />
-      <Tab.Screen name="PutRouteScreen" component={() => PutRouteScreenSelector(route)} />
-    </Tab.Navigator>
-  }
 
-  const PutRouteScreenSelector = (route) => {
-    if (Platform.OS === 'ios') {
-      if (route.params.userType === 'rider') {
-        return RiderMapScreen
-      } else {
-        return DriverPutRouteScreen
-      }
-    }
-    else {
-      if (route.params.userType === 'rider') {
-        return RiderMapScreen_android
-      } else {
-        return DriverPutRouteScreen_Android
-      }
-    }
 
-  }
+
 
   useEffect(() => {
     checkLoginState();
@@ -133,7 +115,7 @@ export default function App() {
       {/* <TabNavigator> */}
       <Stack.Navigator initialRouteName={"Login"}
         screenOptions={{
-          headerShown: false,
+          headerShown: true,
         }}>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="SignUpPage" component={NewUser} />
@@ -159,6 +141,14 @@ export default function App() {
         <Stack.Screen
           name="FinalDriverRouteScreen"
           component={FinalDriverRouteScreen}
+        />
+        <Stack.Screen
+          name="CalendarScreenTabNavigator_Driver"
+          component={CalendarScreenTabNavigator_Driver}
+        />
+        <Stack.Screen
+          name="CalendarScreenTabNavigator_Rider"
+          component={CalendarScreenTabNavigator_Rider}
         />
       </Stack.Navigator>
       {/* </TabNavigator> */}
