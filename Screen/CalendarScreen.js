@@ -96,6 +96,42 @@ function DayPlan({ navigation }) {
       </View>
     );
   }
+
+  // setTimeout(() => {
+  //   setShowPlan(true);
+  //   console.log("my displayplan after 2s,", displayPlan);
+  //   // return (
+  //   //   <View style={styles.plan}>
+  //   //     <View style={styles.component}>{displayPlan}</View>
+  //   //   </View>
+  //   // );
+  // }, 2000);
+
+  // useEffect(() => {
+  //   console.log("use effect");
+  //   showDayPlan();
+  // }, [showPlan]);
+  // }
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     console.log("useeffect now", displayPlan);
+
+  //     if (displayPlan != null) {
+  //       setShowPlan(true);
+  //     }
+  //     //console.log("i suppose to be end ", displayPlan);
+  //     return (
+  //       <View style={styles.plan}>
+  //         <View style={styles.component}>{displayPlan}</View>
+  //       </View>
+  //     );
+  //   }, 2000);
+  // }, [showPlan]);
+}
+
+function MarkCalender() {
+  for (let i = 0; i < dayDataLen; i++) {}
 }
 
 function CalendarScreen({ navigation }) {

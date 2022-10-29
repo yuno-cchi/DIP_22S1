@@ -18,34 +18,50 @@ import {
     Text,
     View,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    StyleSheet
 } from "react-native";
 import styles from '../assets/styles/styles.js'
+import { color } from '../Config/Color.js';
 
 export default function SelectUserType({ route, navigation }) {
 
     const userParams = route.params;
     const selectUserType = (userType) => {
-        userParams.userType=userType
-        navigation.navigate("DebugViewer", userParams);
+        userParams.userType = userType
+        if (userType === "rider") {
+            navigation.navigate("RiderMapScreen", userParams);
+        } else {
+            navigation.navigate("DriverPutRoute", userParams);
+        }
+
     }
 
     return (
         <View style={styles.container}>
-            <Text>Today I am:</Text>
+            <View style={{ height: 90 }} />
+            <Text style={localStyles.fontStyle}>Today I am</Text>
 
-            <View style={{height:35}}/>
+            <View style={{ height: 35 }} />
 
-            <View style={{flexDirection:"row"}}>
+            <View style={{ flexDirection: "row", marginHorizontal: 5 }}>
                 <TouchableOpacity style={styles.iconButtonBig} onPress={(event) => selectUserType("rider")}>
-                    <Image style={styles.buttonIcon} source={require("../assets/img/rider.png")}/>
+                    <Image style={styles.buttonIcon} source={require("../assets/img/rider.png")} />
                     <Text style={styles.iconButtonText}>Riding</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.iconButtonBig} onPress={(event) => selectUserType("driver")}>
-                    <Image style={styles.buttonIcon} source={require("../assets/img/driver.png")}/>
+                    <Image style={styles.buttonIcon} source={require("../assets/img/driver.png")} />
                     <Text style={styles.iconButtonText}>Driving</Text>
                 </TouchableOpacity>
             </View>
         </View>
     );
 }
+
+const localStyles = StyleSheet.create({
+    fontStyle: {
+        fontSize: 50,
+
+        color: color.primary
+    }
+})

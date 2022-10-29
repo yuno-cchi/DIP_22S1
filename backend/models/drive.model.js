@@ -6,7 +6,6 @@ const Schema = mongoose.Schema;
 const driveSchema = new Schema({
     routeUserID:{ //to store userID/username from session inside
         type: String,
-        unique: false,
         trim: true
     },
     start:{

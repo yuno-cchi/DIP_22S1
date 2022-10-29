@@ -314,7 +314,7 @@ const styles = StyleSheet.create({
     },
     searchBar: {
         position: 'absolute',
-        marginTop: 60,
+        marginTop: 40,
         right: 20
     },
     dashButton: {
