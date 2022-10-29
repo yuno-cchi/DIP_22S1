@@ -33,6 +33,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import DatePicker from "react-native-date-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import DriverPutRouteScreen_Android from "./Screen/DriverPutRouteScreen_Android";
 import DriverPutRouteScreen from "./Screen/DriverPutRouteScreen";
@@ -44,9 +45,13 @@ import ReccommendedRouteScreen_getroute from "./Screen/ReccommendedRouteScreen_g
 import ReccommendedRouteScreen from "./Screen/ReccommendedRouteScreen";
 import FinalDriverRouteScreen from "./Screen/FinalDriverRouteScreen";
 import DrivingNavigationScreen from "./Screen/DrivingNavigationScreen";
+import CalendarScreenTabNavigator from "./Screen/CalendarScreen";
+import CalendarScreen from "./Screen/CalendarScreen";
 import NewUser from "./src/newUser";
 //import TabNavigator from "./Components/AppTabNavigator";
 import SelectUserType from "./src/selectUserType";
+import CalendarScreenTabNavigator_Driver from "./Screen/CalendarScreen_Driver";
+import CalendarScreenTabNavigator_Rider from "./Screen/CalendarScreen_Rider";
 //navigator.geolocation = require('react-native-geolocation-service');
 
 export default function App() {
@@ -102,7 +107,13 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={"Login"}>
+      {/* <TabNavigator> */}
+      <Stack.Navigator
+        initialRouteName={"Login"}
+        screenOptions={{
+          headerShown: true,
+        }}
+      >
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="SignUpPage" component={NewUser} />
         <Stack.Screen name="SelectUserType" component={selectUserType} />
@@ -128,10 +139,13 @@ export default function App() {
           name="FinalDriverRouteScreen"
           component={FinalDriverRouteScreen}
         />
-        <Stack.Screen name="TypeSelect" component={selectUserType} />
         <Stack.Screen
-          name="DrivingNavigationScreen"
-          component={DrivingNavigationScreen}
+          name="CalendarScreenTabNavigator_Driver"
+          component={CalendarScreenTabNavigator_Driver}
+        />
+        <Stack.Screen
+          name="CalendarScreenTabNavigator_Rider"
+          component={CalendarScreenTabNavigator_Rider}
         />
       </Stack.Navigator>
     </NavigationContainer>

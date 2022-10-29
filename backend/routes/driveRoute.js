@@ -9,15 +9,17 @@ router.route('/').get((req, res) => {
 
 router.route('/add').post((req, res) => {
   const routeUserID = req.body.routeUserID;
+  const startName = req.body.startName;
   const start = req.body.start;
   const destination = req.body.destination;
+  const destinationName = req.body.destinationName;
   const date = req.body.date;
   const price = req.body.price;
   const centroid = req.body.centroid;
   const selected = req.body.selected;
   const routeIdPair = req.body.routeIdPair;
 
-  const newRide = new Drive({ routeUserID: routeUserID, start: start, destination: destination, date: date, price: price, centroid: centroid, selected: selected, routeIdPair: routeIdPair});
+  const newRide = new Drive({ routeUserID: routeUserID, startName: startName, start: start, destinationName: destinationName, destination: destination, date: date, price: price, centroid: centroid, selected: selected, routeIdPair: routeIdPair});
 
   newRide.save()
     .then(response => res.json(response))
@@ -29,7 +31,9 @@ router.route('/update/:id').post((req, res) => {
   Drive.findById(req.params.id)
     .then(driver => {
       driver.routeUserID = req.body.routeUserID;
+      driver.startName = req.body.startName;
       driver.start = req.body.start;
+      driver.destinationName = req.body.destinationName;
       driver.destination = req.body.destination;
       driver.date = req.body.date;
       driver.price = req.body.price;

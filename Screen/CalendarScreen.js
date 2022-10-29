@@ -5,19 +5,25 @@ import data from "./calendarData.json";
 import mydata from "./dayTripData.json";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PlanList from "../Components/PlanList";
 import { FlatList } from "react-native";
 import { color } from "../Config/Color";
 import axios from "axios";
 import mydates from "./GetDriveData";
+import RiderMapScreen from "./RiderMapScreen";
+import DriverPutRouteScreen from "./DriverPutRouteScreen";
+import DriverPutRouteScreen_Android from "./DriverPutRouteScreen_Android";
+import RiderMapScreen_android from "./RiderMapScreen_android";
 //import drivedata from "./GetDriveData";
 
-const Stack = createNativeStackNavigator();
+
 var dataLen = Object.keys(data).length;
 var dayDataLen = Object.keys(mydata).length;
 var selectedday;
 let drivedata;
 
+<<<<<<< HEAD
 const CalendarNavigator = () => (
   <Stack.Navigator initialRouteName="CalendarScreen">
     <Stack.Screen name="CalendarScreen" component={CalendarScreen} />
@@ -25,13 +31,64 @@ const CalendarNavigator = () => (
     {/* <Stack.Screen name="DayPlan" component={PlannedRouteDetails} /> */}
   </Stack.Navigator>
 );
+=======
+async function axiosTest(displayPlan, selectedday) {
+  await axios
+    .get("http://secret-caverns-21869.herokuapp.com/ride")
+    .then(function (response) {
+      for (let i = 0; i < dayDataLen; i++) {
+        let thisRoute = response.data[i];
+        console.log("selected date", Object.values(selectedday)[4]);
+        //has to use [4] to get date string
+        if (Object.values(selectedday)[4] == thisRoute.date.slice(0, 10)) {
+          console.log("display in loop ", thisRoute.routename);
+
+          displayPlan.push(
+            <View>
+              <PlanList
+                title={thisRoute.date}
+                key={thisRoute.routename}
+                user={thisRoute.routename}
+              //style={thisRoute.selected}
+              />
+            </View>
+          );
+        }
+
+        //console.log("in display", displayPlan);
+      }
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+
+// const CalendarNavigator = () => (
+//   <Stack.Navigator initialRouteName="CalendarScreen">
+//     <Stack.Screen name="CalendarScreen" component={CalendarScreen} />
+//     <Stack.Screen name="DayPlan" component={DayPlan} />
+//     {/* <Stack.Screen name="DayPlan" component={PlannedRouteDetails} /> */}
+//   </Stack.Navigator>
+// );
+>>>>>>> a9625553edc27100eb3bca922c88a9ef5292c4c1
 
 function DayPlan({ navigation }) {
   let displayPlan = [];
   const [forDisplay, setForDisplay] = useState();
   const [isLoading, setLoading] = useState(true);
   //axiosTest(displayPlan, selectedday);
+<<<<<<< HEAD
   //console.log("can i get my dates?", mydates);
+=======
+  console.log("can i get my dates?", mydates);
+
+
+  //set to store date no duplicate
+
+
+  //object array for post process
+
+>>>>>>> a9625553edc27100eb3bca922c88a9ef5292c4c1
 
   useEffect(() => {
     axios
@@ -48,8 +105,8 @@ function DayPlan({ navigation }) {
             displayPlan.push(
               <View>
                 <PlanList
-                  start={thisRoute.start.latitude}
-                  destination={thisRoute.destination.latitude}
+                  start={thisRoute.startName}
+                  destination={thisRoute.destinationName}
                   key={thisRoute._id}
                   user={thisRoute.routename}
                   price="$15"
@@ -70,6 +127,17 @@ function DayPlan({ navigation }) {
             setLoading(false);
           }, 300);
         }
+<<<<<<< HEAD
+=======
+
+        let arr = Array.from(dateColect);
+        arr = arr.map(i => i + ": { 'marked': true, 'selectedColor': 'blue'}")
+
+        console.log(JSON.stringify(arr));
+
+        setGetDates(JSON.stringify(arr));
+
+>>>>>>> a9625553edc27100eb3bca922c88a9ef5292c4c1
       });
   }, []);
 
@@ -134,7 +202,45 @@ function MarkCalender() {
   for (let i = 0; i < dayDataLen; i++) {}
 }
 
-function CalendarScreen({ navigation }) {
+const PutRouteScreenSelector = (route) => {
+
+
+  console.log(route.params.userType)
+
+  if (Platform.OS === 'ios') {
+    if (route.params.userType === 'rider') {
+      return RiderMapScreen
+    } else {
+      return DriverPutRouteScreen
+    }
+  }
+  else {
+    if (route.params.userType === 'rider') {
+      return RiderMapScreen_android
+    } else {
+      return DriverPutRouteScreen_Android
+    }
+  }
+
+}
+
+const CalendarScreenTabNavigator = ({ navigation, route }) => {
+  const Tab = createBottomTabNavigator();
+  if (route === undefined) {
+    route.params.userType = 'rider' //Set default
+  }
+
+  return (
+    <Tab.Navigator initialRouteName="Calendar">
+      <Tab.Screen name="Calendar" component={CalendarScreen} />
+      <Tab.Screen name="PutRouteScreen" >
+        {() => <PutRouteScreenSelector route={route} />}
+      </Tab.Screen>
+    </Tab.Navigator>
+  )
+}
+
+function CalendarScreen({ navigation, route }) {
   let today = new Date();
   let tryPlanning = new Date();
   tryPlanning.setMonth(tryPlanning.getMonth() + 1);
@@ -153,8 +259,17 @@ function CalendarScreen({ navigation }) {
           let thisRoute = response.data[i];
           let myDate = thisRoute.date.slice(0, 10);
 
+<<<<<<< HEAD
           dateColect.add(myDate);
           console.log("this date?", dateColect);
+=======
+          dateColect.add(thisRoute.date.slice(0, 10));
+
+          //setDbDates()
+          //has to use [4] to get date string
+          console.log("this date?", response.data[i]);
+
+>>>>>>> a9625553edc27100eb3bca922c88a9ef5292c4c1
 
           setTimeout(() => {
             setLoading(false);
@@ -164,6 +279,7 @@ function CalendarScreen({ navigation }) {
         console.log(dateColect);
         let arr = Array.from(dateColect);
         //obj = Object.assign({arr}, "{'marked': true, 'selectedColor': 'blue'}");
+<<<<<<< HEAD
         let obj = {};
         arr.forEach((elem, i) => {
           //obj[{${arr[i]}] = "{'marked': true, 'selectedColor': 'blue'}"
@@ -171,6 +287,26 @@ function CalendarScreen({ navigation }) {
         });
 
         console.log("dd", obj);
+=======
+        obj = {};
+        arr.forEach((elem, i) => {
+          //obj[{${arr[i]}] = "{'marked': true, 'selectedColor': 'blue'}" 
+          obj[`${arr[i]}`] = { 'marked': true, 'selectedColor': 'blue' }
+        });
+
+        console.log("dd", obj)
+        let addedarr = [];
+
+        // for (var i = 0 ; i < arr.length; i++){
+        //     addedarr.push({ arr[i]: {'marked': true, 'selectedColor': 'blue'}})
+        // }
+
+        // arr = JSON.stringify(arr)
+        //dateColect = dateColect.map(i => i + ": {'marked': true, 'selectedColor': 'blue'}")
+
+
+        //console.log(JSON.stringify(arr));
+>>>>>>> a9625553edc27100eb3bca922c88a9ef5292c4c1
 
         setGetDates(obj);
       });
@@ -277,4 +413,4 @@ const styles = StyleSheet.create({
   noplan: {},
 });
 
-export default CalendarNavigator;
+export default CalendarScreenTabNavigator;
