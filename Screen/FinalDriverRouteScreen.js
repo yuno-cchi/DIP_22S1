@@ -8,68 +8,83 @@ import AppButton from '../Components/AppButton';
 import { color } from '../Config/Color';
 import BottomTab from '../Components/BottomTab';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Notifications from 'expo-notifications';
 import axios from "axios";
 
-const storeInDatabase = async (
-    startLocation,
-    endLocation,
-    date = null,
-    userID = null,
-    description = ""
-) => {
-    console.log("adding to database");
+const storeInDrive = async (start, end, date, startN, endN, selectedRoute) => {
+    console.log("adding to drives table")
 
-    console.log("Start: ");
-    console.log(startLocation);
+    console.log("Start: ")
+    console.log(start)
 
-    console.log("Destination: ");
-    console.log(endLocation);
+    console.log("Destination: ")
+    console.log(end)
 
-    console.log("Date: ");
-    console.log(date);
+    console.log("Date: ")
+    console.log(date)
 
-    console.log("Route description: ", description)
+    console.log("waypoints: ");
+    console.log(selectedRoute);
 
-    //userID has to be retrieved from the login
-    let centroid = {
-        latitude: (startLocation.latitude + endLocation.latitude) / 2.0,
-        longitude: (startLocation.longitude + endLocation.longitude) / 2.0,
-    };
-
-    console.log("userID: ");
+    console.log("userID: ")
     // if (userID === null) {
     //     userID = "user" + Math.floor(Math.random() * 100);
     // }
-
     userID = await AsyncStorage.getItem("userId");
+    console.log(userID)
 
-    console.log(userID);
+    console.log("centroid: ")
+    centroid = { latitude: (start.latitude + end.latitude) / 2.0, longitude: (start.longitude + end.longitude) / 2.0, };
+    console.log(centroid);
 
+
+    //define an array for storing all the selectedRoute ids
+    let selectedRideIDs = []
+
+    //getting id of route and updating selected to true
+    console.log("list all ids: ");
+    for (let x = 0; x < selectedRoute.length; x++) {
+        //TODO: update 'ride' table w DriverID: drives's _id and selected: true
+        console.log(selectedRoute[x].routeId);
+
+        selectedRideIDs.push(selectedRoute[x].routeId);
+
+    }
+
+    console.log(selectedRideIDs);
+
+
+    //TODO: use axios to post into database
     axios({
-        method: "post",
-        url: "http://secret-caverns-21869.herokuapp.com/ride/add",
+        method: 'post',
+        url: 'http://secret-caverns-21869.herokuapp.com/drive/add',
         headers: {},
         data: {
-            routename: userID,
-            start: startLocation,
-            destination: endLocation,
+            routeUserID: userID, //routeUserID
+            startName: startN,
+            start: start,
+            destinationName: endN,
+            destination: end,
             centroid: centroid,
             date: date,
             selected: false,
-            userID: null,
-            routeDescription: description
-
-        },
-    }).then(
-        (response) => {
-            console.log(response);
-
-        },
-        (error) => {
-            console.log(error);
+            routeIdPair: selectedRideIDs
         }
-    );
-};
+    }).then((response) => {
+        console.log(response);
+        console.log(response.data);
+
+        console.log(response.data._id);
+
+        updateRideTable(selectedRoute, selectedRideIDs, response.data._id, userID)
+
+        // navigateToRecc() //navigate to FinalDriverRouteScreen
+
+
+    }, (error) => {
+        console.log(error);
+    })
+}
 
 
 const GOOGLE_API_KEY = 'AIzaSyBYDEKY12RzWyP0ACQEpgsr4up2w3CjH88';
@@ -95,6 +110,28 @@ const getWaypoints = (routeParams) => {
         })
     }
     return tempWaypoints
+}
+
+async function schedulePushNotification(timeLeft) {
+    await Notifications.scheduleNotificationAsync({
+        content: {
+            title: "Don't forget your ride",
+            body: 'Here is the notification body',
+            data: { data: 'goes here' },
+        },
+        trigger: { seconds: timeLeft - (86400 / 2) },
+    });
+}
+
+const timeToNotify = (selectedDate) => {
+    console.log(selectedDate)
+    let timeThen = new Date(selectedDate)
+    let timeNow = new Date()
+    let dateDiff = timeThen - timeNow
+    dateDiff = dateDiff / 1000
+    dateDiff = Math.round(dateDiff)
+    return dateDiff
+    //Notify 2 hours before the ride
 }
 
 
@@ -165,7 +202,28 @@ export default function FinalDriverRouteScreen({ navigation, route }) {
             <BottomTab style={styles.bottomTab}>
                 <AppButton
                     title={'Confirm'}
-                    onPress={() => { console.log(route.params) }} />
+                    onPress={() => {
+                        schedulePushNotification(timeToNotify(route.params.selectedDate))
+                        storeInDrive(
+                            start = route.params.startLocation,
+                            end = route.params.endLocation,
+                            userID = route.params.userId,
+                            date = route.params.selectedDate,
+                            selectedRoute = getWaypoints(routeWaypoints)
+                        )
+                        navigation.navigate('CalendarScreenTabNavigator_Driver')
+                        // routeUserID: userID, //routeUserID
+                        // startName: startN,
+                        // start: start,
+                        // destinationName: endN,
+                        // destination: end,
+                        // centroid: centroid,
+                        // date: date,
+                        // selected: false,
+                        // routeIdPair: selectedRideIDs
+
+                    }} />
+
             </BottomTab>
 
 

@@ -139,80 +139,7 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
 
 
 
-    const storeInDrive = async (start, end, date, startN, endN, selectedRoute) => {
-        console.log("adding to drives table")
 
-        console.log("Start: ")
-        console.log(start)
-
-        console.log("Destination: ")
-        console.log(end)
-
-        console.log("Date: ")
-        console.log(date)
-
-        console.log("waypoints: ");
-        console.log(selectedRoute);
-
-        console.log("userID: ")
-        // if (userID === null) {
-        //     userID = "user" + Math.floor(Math.random() * 100);
-        // }
-        userID = await AsyncStorage.getItem("userId");
-        console.log(userID)
-
-        console.log("centroid: ")
-        centroid = { latitude: (start.latitude + end.latitude) / 2.0, longitude: (start.longitude + end.longitude) / 2.0, };
-        console.log(centroid);
-
-
-        //define an array for storing all the selectedRoute ids
-        let selectedRideIDs = []
-
-        //getting id of route and updating selected to true
-        console.log("list all ids: ");
-        for (let x = 0; x < selectedRoute.length; x++) {
-            //TODO: update 'ride' table w DriverID: drives's _id and selected: true
-            console.log(selectedRoute[x].routeId);
-
-            selectedRideIDs.push(selectedRoute[x].routeId);
-
-        }
-
-        console.log(selectedRideIDs);
-
-
-        //TODO: use axios to post into database
-        axios({
-            method: 'post',
-            url: 'http://secret-caverns-21869.herokuapp.com/drive/add',
-            headers: {},
-            data: {
-                routeUserID: userID, //routeUserID
-                startName: startN,
-                start: start,
-                destinationName: endN,
-                destination: end,
-                centroid: centroid,
-                date: date,
-                selected: false,
-                routeIdPair: selectedRideIDs
-            }
-        }).then((response) => {
-            console.log(response);
-            console.log(response.data);
-
-            console.log(response.data._id);
-
-            updateRideTable(selectedRoute, selectedRideIDs, response.data._id, userID)
-
-            // navigateToRecc() //navigate to FinalDriverRouteScreen
-
-
-        }, (error) => {
-            console.log(error);
-        })
-    }
 
     //update 'ride' table w DriverID: drives's _id and selected: true
     async function updateRideTable(selectedRoute, selectedRideIDs, driveID, driveruserID) {
@@ -357,6 +284,7 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
 
 
 
+
     const sortedRoutes = getBestRoutes(initialDummyRoute, route.params)
     //console.log("Route parrams", route.params.centroid)
     return (
@@ -396,16 +324,16 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
                             // console.log("Hello there")
                             console.log(tempSelectedRoute)
 
-                            storeInDrive(route.params.startLocation, route.params.endLocation, route.params.selectedDate, route.params.startName, route.params.endName, tempSelectedRoute)
+                            //storeInDrive(route.params.startLocation, route.params.endLocation, route.params.selectedDate, route.params.startName, route.params.endName, tempSelectedRoute)
 
 
-                            // navigation.navigate('FinalDriverRouteScreen', {
-                            //     startLocation: route.params.startLocation,
-                            //     endLocation: route.params.endLocation,
-                            //     selectedDate: route.params.selectedDate,
-                            //     userId: route.params.userId,
-                            //     waypoints: tempSelectedRoute
-                            // })
+                            navigation.navigate('FinalDriverRouteScreen', {
+                                startLocation: route.params.startLocation,
+                                endLocation: route.params.endLocation,
+                                selectedDate: route.params.selectedDate,
+                                userId: route.params.userId,
+                                waypoints: tempSelectedRoute
+                            })
 
                         }
                     }

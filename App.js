@@ -21,6 +21,7 @@ import {
   Platform,
 } from "react-native";
 import Login from "./src/login";
+
 import { TouchableOpacity } from "react-native";
 import TopTab from "./Components/TopTab";
 import SearchBar from "./Components/SearchBar";
@@ -52,6 +53,8 @@ import NewUser from "./src/newUser";
 import SelectUserType from "./src/selectUserType";
 import CalendarScreenTabNavigator_Driver from "./Screen/CalendarScreen_Driver";
 import CalendarScreenTabNavigator_Rider from "./Screen/CalendarScreen_Rider";
+import PushNotification from "./Screen/PushNotification";
+import DayPlan_test from "./Screen/DayPlan_test";
 //navigator.geolocation = require('react-native-geolocation-service');
 
 export default function App() {
@@ -146,6 +149,14 @@ export default function App() {
         <Stack.Screen
           name="CalendarScreenTabNavigator_Rider"
           component={CalendarScreenTabNavigator_Rider}
+        />
+        <Stack.Screen
+          name="PushNotification"
+          component={PushNotification}
+        />
+        <Stack.Screen
+          name="DayPlan_test"
+          component={DayPlan_test}
         />
       </Stack.Navigator>
     </NavigationContainer>

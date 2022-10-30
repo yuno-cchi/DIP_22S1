@@ -55,13 +55,13 @@ async function axiosTest(displayPlan, selectedday) {
         });
 }
 
-// const CalendarNavigator = () => (
-//   <Stack.Navigator initialRouteName="CalendarScreen">
-//     <Stack.Screen name="CalendarScreen" component={CalendarScreen} />
-//     <Stack.Screen name="DayPlan" component={DayPlan} />
-//     {/* <Stack.Screen name="DayPlan" component={PlannedRouteDetails} /> */}
-//   </Stack.Navigator>
-// );
+const CalendarNavigator = () => (
+    <Stack.Navigator initialRouteName="CalendarScreen">
+        <Stack.Screen name="CalendarScreen" component={CalendarScreen} />
+        <Stack.Screen name="DayPlan" component={DayPlan} />
+        {/* <Stack.Screen name="DayPlan" component={PlannedRouteDetails} /> */}
+    </Stack.Navigator>
+);
 
 function showDayPlan(displayPlan) {
     console.log("inside showdayplan", displayPlan);
@@ -239,7 +239,6 @@ const CalendarScreenTabNavigator_Driver = ({ navigation, route }) => {
         }}>
             <Tab.Screen name="Calendar" component={CalendarScreen} />
             <Tab.Screen name="DriverMap" component={DriverPutRouteScreen}>
-                {/* {() => <PutRouteScreenSelector route={route} />} */}
             </Tab.Screen>
         </Tab.Navigator>
     )
@@ -331,7 +330,7 @@ function CalendarScreen({ navigation, route }) {
                 onDayPress={(day) => {
                     //setPickday(day);
                     selectedday = day;
-                    navigation.push("DayPlan");
+                    navigation.push("DayPlan_test");
                 }}
                 onDayLongPress={(day) => {
                     console.log("selected day", day);
@@ -393,6 +392,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: "center",
+        backgroundColor: 'white'
     },
     plan: {
         flex: 2,
