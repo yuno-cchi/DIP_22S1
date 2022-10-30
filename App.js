@@ -74,6 +74,7 @@ export default function App() {
   async function checkLoginState() {
     console.log("wait");
 
+
     AsyncStorage.removeItem("isLoggedIn");
     AsyncStorage.removeItem("userId");
 
@@ -110,13 +111,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      {/* <TabNavigator> */}
-      <Stack.Navigator
-        initialRouteName={"Login"}
-        screenOptions={{
-          headerShown: true,
-        }}
-      >
+      <Stack.Navigator initialRouteName={"Login"}>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="SignUpPage" component={NewUser} />
         <Stack.Screen name="SelectUserType" component={selectUserType} />
@@ -143,24 +138,13 @@ export default function App() {
           component={FinalDriverRouteScreen}
         />
         <Stack.Screen
-          name="CalendarScreenTabNavigator_Driver"
-          component={CalendarScreenTabNavigator_Driver}
+          name="TypeSelect"
+          component={selectUserType}
         />
         <Stack.Screen
-          name="CalendarScreenTabNavigator_Rider"
-          component={CalendarScreenTabNavigator_Rider}
+          name="DrivingNavigationScreen"
+          component={DrivingNavigationScreen}
         />
-        <Stack.Screen
-          name="PushNotification"
-          component={PushNotification}
-        />
-        <Stack.Screen
-          name="DayPlan_test"
-          component={DayPlan_test}
-        />
-        <Stack.Screen
-          name="CalendarScreen"
-          component={CalendarScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

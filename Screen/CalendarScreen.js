@@ -54,13 +54,26 @@ async function axiosTest(displayPlan, selectedday) {
     });
 }
 
-// const CalendarNavigator = () => (
-//   <Stack.Navigator initialRouteName="CalendarScreen">
-//     <Stack.Screen name="CalendarScreen" component={CalendarScreen} />
-//     <Stack.Screen name="DayPlan" component={DayPlan} />
-//     {/* <Stack.Screen name="DayPlan" component={PlannedRouteDetails} /> */}
-//   </Stack.Navigator>
-// );
+const CalendarNavigator = () => (
+  <Stack.Navigator initialRouteName="CalendarScreen">
+    <Stack.Screen name="CalendarScreen" component={CalendarScreen} />
+    <Stack.Screen name="DayPlan" component={DayPlan} />
+    {/* <Stack.Screen name="DayPlan" component={PlannedRouteDetails} /> */}
+  </Stack.Navigator>
+);
+
+function showDayPlan(displayPlan) {
+  console.log("inside showdayplan", displayPlan);
+
+  return (
+    <View style={styles.plan}>
+      <ScrollView>
+        <View style={styles.component}>{displayPlan}</View>
+      </ScrollView>
+    </View>
+  );
+}
+
 
 function DayPlan({ navigation }) {
   let displayPlan = [];
@@ -71,20 +84,28 @@ function DayPlan({ navigation }) {
 
 
   //set to store date no duplicate
-
+  const [getDbDate, setDbDates] = useState(new Set());
 
   //object array for post process
 
 
   useEffect(() => {
+
+    let dateColect = new Set();
+    let returnRouteObjectArray = [];
+
     axios
       .get("http://secret-caverns-21869.herokuapp.com/ride")
       .then((response) => {
         //console.log("resp", response.data.length);
         for (let i = 0; i < response.data.length; i++) {
           let thisRoute = response.data[i];
-          console.log("this date?", response.data[i]);
 
+          dateColect.add(thisRoute.date.slice(0, 10));
+
+          //setDbDates()
+          //has to use [4] to get date string
+          console.log("this date?", response.data[i]);
           if (Object.values(selectedday)[4] === thisRoute.date.slice(0, 10)) {
             console.log("select", Object.values(selectedday)[4]);
             console.log("route ", thisRoute.date.slice(0, 10));
@@ -105,7 +126,8 @@ function DayPlan({ navigation }) {
               </View>
             );
           }
-          //console.log("in display", displayPlan);
+
+          console.log("in display", displayPlan);
           setForDisplay(displayPlan);
           console.log("for display?", forDisplay);
 
@@ -191,11 +213,16 @@ function CalendarScreen({ navigation, route }) {
   let tryPlanning = new Date();
   tryPlanning.setMonth(tryPlanning.getMonth() + 1);
 
+
   const [isLoading, setLoading] = useState(true);
   const [getDates, setGetDates] = useState([]);
 
+
+
   useEffect(() => {
+
     let dateColect = new Set();
+    let returnRouteObjectArray = [];
 
     axios
       .get("http://secret-caverns-21869.herokuapp.com/ride")
@@ -203,7 +230,6 @@ function CalendarScreen({ navigation, route }) {
         //console.log("resp", response.data.length);
         for (let i = 0; i < response.data.length; i++) {
           let thisRoute = response.data[i];
-          let myDate = thisRoute.date.slice(0, 10);
 
           dateColect.add(thisRoute.date.slice(0, 10));
 
@@ -217,7 +243,7 @@ function CalendarScreen({ navigation, route }) {
           }, 300);
         }
 
-        console.log(dateColect);
+        console.log(dateColect)
         let arr = Array.from(dateColect);
         //obj = Object.assign({arr}, "{'marked': true, 'selectedColor': 'blue'}");
         obj = {};
@@ -240,6 +266,7 @@ function CalendarScreen({ navigation, route }) {
         //console.log(JSON.stringify(arr));
 
         setGetDates(obj);
+
       });
   }, []);
 
