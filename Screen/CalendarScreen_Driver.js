@@ -285,7 +285,7 @@ function CalendarScreen({ navigation, route }) {
                     obj = {};
                     arr.forEach((elem, i) => {
                         //obj[{${arr[i]}] = "{'marked': true, 'selectedColor': 'blue'}" 
-                        obj[`${arr[i]}`] = { 'marked': true, 'selectedColor': 'blue' }
+                        obj[`${arr[i]}`] = { 'marked': true, 'selectedColor': 'red' }
                     });
 
                     console.log("dd", obj)

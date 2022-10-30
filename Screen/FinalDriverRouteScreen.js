@@ -30,7 +30,7 @@ const storeInDrive = async (start, end, date, startN, endN, selectedRoute) => {
     // if (userID === null) {
     //     userID = "user" + Math.floor(Math.random() * 100);
     // }
-    userID = await AsyncStorage.getItem("userId");
+    const userID = await AsyncStorage.getItem("userId");
     console.log(userID)
 
     console.log("centroid: ")
@@ -153,10 +153,11 @@ async function schedulePushNotification(timeLeft) {
     await Notifications.scheduleNotificationAsync({
         content: {
             title: "Don't forget your ride",
-            body: 'Here is the notification body',
+            body: timeLeft,
             data: { data: 'goes here' },
         },
-        trigger: { seconds: timeLeft - (43200) },
+        // trigger: { seconds: timeLeft - (43200) },
+        trigger: { seconds: 5 }
     });
 }
 
@@ -169,6 +170,11 @@ const timeToNotify = (selectedDate) => {
     dateDiff = Math.round(dateDiff)
     return dateDiff
     //Notify 2 hours before the ride
+}
+
+const getTimeString = (selectedDate) => {
+    let time = new Date(selectedDate)
+    return (time.getDate() + "/" + time.getMonth() + "/" + time.getFullYear())
 }
 
 
@@ -240,18 +246,27 @@ export default function FinalDriverRouteScreen({ navigation, route }) {
                 <AppButton
                     title={'Confirm'}
                     onPress={() => {
-                        //schedulePushNotification(timeToNotify(route.params.selectedDate))
-
+                        schedulePushNotification(getTimeString(route.params.selectedDate))
+                        console.log("Selected date:", route.params.selectedDate)
                         const waypoints = getWaypoints(routeWaypoints)
                         console.log(waypoints)
-                        storeInDrive(
-                            route.params.startLocation,
-                            route.params.endLocation,
-                            route.params.selectedDate,
-                            "StartName",
-                            "EndName",
-                            waypoints
-                        )
+                        // Notifications.scheduleNotificationAsync({
+                        //     content: {
+                        //         title: "Don't forget your ride",
+                        //         body: timeLeft,
+                        //         data: { data: 'goes here' },
+                        //     },
+                        //     // trigger: { seconds: timeLeft - (43200) },
+                        //     trigger: { seconds: 5 }
+                        // });
+                        // storeInDrive(
+                        //     route.params.startLocation,
+                        //     route.params.endLocation,
+                        //     route.params.selectedDate,
+                        //     "StartName",
+                        //     "EndName",
+                        //     waypoints
+                        // )
                         console.log(routeWaypoints.length)
                         // navigation.navigate('CalendarScreenTabNavigator_Driver')
                         // routeUserID: userID, //routeUserID
