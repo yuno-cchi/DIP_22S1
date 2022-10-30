@@ -100,7 +100,7 @@ export default function App() {
 
   if (show) {
     //setRouteVisible(false);
-    console.log("attenzioni");
+    console.log("Attention");
     console.log(initialPage);
     return (
       <View>
