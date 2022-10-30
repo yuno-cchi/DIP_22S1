@@ -319,6 +319,7 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
                     style={styles.confirmButton}
                     onPress={
                         () => {
+                            selectCount = 0;
                             const tempSelectedRoute = clean2DArray(selectedRoute)
                             // console.log("The selected route is", route.params.selectedDate)
                             // console.log("Hello there")
@@ -350,7 +351,8 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
                             //     console.log(selectedRoute[x][0].routeId)
 
                             // }
-                            navigation.navigate('DriverPutRoute')
+                            selectCount = 0;
+                            navigation.navigate('CalendarScreen_Driver')
                         }
                     }
                 />

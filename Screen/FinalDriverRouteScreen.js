@@ -34,7 +34,7 @@ const storeInDrive = async (start, end, date, startN, endN, selectedRoute) => {
     console.log(userID)
 
     console.log("centroid: ")
-    centroid = { latitude: (start.latitude + end.latitude) / 2.0, longitude: (start.longitude + end.longitude) / 2.0, };
+    const centroid = { latitude: (start.latitude + end.latitude) / 2.0, longitude: (start.longitude + end.longitude) / 2.0, };
     console.log(centroid);
 
 
@@ -86,6 +86,43 @@ const storeInDrive = async (start, end, date, startN, endN, selectedRoute) => {
     })
 }
 
+async function updateRideTable(selectedRoute, selectedRideIDs, driveID, driveruserID) {
+    //const resp = await axios.get('http://secret-caverns-21869.herokuapp.com/drive');
+
+    for (let x = 0; x < selectedRideIDs.length; x++) {
+        //TODO: update 'ride' table w DriverID: drives's _id and selected: true
+        console.log("updating ride table:")
+        console.log(selectedRideIDs[x]);
+        console.log(driveID);
+
+
+        //once my new drive id has been retrieved, i can run a for loop here
+        axios.post('http://secret-caverns-21869.herokuapp.com/ride/update/' + selectedRideIDs[x], {
+            routename: selectedRoute[x].routeRider,
+            startName: selectedRoute[x].routename,
+            start: selectedRoute[x].start,
+            destinationName: selectedRoute[x].routeDescription,
+            destination: selectedRoute[x].destination,
+            date: selectedRoute[x].date,
+            centroid: selectedRoute[x].centroid,
+            selected: true, //set selected to tru
+            driverID: driveID
+        })
+            .then(response => {
+                console.log(response);
+
+
+                //navigate to FinalDriverRouteScreen
+
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+}
+
+
 
 const GOOGLE_API_KEY = 'AIzaSyBYDEKY12RzWyP0ACQEpgsr4up2w3CjH88';
 const ANIMATE_SPEED = 1000;
@@ -119,7 +156,7 @@ async function schedulePushNotification(timeLeft) {
             body: 'Here is the notification body',
             data: { data: 'goes here' },
         },
-        trigger: { seconds: timeLeft - (86400 / 2) },
+        trigger: { seconds: timeLeft - (43200) },
     });
 }
 
@@ -203,15 +240,20 @@ export default function FinalDriverRouteScreen({ navigation, route }) {
                 <AppButton
                     title={'Confirm'}
                     onPress={() => {
-                        schedulePushNotification(timeToNotify(route.params.selectedDate))
+                        //schedulePushNotification(timeToNotify(route.params.selectedDate))
+
+                        const waypoints = getWaypoints(routeWaypoints)
+                        console.log(waypoints)
                         storeInDrive(
-                            start = route.params.startLocation,
-                            end = route.params.endLocation,
-                            userID = route.params.userId,
-                            date = route.params.selectedDate,
-                            selectedRoute = getWaypoints(routeWaypoints)
+                            route.params.startLocation,
+                            route.params.endLocation,
+                            route.params.selectedDate,
+                            "StartName",
+                            "EndName",
+                            waypoints
                         )
-                        navigation.navigate('CalendarScreenTabNavigator_Driver')
+                        console.log(routeWaypoints.length)
+                        // navigation.navigate('CalendarScreenTabNavigator_Driver')
                         // routeUserID: userID, //routeUserID
                         // startName: startN,
                         // start: start,
