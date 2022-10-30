@@ -150,6 +150,14 @@ export default function App() {
           component={PushNotification}
         />
         <Stack.Screen
+          name="CalendarScreenTabNavigator_Driver"
+          component={CalendarScreenTabNavigator_Driver}
+        />
+        <Stack.Screen
+          name="CalendarScreenTabNavigator_Rider"
+          component={CalendarScreenTabNavigator_Rider}
+        />
+        <Stack.Screen
           name="DayPlan_test"
           component={DayPlan_test}
         />
