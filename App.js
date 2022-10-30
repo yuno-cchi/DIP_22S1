@@ -158,6 +158,9 @@ export default function App() {
           name="DayPlan_test"
           component={DayPlan_test}
         />
+        <Stack.Screen
+          name="CalendarScreen"
+          component={CalendarScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
