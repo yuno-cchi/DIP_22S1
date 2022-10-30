@@ -1,15 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import mydates from "./GetDriveData";
-import axios from "axios";
-
-
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
 
 export default function DayPlan_test() {
+
     let displayPlan = [];
     const [forDisplay, setForDisplay] = useState();
     const [isLoading, setLoading] = useState(true);
-
     //axiosTest(displayPlan, selectedday);
     console.log("can i get my dates?", mydates);
 
@@ -21,14 +17,22 @@ export default function DayPlan_test() {
 
 
     useEffect(() => {
+
+        let dateColect = new Set();
+        let returnRouteObjectArray = [];
+
         axios
             .get("http://secret-caverns-21869.herokuapp.com/ride")
             .then((response) => {
                 //console.log("resp", response.data.length);
                 for (let i = 0; i < response.data.length; i++) {
                     let thisRoute = response.data[i];
-                    console.log("this date?", response.data[i]);
 
+                    dateColect.add(thisRoute.date.slice(0, 10));
+
+                    //setDbDates()
+                    //has to use [4] to get date string
+                    console.log("this date?", response.data[i]);
                     if (Object.values(selectedday)[4] === thisRoute.date.slice(0, 10)) {
                         console.log("select", Object.values(selectedday)[4]);
                         console.log("route ", thisRoute.date.slice(0, 10));
@@ -49,7 +53,8 @@ export default function DayPlan_test() {
                             </View>
                         );
                     }
-                    //console.log("in display", displayPlan);
+
+                    console.log("in display", displayPlan);
                     setForDisplay(displayPlan);
                     console.log("for display?", forDisplay);
 

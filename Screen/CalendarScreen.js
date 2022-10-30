@@ -207,6 +207,43 @@ function MarkCalender() {
   for (let i = 0; i < dayDataLen; i++) { }
 }
 
+const PutRouteScreenSelector = (route) => {
+
+
+  console.log(route.params.userType)
+
+  if (Platform.OS === 'ios') {
+    if (route.params.userType === 'rider') {
+      return RiderMapScreen
+    } else {
+      return DriverPutRouteScreen
+    }
+  }
+  else {
+    if (route.params.userType === 'rider') {
+      return RiderMapScreen_android
+    } else {
+      return DriverPutRouteScreen_Android
+    }
+  }
+
+}
+
+const CalendarScreenTabNavigator = ({ navigation, route }) => {
+  const Tab = createBottomTabNavigator();
+  if (route === undefined) {
+    route.params.userType = 'rider' //Set default
+  }
+
+  return (
+    <Tab.Navigator initialRouteName="Calendar">
+      <Tab.Screen name="Calendar" component={CalendarScreen} />
+      <Tab.Screen name="PutRouteScreen" >
+        {() => <PutRouteScreenSelector route={route} />}
+      </Tab.Screen>
+    </Tab.Navigator>
+  )
+}
 
 function CalendarScreen({ navigation, route }) {
   let today = new Date();
@@ -371,4 +408,4 @@ const styles = StyleSheet.create({
   noplan: {},
 });
 
-export default CalendarScreen;
+export default CalendarScreenTabNavigator;

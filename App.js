@@ -145,6 +145,14 @@ export default function App() {
           name="DrivingNavigationScreen"
           component={DrivingNavigationScreen}
         />
+        <Stack.Screen
+          name="PushNotification"
+          component={PushNotification}
+        />
+        <Stack.Screen
+          name="DayPlan_test"
+          component={DayPlan_test}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
