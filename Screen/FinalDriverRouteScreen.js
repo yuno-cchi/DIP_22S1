@@ -157,10 +157,10 @@ async function schedulePushNotification(timeLeft) {
     Notifications.scheduleNotificationAsync({
         content: {
             title: "Don't forget your ride",
-            body: timeLeft,
+            body: timeLeft, //getTimeString(timeLeft)
             data: { data: 'goes here' },
         },
-        // trigger: { seconds: timeLeft - (43200) },
+        // trigger: { seconds: timeToNotify(selectedDate) - (43200) },
         trigger: { seconds: 3 }
     });
 }
@@ -288,6 +288,7 @@ export default function FinalDriverRouteScreen({ navigation, route }) {
                     title={'Confirm'}
                     onPress={async () => {
                         await schedulePushNotification(getTimeString(route.params.selectedDate));
+                        navigation.navigate('CalendarScreenTabNavigator_Driver')
                     }}
                 // navigation.navigate('CalendarScreenTabNavigator_Driver')
                 // routeUserID: userID, //routeUserID
