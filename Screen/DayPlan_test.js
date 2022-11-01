@@ -16,15 +16,16 @@ import DriverPutRouteScreen from "./DriverPutRouteScreen";
 import DriverPutRouteScreen_Android from "./DriverPutRouteScreen_Android";
 import RiderMapScreen_android from "./RiderMapScreen_android";
 
-export default function DayPlan_test() {
+export default function DayPlan_test({ navigation, route }) {
 
     let displayPlan = [];
     const [forDisplay, setForDisplay] = useState();
     const [isLoading, setLoading] = useState(false);
+    const [getDates, setGetDates] = useState([]);
     //axiosTest(displayPlan, selectedday);
     console.log("can i get my dates?", mydates);
 
-
+    var selectedday = route.params.selectedday;
     //set to store date no duplicate
 
 
