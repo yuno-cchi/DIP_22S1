@@ -105,14 +105,20 @@ async function updateRideTable(selectedRoute, selectedRideIDs, driveID, driverus
         //TODO: update 'ride' table w DriverID: drives's _id and selected: true
         console.log("updating ride table:")
         console.log(selectedRideIDs[x]);
-        console.log(driveID);
-        console.log(selectedRoute[x].selectedDate); //Problem here #####
+        console.log("driveID:", driveID);
+        console.log("date:", selectedRoute[x].date); //Problem here #####
+        console.log("startName: ", selectedRoute[x].routeName);
+        console.log("routename: ", selectedRoute[x].routeRider)
+        console.log("start coor: ", selectedRoute[x].start)
+        console.log("destName: ", selectedRoute[x].routeDescription)
+        console.log("destination: ", selectedRoute[x].destination)
+        console.log("date: ", selectedRoute[x].date)
 
 
         //once my new drive id has been retrieved, i can run a for loop here
         axios.post('http://secret-caverns-21869.herokuapp.com/ride/update/' + selectedRideIDs[x], {
-            routename: selectedRoute[x].routeRider,
-            startName: selectedRoute[x].routename,
+            routename: selectedRoute[x].routeId,//routeId
+            startName: selectedRoute[x].routeName,
             start: selectedRoute[x].start,
             destinationName: selectedRoute[x].routeDescription,
             destination: selectedRoute[x].destination,
