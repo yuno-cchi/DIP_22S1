@@ -48,7 +48,7 @@ export default function PlanList({
 
           <View style={styles.botcontainer}>
             <AppText style={styles.subTitle}>{user}</AppText>
-            <AppText style={[styles.subTitle, { marginLeft: "auto" }]}>
+            <AppText style={styles.subTitle}>
               {price}
             </AppText>
           </View>
