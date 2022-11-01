@@ -99,6 +99,7 @@ const getBestRoutes = (routeObjectArray, driverRoute) => {
                 routeId: tempRouteObject.routeId,
                 routeRider: tempRouteObject.routeRider,
                 routeName: tempRouteObject.routeName,
+                date: tempRouteObject.date,
                 routeDescription: tempRouteObject.routeDescription,
                 start: { latitude: tempRouteObject.start.latitude, longitude: tempRouteObject.start.longitude },
                 destination: { latitude: tempRouteObject.destination.latitude, longitude: tempRouteObject.destination.longitude },
@@ -222,6 +223,7 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
                 routeId: inputArray[i][0].routeId,
                 routeName: inputArray[i][0].routeName,
                 routeDescription: inputArray[i][0].routeDescription,
+                date: inputArray[i][0].date,
                 start: { latitude: inputArray[i][0].start.latitude, longitude: inputArray[i][0].start.longitude },
                 destination: { latitude: inputArray[i][0].destination.latitude, longitude: inputArray[i][0].destination.longitude },
                 centroid: { latitude: inputArray[i][0].centroid.latitude, longitude: inputArray[i][0].centroid.longitude },
@@ -263,6 +265,7 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
                 routeArray.push({
                     centroid: ridedata[i].centroid,
                     destination: ridedata[i].destination,
+                    date: ridedata[i].date,
                     routeDescription: ridedata[i].destinationName, //to show destination name
                     routeName: ridedata[i].startName, //to show start location name
                     routeRider: ridedata[i].routename, //ride user's id, to store as hidden
@@ -331,6 +334,8 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
 
                             navigation.navigate('FinalDriverRouteScreen', {
                                 startLocation: route.params.startLocation,
+                                startName: route.params.startName,
+                                destinationName: route.params.destinationName,
                                 endLocation: route.params.endLocation,
                                 selectedDate: route.params.selectedDate,
                                 userId: route.params.userId,
