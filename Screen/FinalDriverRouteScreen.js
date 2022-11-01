@@ -30,6 +30,13 @@ const storeInDrive = async (start, end, date, startN, endN, selectedRoute) => {
     console.log("waypoints: ");
     console.log(selectedRoute);
 
+    console.log("startN:");
+    console.log(startN);
+
+    console.log("endN:", endN);
+
+    console.log("selectedRoute: ", selectedRoute);
+
     console.log("userID: ")
     // if (userID === null) {
     //     userID = "user" + Math.floor(Math.random() * 100);
@@ -92,12 +99,14 @@ const storeInDrive = async (start, end, date, startN, endN, selectedRoute) => {
 
 async function updateRideTable(selectedRoute, selectedRideIDs, driveID, driveruserID) {
     //const resp = await axios.get('http://secret-caverns-21869.herokuapp.com/drive');
-
+    console.log("selectedRoute: ", selectedRoute);
+    console.log("selectedRideIDs:", selectedRideIDs);
     for (let x = 0; x < selectedRideIDs.length; x++) {
         //TODO: update 'ride' table w DriverID: drives's _id and selected: true
         console.log("updating ride table:")
         console.log(selectedRideIDs[x]);
         console.log(driveID);
+        console.log(selectedRoute[x].selectedDate); //Problem here #####
 
 
         //once my new drive id has been retrieved, i can run a for loop here

@@ -327,7 +327,6 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
                             // console.log("Hello there")
                             console.log(tempSelectedRoute)
 
-                            //storeInDrive(route.params.startLocation, route.params.endLocation, route.params.selectedDate, route.params.startName, route.params.endName, tempSelectedRoute)
 
 
                             navigation.navigate('FinalDriverRouteScreen', {
@@ -335,7 +334,9 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
                                 endLocation: route.params.endLocation,
                                 selectedDate: route.params.selectedDate,
                                 userId: route.params.userId,
-                                waypoints: tempSelectedRoute
+                                waypoints: tempSelectedRoute,
+                                startName: route.params.startName,
+                                endName: route.params.endName
                             })
 
                         }
