@@ -174,7 +174,9 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
                         endLocation: route.params.endLocation,
                         selectedDate: route.params.selectedDate,
                         userId: driveruserID,
-                        waypoints: selectedRoute
+                        waypoints: selectedRoute,
+                        startName: route.params.startName,
+                        endName: route.params.endName
                     })
 
                 })

@@ -126,10 +126,11 @@ export default function DriverPutRouteScreen({ navigation, route }) {
     function navigateToRecc() {
         //alert successful and move to next page
         navigation.navigate("ReccommendedRouteScreen", {
-            
+
             startLocation: startLocation,
             endLocation: endLocation,
             selectedDate: selectedDate.toISOString(),
+
         });
     }
 
@@ -300,7 +301,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
 
                         navigation.navigate("ReccommendedRouteScreen", {
                             startName: startLocationName,
-                            endName: endLocationName, 
+                            endName: endLocationName,
                             startLocation: startLocation,
                             endLocation: endLocation,
                             selectedDate: selectedDate.toISOString(),

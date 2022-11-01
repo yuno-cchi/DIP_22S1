@@ -289,13 +289,14 @@ export default function FinalDriverRouteScreen({ navigation, route }) {
                     onPress={async () => {
                         await schedulePushNotification(getTimeString(route.params.selectedDate));
                         navigation.navigate('CalendarScreenTabNavigator_Driver')
+                        console.log(routeWaypoints)
                         storeInDrive(
                             route.params.startLocation,
                             route.params.endLocation,
                             route.params.selectedDate,
-                            "",
-                            "",
-                            getWaypoints(routeWaypoints)
+                            route.params.startName,
+                            route.params.endName,
+                            routeWaypoints
                         )
                     }}
                 // navigation.navigate('CalendarScreenTabNavigator_Driver')
