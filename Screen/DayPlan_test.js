@@ -18,13 +18,12 @@ import RiderMapScreen_android from "./RiderMapScreen_android";
 import MapViewDirections from "react-native-maps-directions";
 
 export default function DayPlan_test({ navigation, route }) {
-    const GOOGLE_API_KEY = "AIzaSyBYDEKY12RzWyP0ACQEpgsr4up2w3CjH88";
+
     let displayPlan = [];
     const [forDisplay, setForDisplay] = useState();
     const [isLoading, setLoading] = useState(false);
     const [getDates, setGetDates] = useState([]);
-    const [distance, setDistance] = useState(0);
-    const [duration, setDuration] = useState(0);
+
     //axiosTest(displayPlan, selectedday);
     console.log("can i get my dates?", mydates);
 
@@ -62,27 +61,13 @@ export default function DayPlan_test({ navigation, route }) {
                                     justifyContent: 'center'
                                 }}>
 
-                                    <MapViewDirections
-                                        style={{ flex: 0 }}
-                                        origin={thisRoute.startName}
-                                        destination={thisRoute.destinationName}
-                                        apikey={GOOGLE_API_KEY}
-                                        onReady={result => {
-                                            console.log(`Distance: ${result.distance} km`)
-                                            console.log(`Duration: ${result.duration} min.`)
-                                            setDistance(result.distance);
-                                            setDuration(result.duration);
-                                            dist = Math.round(result.distance);
-                                            dist = dist.toString()
-                                            console.log("distance is ", dist)
-                                        }}
-                                    />
+
                                     <PlanList
                                         start={thisRoute.startName}
                                         destination={thisRoute.destinationName}
                                         key={thisRoute._id}
                                         user={thisRoute.routename}
-                                        price={"dist"}//Put dist here, somehow when dist is inserted the value wasn't shown
+                                        //Price is removed, the calculated is done inside the JSX
                                         style={
                                             thisRoute.selected
                                                 ? {
