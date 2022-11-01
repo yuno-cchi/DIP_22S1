@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, StyleSheet, Dimensions, Text } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { View, StyleSheet, Dimensions, Text, Platform } from 'react-native';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { Marker } from 'react-native-maps';
@@ -10,6 +10,10 @@ import BottomTab from '../Components/BottomTab';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Notifications from 'expo-notifications';
 import axios from "axios";
+
+
+
+
 
 const storeInDrive = async (start, end, date, startN, endN, selectedRoute) => {
     console.log("adding to drives table")
@@ -150,16 +154,31 @@ const getWaypoints = (routeParams) => {
 }
 
 async function schedulePushNotification(timeLeft) {
-    await Notifications.scheduleNotificationAsync({
+    Notifications.scheduleNotificationAsync({
         content: {
             title: "Don't forget your ride",
             body: timeLeft,
             data: { data: 'goes here' },
         },
         // trigger: { seconds: timeLeft - (43200) },
-        trigger: { seconds: 5 }
+        trigger: { seconds: 3 }
     });
 }
+
+async function registerForPushNotificationsAsync() {
+    let token;
+
+    if (Platform.OS === 'android') {
+        await Notifications.setNotificationChannelAsync('default', {
+            name: 'default',
+            importance: Notifications.AndroidImportance.MAX,
+            vibrationPattern: [0, 250, 250, 250],
+            lightColor: '#FF231F7C',
+        });
+    }
+    return token;
+}
+
 
 const timeToNotify = (selectedDate) => {
     console.log(selectedDate)
@@ -179,6 +198,28 @@ const getTimeString = (selectedDate) => {
 
 
 export default function FinalDriverRouteScreen({ navigation, route }) {
+
+    const [expoPushToken, setExpoPushToken] = useState('');
+    const [notification, setNotification] = useState(false);
+    const notificationListener = useRef();
+    const responseListener = useRef();
+
+    useEffect(() => {
+        registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+            setNotification(notification);
+        });
+
+        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+            console.log(response);
+        });
+
+        return () => {
+            Notifications.removeNotificationSubscription(notificationListener.current);
+            Notifications.removeNotificationSubscription(responseListener.current);
+        };
+    }, []);
 
     let distance = 0;
     let duration = 0;
@@ -245,41 +286,21 @@ export default function FinalDriverRouteScreen({ navigation, route }) {
             <BottomTab style={styles.bottomTab}>
                 <AppButton
                     title={'Confirm'}
-                    onPress={() => {
-                        schedulePushNotification(getTimeString(route.params.selectedDate))
-                        console.log("Selected date:", route.params.selectedDate)
-                        const waypoints = getWaypoints(routeWaypoints)
-                        console.log(waypoints)
-                        // Notifications.scheduleNotificationAsync({
-                        //     content: {
-                        //         title: "Don't forget your ride",
-                        //         body: timeLeft,
-                        //         data: { data: 'goes here' },
-                        //     },
-                        //     // trigger: { seconds: timeLeft - (43200) },
-                        //     trigger: { seconds: 5 }
-                        // });
-                        // storeInDrive(
-                        //     route.params.startLocation,
-                        //     route.params.endLocation,
-                        //     route.params.selectedDate,
-                        //     "StartName",
-                        //     "EndName",
-                        //     waypoints
-                        // )
-                        console.log(routeWaypoints.length)
-                        // navigation.navigate('CalendarScreenTabNavigator_Driver')
-                        // routeUserID: userID, //routeUserID
-                        // startName: startN,
-                        // start: start,
-                        // destinationName: endN,
-                        // destination: end,
-                        // centroid: centroid,
-                        // date: date,
-                        // selected: false,
-                        // routeIdPair: selectedRideIDs
+                    onPress={async () => {
+                        await schedulePushNotification(getTimeString(route.params.selectedDate));
+                    }}
+                // navigation.navigate('CalendarScreenTabNavigator_Driver')
+                // routeUserID: userID, //routeUserID
+                // startName: startN,
+                // start: start,
+                // destinationName: endN,
+                // destination: end,
+                // centroid: centroid,
+                // date: date,
+                // selected: false,
+                // routeIdPair: selectedRideIDs
 
-                    }} />
+                />
 
             </BottomTab>
 

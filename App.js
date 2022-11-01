@@ -55,6 +55,7 @@ import CalendarScreenTabNavigator_Driver from "./Screen/CalendarScreen_Driver";
 import CalendarScreenTabNavigator_Rider from "./Screen/CalendarScreen_Rider";
 import PushNotification from "./Screen/PushNotification";
 import DayPlan_test from "./Screen/DayPlan_test";
+import * as Notifications from 'expo-notifications';
 //navigator.geolocation = require('react-native-geolocation-service');
 
 export default function App() {
@@ -63,12 +64,28 @@ export default function App() {
   const [show, setShow] = useState(true);
 
   const [initialPage, setInitialPage] = useState("Login");
+  const [permission, setNotiPermission] = useState();
+
+  const [token, setToken] = useState();
 
   const Stack = createNativeStackNavigator();
 
   useEffect(() => {
     checkLoginState();
+    registerForPushNotifications();
   }, []);
+
+  const registerForPushNotifications = async () => {
+    try {
+      setNotiPermission(await Notifications.getPermissionsAsync())
+      if (!permission) return;
+      setToken((await Notifications.getExpoPushTokenAsync()).data);
+
+      console.log(token)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   //to redirect users to login / create screen if not logged in for first time, else proceed to calendar page
   async function checkLoginState() {
