@@ -213,8 +213,8 @@ export default function Login({ navigation }) {
                 }}>
                 <Text style={styles.buttonText}>Log in</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonNormal}>
-                <Text style={styles.buttonText} onPress={(event) => navigation.navigate("SignUpPage", userParams)}>New user?</Text>
+            <TouchableOpacity style={styles.buttonNormal}onPress={(event) => navigation.navigate("SignUpPage", userParams)}>
+                <Text style={styles.buttonText} >New user?</Text>
             </TouchableOpacity>
         </View>
     );
