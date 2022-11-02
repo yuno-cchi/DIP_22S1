@@ -23,15 +23,6 @@ var dayDataLen = Object.keys(mydata).length;
 var selectedday;
 let drivedata;
 
-<<<<<<< HEAD
-const CalendarNavigator = () => (
-  <Stack.Navigator initialRouteName="CalendarScreen">
-    <Stack.Screen name="CalendarScreen" component={CalendarScreen} />
-    <Stack.Screen name="DayPlan" component={DayPlan} />
-    {/* <Stack.Screen name="DayPlan" component={PlannedRouteDetails} /> */}
-  </Stack.Navigator>
-);
-=======
 async function axiosTest(displayPlan, selectedday) {
   await axios
     .get("http://secret-caverns-21869.herokuapp.com/ride")
@@ -70,16 +61,12 @@ async function axiosTest(displayPlan, selectedday) {
 //     {/* <Stack.Screen name="DayPlan" component={PlannedRouteDetails} /> */}
 //   </Stack.Navigator>
 // );
->>>>>>> a9625553edc27100eb3bca922c88a9ef5292c4c1
 
 function DayPlan({ navigation }) {
   let displayPlan = [];
   const [forDisplay, setForDisplay] = useState();
   const [isLoading, setLoading] = useState(true);
   //axiosTest(displayPlan, selectedday);
-<<<<<<< HEAD
-  //console.log("can i get my dates?", mydates);
-=======
   console.log("can i get my dates?", mydates);
 
 
@@ -88,7 +75,6 @@ function DayPlan({ navigation }) {
 
   //object array for post process
 
->>>>>>> a9625553edc27100eb3bca922c88a9ef5292c4c1
 
   useEffect(() => {
     axios
@@ -127,8 +113,6 @@ function DayPlan({ navigation }) {
             setLoading(false);
           }, 300);
         }
-<<<<<<< HEAD
-=======
 
         let arr = Array.from(dateColect);
         arr = arr.map(i => i + ": { 'marked': true, 'selectedColor': 'blue'}")
@@ -137,7 +121,6 @@ function DayPlan({ navigation }) {
 
         setGetDates(JSON.stringify(arr));
 
->>>>>>> a9625553edc27100eb3bca922c88a9ef5292c4c1
       });
   }, []);
 
@@ -259,17 +242,12 @@ function CalendarScreen({ navigation, route }) {
           let thisRoute = response.data[i];
           let myDate = thisRoute.date.slice(0, 10);
 
-<<<<<<< HEAD
-          dateColect.add(myDate);
-          console.log("this date?", dateColect);
-=======
           dateColect.add(thisRoute.date.slice(0, 10));
 
           //setDbDates()
           //has to use [4] to get date string
           console.log("this date?", response.data[i]);
 
->>>>>>> a9625553edc27100eb3bca922c88a9ef5292c4c1
 
           setTimeout(() => {
             setLoading(false);
@@ -279,15 +257,6 @@ function CalendarScreen({ navigation, route }) {
         console.log(dateColect);
         let arr = Array.from(dateColect);
         //obj = Object.assign({arr}, "{'marked': true, 'selectedColor': 'blue'}");
-<<<<<<< HEAD
-        let obj = {};
-        arr.forEach((elem, i) => {
-          //obj[{${arr[i]}] = "{'marked': true, 'selectedColor': 'blue'}"
-          obj[`${arr[i]}`] = { marked: true, selectedColor: "blue" };
-        });
-
-        console.log("dd", obj);
-=======
         obj = {};
         arr.forEach((elem, i) => {
           //obj[{${arr[i]}] = "{'marked': true, 'selectedColor': 'blue'}" 
@@ -306,7 +275,6 @@ function CalendarScreen({ navigation, route }) {
 
 
         //console.log(JSON.stringify(arr));
->>>>>>> a9625553edc27100eb3bca922c88a9ef5292c4c1
 
         setGetDates(obj);
       });
