@@ -252,12 +252,21 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
         const resp = await axios.get('http://secret-caverns-21869.herokuapp.com/ride');
         ridedata = resp.data;
 
+        var dateobj = new Date();
+ 
 
-        // console.log(ridedata);
+        var B = dateobj.toISOString();
+
+        B = str.slice(0, 10)
+
+        console.log(B);
 
         for (let i = 0; i < ridedata.length; i++) {
             //console.log("inside now")
-            if (ridedata[i].selected == false) {
+            var dateSliced = ridedata[i].date;
+            dateSliced = str.slice(0, 10)
+
+            if (ridedata[i].selected == false && B == dateSliced) {
                 // if (ridedata[i].centroid.latitude <= centroid1.latitude + 0.5 && ridedata[i].centroid.latitude >= centroid1.latitude - 0.5) {
                 //     routeArray.push({centroid: ridedata[i].centroid, destination: ridedata[i].destination, routeDescription: ridedata[i].routeName, routeId: ridedata[i]._id, selected: false,
                 //     start: ridedata[i].start});
