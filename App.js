@@ -127,7 +127,13 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={"Login"}>
+      {/* <TabNavigator> */}
+      <Stack.Navigator
+        initialRouteName={"Login"}
+        screenOptions={{
+          headerShown: true,
+        }}
+      >
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="SignUpPage" component={NewUser} />
         <Stack.Screen name="SelectUserType" component={selectUserType} />
