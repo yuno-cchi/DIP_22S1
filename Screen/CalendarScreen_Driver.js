@@ -183,21 +183,21 @@ function CalendarScreen({ navigation, route }) {
 
     }, []);
 
-    if (isLoading) {
-        return (
-            <View
-                style={{
-                    flexDirection: "row",
-                    height: "100%",
-                    padding: 30,
-                    justifyContent: "center",
-                    alignContent: "center",
-                }}
-            >
-                <Text>Loading...</Text>
-            </View>
-        );
-    }
+    // if (isLoading) {
+    //     return (
+    //         <View
+    //             style={{
+    //                 flexDirection: "row",
+    //                 height: "100%",
+    //                 padding: 30,
+    //                 justifyContent: "center",
+    //                 alignContent: "center",
+    //             }}
+    //         >
+    //             <Text>Loading...</Text>
+    //         </View>
+    //     );
+    // }
 
     return (
         <View style={styles.container}>
