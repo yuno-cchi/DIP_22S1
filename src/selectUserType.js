@@ -71,7 +71,7 @@ export default function SelectUserType({ route, navigation }) {
     return (
         <View style={styles.container}>
             <View style={{ height: 90 }} />
-            <Text style={localStyles.fontStyle}>Today I am</Text>
+            <Text style={localStyles.fontStyle}>Today I am:</Text>
 
             <View style={{ height: 35 }} />
 
@@ -91,8 +91,8 @@ export default function SelectUserType({ route, navigation }) {
 
 const localStyles = StyleSheet.create({
     fontStyle: {
-        fontSize: 30,
-
-        color: color.primary
+        fontSize: 20,
+        color: color.primary,
+        fontStyle: 'italic',
     }
 })
