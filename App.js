@@ -109,7 +109,7 @@ export default function App() {
     <NavigationContainer>
       {/* <TabNavigator> */}
       <Stack.Navigator
-        initialRouteName={"Login"}
+        initialRouteName={"CalendarScreenTabNavigator_Driver"}
         screenOptions={{
           headerShown: true,
         }}
