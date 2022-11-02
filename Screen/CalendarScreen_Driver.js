@@ -15,6 +15,7 @@ import RiderMapScreen from "./RiderMapScreen";
 import DriverPutRouteScreen from "./DriverPutRouteScreen";
 import DriverPutRouteScreen_Android from "./DriverPutRouteScreen_Android";
 import RiderMapScreen_android from "./RiderMapScreen_android";
+import AppButton from "../Components/AppButton";
 
 //import drivedata from "./GetDriveData";
 
@@ -23,6 +24,9 @@ var dataLen = Object.keys(data).length;
 var dayDataLen = Object.keys(mydata).length;
 var selectedday;
 let drivedata;
+
+
+
 
 async function axiosTest(displayPlan, selectedday) {
     await axios
@@ -171,37 +175,6 @@ function DayPlan({ navigation }) {
         );
     }
 
-    // setTimeout(() => {
-    //   setShowPlan(true);
-    //   console.log("my displayplan after 2s,", displayPlan);
-    //   // return (
-    //   //   <View style={styles.plan}>
-    //   //     <View style={styles.component}>{displayPlan}</View>
-    //   //   </View>
-    //   // );
-    // }, 2000);
-
-    // useEffect(() => {
-    //   console.log("use effect");
-    //   showDayPlan();
-    // }, [showPlan]);
-    // }
-
-    // useEffect(() => {
-    //   setTimeout(() => {
-    //     console.log("useeffect now", displayPlan);
-
-    //     if (displayPlan != null) {
-    //       setShowPlan(true);
-    //     }
-    //     //console.log("i suppose to be end ", displayPlan);
-    //     return (
-    //       <View style={styles.plan}>
-    //         <View style={styles.component}>{displayPlan}</View>
-    //       </View>
-    //     );
-    //   }, 2000);
-    // }, [showPlan]);
 }
 
 function MarkCalender() {
@@ -325,7 +298,18 @@ function CalendarScreen({ navigation, route }) {
 
     return (
         <View style={styles.container}>
-            <Calendar
+            <AppButton style={{
+                position: 'absolute',
+                top: 20,
+                left: 10,
+                width: 45
+            }}
+                onPress={() => {
+                    console.log("Logging out")
+                    /*CheeHean!*/
+                }}
+            />
+            < Calendar
                 //minDate={today}
                 //maxDate={tryPlanning}
                 onDayPress={(day) => {
@@ -385,7 +369,7 @@ function CalendarScreen({ navigation, route }) {
                 // }}
                 markingType={"period"}
             ></Calendar>
-        </View>
+        </View >
     );
 }
 

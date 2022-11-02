@@ -22,6 +22,7 @@ import DriverPutRouteScreen from "./DriverPutRouteScreen";
 import DriverPutRouteScreen_Android from "./DriverPutRouteScreen_Android";
 import RiderMapScreen_android from "./RiderMapScreen_android";
 import * as Notifications from "expo-notifications";
+import AppButton from "../Components/AppButton";
 
 //import drivedata from "./GetDriveData";
 
@@ -319,6 +320,17 @@ function CalendarScreen({ navigation, route }) {
 
     return (
         <View style={styles.container}>
+            <AppButton style={{
+                position: 'absolute',
+                top: 20,
+                left: 10,
+                width: 45
+            }}
+                onPress={() => {
+                    console.log("Logging out")
+                    /*CheeHean!*/
+                }}
+            />
             <Calendar
                 //minDate={today}
                 //maxDate={tryPlanning}
