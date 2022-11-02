@@ -22,6 +22,7 @@ import {
     StyleSheet
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Notifications from 'expo-notifications';
 import styles from '../assets/styles/styles.js'
 import { color } from '../Config/Color.js';
 
@@ -35,6 +36,18 @@ export default function SelectUserType({ route, navigation }) {
             navigation.navigate("CalendarScreenTabNavigator_Driver", userParams);
         }
 
+    }
+
+    const registerForPushNotifications = async () => {
+        try {
+            setNotiPermission(await Notifications.getPermissionsAsync())
+            if (!permission) return;
+            setToken((await Notifications.getExpoPushTokenAsync()).data);
+
+            console.log(token)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
 
@@ -61,7 +74,7 @@ export default function SelectUserType({ route, navigation }) {
 
 const localStyles = StyleSheet.create({
     fontStyle: {
-        fontSize: 50,
+        fontSize: 30,
 
         color: color.primary
     }

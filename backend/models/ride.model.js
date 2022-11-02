@@ -4,16 +4,18 @@ const Schema = mongoose.Schema;
 
 //for users db
 const rideSchema = new Schema({
-    routename:{ //to store userID/username from session inside
+    routename: { //to store userID/username from session inside
         type: String,
+        unique: false,
         trim: true
     },
     startName: {
         type: String,
         required: true,
+        unique: false,
         trim: true
     },
-    start:{
+    start: {
         type: Object,
         required: true,
         unique: false,
@@ -34,9 +36,10 @@ const rideSchema = new Schema({
     destinationName: {
         type: String,
         required: true,
+        unique: false,
         trim: true
     },
-    destination:{
+    destination: {
         type: Object,
         required: true,
         unique: false,
@@ -54,17 +57,17 @@ const rideSchema = new Schema({
             trim: true
         },
     },
-    date:{
+    date: {
         type: String,
         unique: false,
         trim: true
     },
-    price:{
+    price: {
         type: String,
         unique: false,
         trim: true
     },
-    centroid:{
+    centroid: {
         type: Object,
         unique: false,
         trim: true,

@@ -21,6 +21,7 @@ import {
   Platform,
 } from "react-native";
 import Login from "./src/login";
+
 import { TouchableOpacity } from "react-native";
 import TopTab from "./Components/TopTab";
 import SearchBar from "./Components/SearchBar";
@@ -52,6 +53,9 @@ import NewUser from "./src/newUser";
 import SelectUserType from "./src/selectUserType";
 import CalendarScreenTabNavigator_Driver from "./Screen/CalendarScreen_Driver";
 import CalendarScreenTabNavigator_Rider from "./Screen/CalendarScreen_Rider";
+import PushNotification from "./Screen/PushNotification";
+import DayPlan_test from "./Screen/DayPlan_test";
+import * as Notifications from "expo-notifications";
 //navigator.geolocation = require('react-native-geolocation-service');
 
 export default function App() {
@@ -60,12 +64,28 @@ export default function App() {
   const [show, setShow] = useState(true);
 
   const [initialPage, setInitialPage] = useState("Login");
+  const [permission, setNotiPermission] = useState();
+
+  const [token, setToken] = useState();
 
   const Stack = createNativeStackNavigator();
 
   useEffect(() => {
     checkLoginState();
+    registerForPushNotifications();
   }, []);
+
+  const registerForPushNotifications = async () => {
+    try {
+      setNotiPermission(await Notifications.getPermissionsAsync());
+      if (!permission) return;
+      setToken((await Notifications.getExpoPushTokenAsync()).data);
+
+      console.log(token);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   //to redirect users to login / create screen if not logged in for first time, else proceed to calendar page
   async function checkLoginState() {
@@ -96,7 +116,7 @@ export default function App() {
 
   if (show) {
     //setRouteVisible(false);
-    console.log("attenzioni");
+    console.log("Attention");
     console.log(initialPage);
     return (
       <View>
@@ -107,13 +127,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      {/* <TabNavigator> */}
-      <Stack.Navigator
-        initialRouteName={"CalendarScreenTabNavigator_Driver"}
-        screenOptions={{
-          headerShown: true,
-        }}
-      >
+      <Stack.Navigator initialRouteName={"Login"}>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="SignUpPage" component={NewUser} />
         <Stack.Screen name="SelectUserType" component={selectUserType} />
@@ -139,6 +153,12 @@ export default function App() {
           name="FinalDriverRouteScreen"
           component={FinalDriverRouteScreen}
         />
+        <Stack.Screen name="TypeSelect" component={selectUserType} />
+        <Stack.Screen
+          name="DrivingNavigationScreen"
+          component={DrivingNavigationScreen}
+        />
+        <Stack.Screen name="PushNotification" component={PushNotification} />
         <Stack.Screen
           name="CalendarScreenTabNavigator_Driver"
           component={CalendarScreenTabNavigator_Driver}
@@ -147,6 +167,7 @@ export default function App() {
           name="CalendarScreenTabNavigator_Rider"
           component={CalendarScreenTabNavigator_Rider}
         />
+        <Stack.Screen name="DayPlan_test" component={DayPlan_test} />
       </Stack.Navigator>
     </NavigationContainer>
   );

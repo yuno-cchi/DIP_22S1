@@ -32,12 +32,6 @@ export default function RiderMapScreen({ route, navigation }) {
   const [startLocationName, setStartLocationName] = useState();
   const [endLocationName, setEndLocationName] = useState();
   const [selectedDate, setSelectedDate] = useState(new Date());
-  //A function to get lastest markerKey from DB
-
-  const navigateCalendar = () => {
-    navigation.navigate("CalendarScreen", route.params)
-  }
-
 
   const animateToLocation = (coordinates) => {
     mapViewRef.animateToRegion(coordinates, ANIMATE_SPEED);
@@ -50,6 +44,15 @@ export default function RiderMapScreen({ route, navigation }) {
     startName,
     endName
   ) => {
+
+
+    //userID has to be retrieved from the login
+    centroid = {
+      latitude: (startLocation.latitude + endLocation.latitude) / 2.0,
+      longitude: (startLocation.longitude + endLocation.longitude) / 2.0,
+    };
+
+
     console.log("adding to database");
 
     console.log("Start: ");
@@ -61,21 +64,18 @@ export default function RiderMapScreen({ route, navigation }) {
     console.log("Date: ");
     console.log(date);
 
-    //userID has to be retrieved from the login
-    centroid = {
-      latitude: (startLocation.latitude + endLocation.latitude) / 2.0,
-      longitude: (startLocation.longitude + endLocation.longitude) / 2.0,
-    };
-
+    console.log("startName: ", startName);
+    console.log("endName: ", endName);
     console.log("userID: ");
     // if (userID === null) {
     //     userID = "user" + Math.floor(Math.random() * 100);
     // }
 
-    userID = await AsyncStorage.getItem("userId");
+    const userID = await AsyncStorage.getItem("userId");
 
     console.log(userID);
 
+    console.log("Centroid: ", centroid)
     //TODO: use axios to post into database
     axios({
       method: "post",
@@ -96,7 +96,7 @@ export default function RiderMapScreen({ route, navigation }) {
       (response) => {
         console.log(response);
 
-        navigateCalendar();
+
       },
       (error) => {
         console.log(error);
@@ -241,6 +241,9 @@ export default function RiderMapScreen({ route, navigation }) {
                   startLocationName,
                   endLocationName
                 );
+                navigation.navigate(
+                  "Calendar"
+                )
               }}
             />
           </View>
