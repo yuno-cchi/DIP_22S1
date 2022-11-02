@@ -70,40 +70,13 @@ async function axiosTest(displayPlan, selectedday) {
 //   </Stack.Navigator>
 // );
 
-function showDayPlan(displayPlan) {
-    console.log("inside showdayplan", displayPlan);
+// function showDayPlan(displayPlan) {
+//     console.log("inside showdayplan", displayPlan);
 
-    return (
-        <Tab.Navigator 
-            initialRouteName="Calendar"
-            screenOptions={{ 
-                headerShown: false,
-                tabBarActiveTintColor: color.primary, 
-            }}
-        >
-        <Tab.Screen
-            name="Calendar"
-            component={CalendarScreen}
-            options={{
-                tabBarLabel: 'Calendar',
-                tabBarIcon: ({ color, size }) => (
-                    <FontAwesome5 name="calendar-alt" color={color} size={size} />
-                ),
-            }}
-        />
-        <Tab.Screen
-            name="RiderMap"
-            component={RiderMapScreen}
-            options={{
-                tabBarLabel: 'RiderMap',
-                tabBarIcon: ({ color, size }) => (
-                    <FontAwesome5 name="map-marked-alt" color={color} size={size} />
-                ),
-            }}
-        />
-        </Tab.Navigator>
-    )
-}
+//     return (
+        
+//     )
+// }
 
 function DayPlan({ navigation }) {
     let displayPlan = [];
@@ -256,17 +229,34 @@ const CalendarScreenTabNavigator_Rider = ({ navigation, route }) => {
     const Tab = createBottomTabNavigator();
 
   return (
-    <Tab.Navigator
-      initialRouteName="Calendar"
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <Tab.Screen name="Calendar" component={CalendarScreen} />
-      <Tab.Screen name="RiderMap" component={Platform.OS === "ios" ? RiderMapScreen : RiderMapScreen_android}>
-        {/* {() => <PutRouteScreenSelector route={route} />} */}
-      </Tab.Screen>
-    </Tab.Navigator>
+    <Tab.Navigator 
+            initialRouteName="Calendar"
+            screenOptions={{ 
+                headerShown: false,
+                tabBarActiveTintColor: color.primary, 
+            }}
+        >
+        <Tab.Screen
+            name="Calendar"
+            component={CalendarScreen}
+            options={{
+                tabBarLabel: 'Calendar',
+                tabBarIcon: ({ color, size }) => (
+                    <FontAwesome5 name="calendar-alt" color={color} size={size} />
+                ),
+            }}
+        />
+        <Tab.Screen
+            name="RiderMap"
+            component={RiderMapScreen}
+            options={{
+                tabBarLabel: 'RiderMap',
+                tabBarIcon: ({ color, size }) => (
+                    <FontAwesome5 name="map-marked-alt" color={color} size={size} />
+                ),
+            }}
+        />
+        </Tab.Navigator>
   );
 };
 
