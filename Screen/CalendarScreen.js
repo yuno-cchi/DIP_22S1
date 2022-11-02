@@ -182,7 +182,7 @@ function DayPlan({ navigation }) {
 }
 
 function MarkCalender() {
-  for (let i = 0; i < dayDataLen; i++) {}
+  for (let i = 0; i < dayDataLen; i++) { }
 }
 
 const PutRouteScreenSelector = (route) => {
