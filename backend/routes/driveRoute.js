@@ -19,9 +19,9 @@ router.route('/add').post((req, res) => {
   const selected = req.body.selected;
   const routeIdPair = req.body.routeIdPair;
 
-  const newRide = new Drive({ routeUserID: routeUserID, startName: startName, start: start, destinationName: destinationName, destination: destination, date: date, price: price, centroid: centroid, selected: selected, routeIdPair: routeIdPair});
+  const newDrive = new Drive({ routeUserID: routeUserID, startName: startName, start: start, destinationName: destinationName, destination: destination, date: date, price: price, centroid: centroid, selected: selected, routeIdPair: routeIdPair});
 
-  newRide.save()
+  newDrive.save()
     .then(response => res.json(response))
     .catch(err => res.status(400).json('Error: ' + err));
 });
