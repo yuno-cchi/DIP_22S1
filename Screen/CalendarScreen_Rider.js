@@ -332,7 +332,7 @@ function CalendarScreen({ navigation, route }) {
                 onDayPress={(day) => {
                     //setPickday(day);
                     selectedday = day;
-                    navigation.navigate("DayPlan_test");
+                    navigation.navigate("DayPlan_test", { selectedday: day });
                 }}
                 onDayLongPress={(day) => {
                     console.log("selected day", day);

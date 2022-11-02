@@ -15,16 +15,20 @@ import RiderMapScreen from "./RiderMapScreen";
 import DriverPutRouteScreen from "./DriverPutRouteScreen";
 import DriverPutRouteScreen_Android from "./DriverPutRouteScreen_Android";
 import RiderMapScreen_android from "./RiderMapScreen_android";
+import MapViewDirections from "react-native-maps-directions";
 
-export default function DayPlan_test() {
+export default function DayPlan_test({ navigation, route }) {
 
     let displayPlan = [];
     const [forDisplay, setForDisplay] = useState();
     const [isLoading, setLoading] = useState(false);
+    const [getDates, setGetDates] = useState([]);
+
     //axiosTest(displayPlan, selectedday);
     console.log("can i get my dates?", mydates);
 
-
+    var selectedday = route.params.selectedday;
+    var dist;
     //set to store date no duplicate
 
 
@@ -52,17 +56,26 @@ export default function DayPlan_test() {
                             console.log("select", Object.values(selectedday)[4]);
                             console.log("route ", thisRoute.date.slice(0, 10));
                             displayPlan.push(
-                                <View>
+                                <View style={{
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}>
+
+
                                     <PlanList
                                         start={thisRoute.startName}
                                         destination={thisRoute.destinationName}
                                         key={thisRoute._id}
                                         user={thisRoute.routename}
-                                        price="$15"
+                                        //Price is removed, the calculated is done inside the JSX
                                         style={
                                             thisRoute.selected
-                                                ? { backgroundColor: color.primary }
-                                                : { backgroundColor: color.white }
+                                                ? {
+                                                    backgroundColor: color.primary,
+                                                }
+                                                : {
+                                                    backgroundColor: color.white,
+                                                }
                                         }
                                     />
                                 </View>
@@ -99,7 +112,7 @@ export default function DayPlan_test() {
                     height: "100%",
                     padding: 30,
                     justifyContent: "center",
-                    alignContent: "center",
+                    alignItems: "center",
                 }}
             >
                 <Text>Loading...</Text>
@@ -115,40 +128,25 @@ export default function DayPlan_test() {
         );
     }
 
-    // setTimeout(() => {
-    //   setShowPlan(true);
-    //   console.log("my displayplan after 2s,", displayPlan);
-    //   // return (
-    //   //   <View style={styles.plan}>
-    //   //     <View style={styles.component}>{displayPlan}</View>
-    //   //   </View>
-    //   // );
-    // }, 2000);
-
-    // useEffect(() => {
-    //   console.log("use effect");
-    //   showDayPlan();
-    // }, [showPlan]);
-    // }
-
-    // useEffect(() => {
-    //   setTimeout(() => {
-    //     console.log("useeffect now", displayPlan);
-
-    //     if (displayPlan != null) {
-    //       setShowPlan(true);
-    //     }
-    //     //console.log("i suppose to be end ", displayPlan);
-    //     return (
-    //       <View style={styles.plan}>
-    //         <View style={styles.component}>{displayPlan}</View>
-    //       </View>
-    //     );
-    //   }, 2000);
-    // }, [showPlan]);
 }
 
 const styles = StyleSheet.create({
     container: {
-    }
+        flex: 1,
+        justifyContent: "center",
+        backgroundColor: 'white'
+    },
+    plan: {
+        flex: 1,
+        justifyContent: "start",
+        alignItems: "center",
+        marginTop: 10,
+        marginBottm: 10
+    },
+    component: {
+        fontSize: 10,
+        height: "15%",
+        backgroundColor: "powerblue",
+    },
+    noplan: {},
 })

@@ -74,7 +74,7 @@ export default function SelectUserType({ route, navigation }) {
 
 const localStyles = StyleSheet.create({
     fontStyle: {
-        fontSize: 50,
+        fontSize: 30,
 
         color: color.primary
     }

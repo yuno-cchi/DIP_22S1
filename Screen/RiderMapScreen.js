@@ -32,12 +32,6 @@ export default function RiderMapScreen({ route, navigation }) {
   const [startLocationName, setStartLocationName] = useState();
   const [endLocationName, setEndLocationName] = useState();
   const [selectedDate, setSelectedDate] = useState(new Date());
-  //A function to get lastest markerKey from DB
-
-  const navigateCalendar = () => {
-    navigation.navigate("CalendarScreen", route.params)
-  }
-
 
   const animateToLocation = (coordinates) => {
     mapViewRef.animateToRegion(coordinates, ANIMATE_SPEED);
@@ -60,6 +54,9 @@ export default function RiderMapScreen({ route, navigation }) {
 
     console.log("Date: ");
     console.log(date);
+
+    console.log("startName: ", startName);
+    console.log("endName: ", endName);
 
     //userID has to be retrieved from the login
     centroid = {
@@ -91,12 +88,12 @@ export default function RiderMapScreen({ route, navigation }) {
         date: date,
         selected: false,
         driverID: null,
-      },
+      },//Issue when there's a duplication of userID
     }).then(
       (response) => {
         console.log(response);
 
-        navigateCalendar();
+
       },
       (error) => {
         console.log(error);
@@ -241,6 +238,9 @@ export default function RiderMapScreen({ route, navigation }) {
                   startLocationName,
                   endLocationName
                 );
+                navigation.navigate(
+                  "Calendar"
+                )
               }}
             />
           </View>
