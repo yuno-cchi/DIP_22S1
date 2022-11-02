@@ -301,6 +301,15 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
 
     const sortedRoutes = getBestRoutes(initialDummyRoute, route.params)
     //console.log("Route parrams", route.params.centroid)
+
+    if (loading){
+        return (
+            <View>
+                <ActivityIndicator size="large" />
+            </View>
+        )
+    }
+
     return (
         <View
             style={styles.container}>
