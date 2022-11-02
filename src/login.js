@@ -25,6 +25,7 @@ import {
     ToastAndroid,
     Alert,
     Platform,
+    ActivityIndicator
 } from "react-native";
 import styles from '../assets/styles/styles.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -85,7 +86,7 @@ export default function Login({ navigation }) {
 
                         //navigation.navigate("TypeSelect", userParams); //ACTUAL
                         navigation.navigate("SelectUserType", userParams); //FOR DEBUGGING
-
+                        setLoading(false)
 
 
                         // sessionStorage.setItem("isLoggedIn", true); //setlogin state to true, set to false once logged out
@@ -111,7 +112,7 @@ export default function Login({ navigation }) {
             }
             else if (x == userdata.length - 1 && userdata[x].username != username) {
 
-
+                setLoading(false)
 
                 message = 'Username invalid / User does not exist!'
                 if (Platform.OS == 'android') {
@@ -133,8 +134,6 @@ export default function Login({ navigation }) {
     }
 
     let loginEvent = (enteredUser, enteredPass) => {
-        
-        setLoading(true)
         // when login functionality is done this is the function that will submit the entered credentials
         // for now it only sends a message
 
@@ -146,13 +145,22 @@ export default function Login({ navigation }) {
 
         var errorToastMessage = ""
         if (!userToValidate) { // an empty string is falsy
+
+            setLoading(false)
+
             errorToastMessage += "Empty or invalid username; ";
         }
         if (!passToValidate) { // an empty string is falsy
+
+            setLoading(false)
+
             errorToastMessage += "Empty password;"
         }
 
         if (errorToastMessage) { // if the error message is NOT an empty string, there is an error, so we print it out
+
+            setLoading(false)
+
             showToast(errorToastMessage);
         } else { // otherwise we attempt a log-in
             //showToast("WIP: Login Function; entered username: ("+ userToValidate + "); entered password: (" + passToValidate +"); "); //comment this out once we implement logins
@@ -166,7 +174,7 @@ export default function Login({ navigation }) {
     }
 
     if (loading){
-        <View style={[styles.container1, styles.horizontal1]}>
+        <View style={[styles.container, styles.horizontal]}>
             <ActivityIndicator size="large" color="#00ff00" />
         </View>
     }
@@ -199,7 +207,10 @@ export default function Login({ navigation }) {
                 <Text style={styles.textLinks} onPress={(event) => showToast("we're probably not gonna implement this any time soon hehe >:)")}>Forgot Password?</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.buttonNormal} onPress={(event) => loginEvent(user, pass)}>
+            <TouchableOpacity style={styles.buttonNormal} onPress={(event) => {
+                setLoading(true); 
+                loginEvent(user, pass)
+                }}>
                 <Text style={styles.buttonText}>Log in</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonNormal}>
@@ -210,15 +221,15 @@ export default function Login({ navigation }) {
     }
 }
 
-const styles = StyleSheet.create({
-    container1: {
-      flex: 1,
-      justifyContent: "center"
-    },
-    horizontal1: {
-      flexDirection: "row",
-      justifyContent: "space-around",
-      padding: 10
-    }
-  });
+// const styles = StyleSheet.create({
+//     container1: {
+//       flex: 1,
+//       justifyContent: "center"
+//     },
+//     horizontal1: {
+//       flexDirection: "row",
+//       justifyContent: "space-around",
+//       padding: 10
+//     }
+//   });
 
