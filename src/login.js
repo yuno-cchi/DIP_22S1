@@ -188,8 +188,8 @@ export default function Login({ navigation }) {
             <TouchableOpacity style={styles.buttonNormal} onPress={(event) => loginEvent(user, pass)}>
                 <Text style={styles.buttonText}>Log in</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonNormal}>
-                <Text style={styles.buttonText} onPress={(event) => navigation.navigate("SignUpPage", userParams)}>New user?</Text>
+            <TouchableOpacity style={styles.buttonNormal}onPress={(event) => navigation.navigate("SignUpPage", userParams)}>
+                <Text style={styles.buttonText} >New user?</Text>
             </TouchableOpacity>
         </View>
     );
