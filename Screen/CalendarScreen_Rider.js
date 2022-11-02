@@ -231,19 +231,19 @@ const PutRouteScreenSelector = (route) => {
 const CalendarScreenTabNavigator_Rider = ({ navigation, route }) => {
     const Tab = createBottomTabNavigator();
 
-    return (
-        <Tab.Navigator
-            initialRouteName="Calendar"
-            screenOptions={{
-                headerShown: false,
-            }}
-        >
-            <Tab.Screen name="Calendar" component={CalendarScreen} />
-            <Tab.Screen name="RiderMap" component={RiderMapScreen}>
-                {/* {() => <PutRouteScreenSelector route={route} />} */}
-            </Tab.Screen>
-        </Tab.Navigator>
-    );
+  return (
+    <Tab.Navigator
+      initialRouteName="Calendar"
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Tab.Screen name="Calendar" component={CalendarScreen} />
+      <Tab.Screen name="RiderMap" component={Platform.OS === "ios" ? RiderMapScreen : RiderMapScreen_android}>
+        {/* {() => <PutRouteScreenSelector route={route} />} */}
+      </Tab.Screen>
+    </Tab.Navigator>
+  );
 };
 
 function CalendarScreen({ navigation, route }) {
