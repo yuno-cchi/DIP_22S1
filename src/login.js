@@ -35,6 +35,8 @@ export default function Login({ navigation }) {
     const [user, setUser] = useState("");;
     const [pass, setPass] = useState("");
 
+    const [loading, setLoading] = useState();
+
     const userParams = {
         username: null,
         userType: null,
@@ -95,6 +97,8 @@ export default function Login({ navigation }) {
                     }
                     else if (i == userdata.length - 1 && userdata[i].password != password) {
 
+                        setLoading(false)
+
                         message = '(Password) Username invalid / User does not exist!'
                         if (Platform.OS == 'android') {
                             ToastAndroid.show(message, ToastAndroid.LONG);
@@ -106,6 +110,8 @@ export default function Login({ navigation }) {
                 }
             }
             else if (x == userdata.length - 1 && userdata[x].username != username) {
+
+
 
                 message = 'Username invalid / User does not exist!'
                 if (Platform.OS == 'android') {
@@ -127,6 +133,8 @@ export default function Login({ navigation }) {
     }
 
     let loginEvent = (enteredUser, enteredPass) => {
+        
+        setLoading(true)
         // when login functionality is done this is the function that will submit the entered credentials
         // for now it only sends a message
 
@@ -157,6 +165,12 @@ export default function Login({ navigation }) {
         }
     }
 
+    if (loading){
+        <View style={[styles.container1, styles.horizontal1]}>
+            <ActivityIndicator size="large" color="#00ff00" />
+        </View>
+    }
+    else {
     return (
         <View style={styles.container}>
             <Image style={styles.logoView} source={require("../assets/img/logo.png")} />
@@ -193,5 +207,18 @@ export default function Login({ navigation }) {
             </TouchableOpacity>
         </View>
     );
+    }
 }
+
+const styles = StyleSheet.create({
+    container1: {
+      flex: 1,
+      justifyContent: "center"
+    },
+    horizontal1: {
+      flexDirection: "row",
+      justifyContent: "space-around",
+      padding: 10
+    }
+  });
 
