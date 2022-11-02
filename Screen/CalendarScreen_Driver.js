@@ -25,7 +25,7 @@ var dataLen = Object.keys(data).length;
 var dayDataLen = Object.keys(mydata).length;
 var selectedday;
 let drivedata;
-
+var userParams = null;
 
 
 
@@ -206,7 +206,7 @@ const PutRouteScreenSelector = (route) => {
 
 const CalendarScreenTabNavigator_Driver = ({ navigation, route }) => {
     const Tab = createBottomTabNavigator();
-
+    userParams = route.params;
     return (
 
         <Tab.Navigator
@@ -220,6 +220,7 @@ const CalendarScreenTabNavigator_Driver = ({ navigation, route }) => {
                 name="Calendar"
                 component={CalendarScreen}
                 options={{
+                    unmountOnBlur: true,
                     tabBarLabel: 'Calendar',
                     tabBarIcon: ({ color, size }) => (
                         <FontAwesome5 name="calendar-alt" color={color} size={size} />
@@ -255,16 +256,16 @@ function CalendarScreen({ navigation, route }) {
 
         let dateColect = new Set();
         let returnRouteObjectArray = [];
-
+        console.log("userID is ", userParams.userID);
         axios
             .get("http://secret-caverns-21869.herokuapp.com/ride")
             .then((response) => {
                 //console.log("resp", response.data.length);
                 for (let i = 0; i < response.data.length; i++) {
                     let thisRoute = response.data[i];
-
-                    dateColect.add(thisRoute.date.slice(0, 10));
-
+                    if (response.data[i].routename === userParams.userID) {
+                        dateColect.add(thisRoute.date.slice(0, 10));
+                    }
                     //setDbDates()
                     //has to use [4] to get date string
                     console.log("this date?", response.data[i]);

@@ -31,11 +31,18 @@ export default function SelectUserType({ route, navigation }) {
 
     const [loading, setLoading] = useState(true);
 
-    const userParams = route.params;
+    const userParams = {
+        userID: route.params.userID,
+        userType: route.params.userType,
+        username: route.params.username
+    };
+    console.log("selectedUserType userparams: ", route.params)
     const selectUserType = (userType) => {
         if (userType === "rider") {
+            userParams.userType = "rider"
             navigation.navigate("CalendarScreenTabNavigator_Rider", userParams);
         } else {
+            userParams.userType = "driver"
             navigation.navigate("CalendarScreenTabNavigator_Driver", userParams);
         }
 
@@ -55,12 +62,12 @@ export default function SelectUserType({ route, navigation }) {
 
     useEffect(() => {
         setInterval(
-            function(){ setLoading(false) }
+            function () { setLoading(false) }
             , 200);
 
     });
 
-    if (loading){
+    if (loading) {
         return (
             <View>
                 <ActivityIndicator size="large" />

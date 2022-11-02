@@ -41,6 +41,7 @@ export default function Login({ navigation }) {
     const userParams = {
         username: null,
         userType: null,
+        userID: null
     };
 
     var userdata; //global var for getting user cred.
@@ -77,11 +78,11 @@ export default function Login({ navigation }) {
 
                         userParams.username = username;
 
-                        console.log(userdata[i]._id);
+                        console.log("UserID: ", userdata[x]._id, "Entry: ", i);
 
                         AsyncStorage.setItem("isLoggedIn", "true");
-                        AsyncStorage.setItem("userId", userdata[i]._id);
-
+                        AsyncStorage.setItem("userId", userdata[x]._id);
+                        userParams.userID = userdata[x]._id;
 
 
                         //navigation.navigate("TypeSelect", userParams); //ACTUAL
@@ -173,51 +174,51 @@ export default function Login({ navigation }) {
         }
     }
 
-    if (loading){
+    if (loading) {
         <View style={[styles.container, styles.horizontal]}>
             <ActivityIndicator size="large" color="#00ff00" />
         </View>
     }
     else {
-    return (
-        <View style={styles.container}>
-            <Image style={styles.logoView} source={require("../assets/img/logo.png")} />
-            <StatusBar style="auto" />
+        return (
+            <View style={styles.container}>
+                <Image style={styles.logoView} source={require("../assets/img/logo.png")} />
+                <StatusBar style="auto" />
 
-            <View style={styles.inputView}>
-                <TextInput
-                    style={styles.TextInput}
-                    placeholder="username"
-                    placeholderTextColor="#fef2f0"
-                    onChangeText={(user) => setUser(user)}
-                />
-            </View>
+                <View style={styles.inputView}>
+                    <TextInput
+                        style={styles.TextInput}
+                        placeholder="username"
+                        placeholderTextColor="#fef2f0"
+                        onChangeText={(user) => setUser(user)}
+                    />
+                </View>
 
-            <View style={styles.inputView}>
-                <TextInput
-                    style={styles.TextInput}
-                    placeholder="password"
-                    placeholderTextColor="#fef2f0"
-                    secureTextEntry={true}
-                    onChangeText={(pass) => setPass(pass)}
-                />
-            </View>
+                <View style={styles.inputView}>
+                    <TextInput
+                        style={styles.TextInput}
+                        placeholder="password"
+                        placeholderTextColor="#fef2f0"
+                        secureTextEntry={true}
+                        onChangeText={(pass) => setPass(pass)}
+                    />
+                </View>
 
-            <TouchableOpacity>
-                <Text style={styles.textLinks} onPress={(event) => showToast("we're probably not gonna implement this any time soon hehe >:)")}>Forgot Password?</Text>
-            </TouchableOpacity>
+                <TouchableOpacity>
+                    <Text style={styles.textLinks} onPress={(event) => showToast("we're probably not gonna implement this any time soon hehe >:)")}>Forgot Password?</Text>
+                </TouchableOpacity>
 
-            <TouchableOpacity style={styles.buttonNormal} onPress={(event) => {
-                setLoading(true); 
-                loginEvent(user, pass)
+                <TouchableOpacity style={styles.buttonNormal} onPress={(event) => {
+                    setLoading(true);
+                    loginEvent(user, pass)
                 }}>
-                <Text style={styles.buttonText}>Log in</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonNormal}onPress={(event) => navigation.navigate("SignUpPage", userParams)}>
-                <Text style={styles.buttonText} >New user?</Text>
-            </TouchableOpacity>
-        </View>
-    );
+                    <Text style={styles.buttonText}>Log in</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonNormal} onPress={(event) => navigation.navigate("SignUpPage", userParams)}>
+                    <Text style={styles.buttonText} >New user?</Text>
+                </TouchableOpacity>
+            </View>
+        );
     }
 }
 
