@@ -143,50 +143,50 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
 
 
     //update 'ride' table w DriverID: drives's _id and selected: true
-    async function updateRideTable(selectedRoute, selectedRideIDs, driveID, driveruserID) {
-        //const resp = await axios.get('http://secret-caverns-21869.herokuapp.com/drive');
+    // async function updateRideTable(selectedRoute, selectedRideIDs, driveID, driveruserID) {
+    //     //const resp = await axios.get('http://secret-caverns-21869.herokuapp.com/drive');
 
-        for (let x = 0; x < selectedRideIDs.length; x++) {
-            //TODO: update 'ride' table w DriverID: drives's _id and selected: true
-            console.log("updating ride table:")
-            console.log(selectedRideIDs[x]);
-            console.log(driveID);
-
-
-            //once my new drive id has been retrieved, i can run a for loop here
-            axios.post('http://secret-caverns-21869.herokuapp.com/ride/update/' + selectedRideIDs[x], {
-                routename: selectedRoute[x].routeRider,
-                startName: selectedRoute[x].routename,
-                start: selectedRoute[x].start,
-                destinationName: selectedRoute[x].routeDescription,
-                destination: selectedRoute[x].destination,
-                date: selectedRoute[x].date,
-                centroid: selectedRoute[x].centroid,
-                selected: true, //set selected to tru
-                driverID: driveID
-            })
-                .then(response => {
-                    console.log(response);
+    //     for (let x = 0; x < selectedRideIDs.length; x++) {
+    //         //TODO: update 'ride' table w DriverID: drives's _id and selected: true
+    //         console.log("updating ride table:")
+    //         console.log(selectedRideIDs[x]);
+    //         console.log(driveID);
 
 
-                    //navigate to FinalDriverRouteScreen
-                    navigation.navigate('FinalDriverRouteScreen', {
-                        startLocation: route.params.startLocation,
-                        endLocation: route.params.endLocation,
-                        selectedDate: route.params.selectedDate,
-                        userId: driveruserID,
-                        waypoints: selectedRoute,
-                        startName: route.params.startName,
-                        endName: route.params.endName
-                    })
+    //         //once my new drive id has been retrieved, i can run a for loop here
+    //         axios.post('http://secret-caverns-21869.herokuapp.com/ride/update/' + selectedRideIDs[x], {
+    //             routename: selectedRoute[x].routeRider,
+    //             startName: selectedRoute[x].routename,
+    //             start: selectedRoute[x].start,
+    //             destinationName: selectedRoute[x].routeDescription,
+    //             destination: selectedRoute[x].destination,
+    //             date: selectedRoute[x].date,
+    //             centroid: selectedRoute[x].centroid,
+    //             selected: true, //set selected to tru
+    //             driverID: driveID
+    //         })
+    //             .then(response => {
+    //                 console.log(response);
 
-                })
-                .catch(error => {
-                    console.log(err);
-                });
-        }
 
-    }
+    //                 //navigate to FinalDriverRouteScreen
+    //                 navigation.navigate('FinalDriverRouteScreen', {
+    //                     startLocation: route.params.startLocation,
+    //                     endLocation: route.params.endLocation,
+    //                     selectedDate: route.params.selectedDate,
+    //                     userId: driveruserID,
+    //                     waypoints: selectedRoute,
+    //                     startName: route.params.startName,
+    //                     endName: route.params.endName
+    //                 })
+
+    //             })
+    //             .catch(error => {
+    //                 console.log(err);
+    //             });
+    //     }
+
+    // }
 
 
     const selectThisCard = (selectedRouteId) => {
@@ -252,17 +252,17 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
         const resp = await axios.get('http://secret-caverns-21869.herokuapp.com/ride');
         ridedata = resp.data;
 
+        //get and slice tdy date
         var dateobj = new Date();
- 
-
         var B = dateobj.toISOString();
-
         B = str.slice(0, 10)
 
         console.log(B);
 
         for (let i = 0; i < ridedata.length; i++) {
             //console.log("inside now")
+            
+            //get and slice retrieved date from the database (temporarily store it in a variable)
             var dateSliced = ridedata[i].date;
             dateSliced = str.slice(0, 10)
 

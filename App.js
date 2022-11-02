@@ -49,7 +49,7 @@ import CalendarScreenTabNavigator_Driver from "./Screen/CalendarScreen_Driver";
 import CalendarScreenTabNavigator_Rider from "./Screen/CalendarScreen_Rider";
 import PushNotification from "./Screen/PushNotification";
 import DayPlan_test from "./Screen/DayPlan_test";
-import * as Notifications from 'expo-notifications';
+import * as Notifications from "expo-notifications";
 //navigator.geolocation = require('react-native-geolocation-service');
 
 export default function App() {
@@ -71,20 +71,19 @@ export default function App() {
 
   const registerForPushNotifications = async () => {
     try {
-      setNotiPermission(await Notifications.getPermissionsAsync())
+      setNotiPermission(await Notifications.getPermissionsAsync());
       if (!permission) return;
       setToken((await Notifications.getExpoPushTokenAsync()).data);
 
-      console.log(token)
+      console.log(token);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   //to redirect users to login / create screen if not logged in for first time, else proceed to calendar page
   async function checkLoginState() {
     console.log("wait");
-
 
     AsyncStorage.removeItem("isLoggedIn");
     AsyncStorage.removeItem("userId");
@@ -122,6 +121,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
+<<<<<<< HEAD
       <Stack.Navigator initialRouteName={"Login"}>
         <Stack.Screen  
           name="Login" 
@@ -132,6 +132,18 @@ export default function App() {
         />
         <Stack.Screen name="SignUpPage" component={NewUser} options={{ title:'Account Creation'}}/>
         <Stack.Screen name="SelectUserType" component={selectUserType} options={{title: ' '}}/>
+=======
+      {/* <TabNavigator> */}
+      <Stack.Navigator
+        initialRouteName={"Login"}
+        screenOptions={{
+          headerShown: true,
+        }}
+      >
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="SignUpPage" component={NewUser} />
+        <Stack.Screen name="SelectUserType" component={selectUserType} />
+>>>>>>> ed24b45cc777ce892ec9bb2ab0c306d50e3a41bf
         <Stack.Screen
           name="RiderMapScreen"
           component={
@@ -158,18 +170,12 @@ export default function App() {
           name="FinalDriverRouteScreen"
           component={FinalDriverRouteScreen}
         />
-        <Stack.Screen
-          name="TypeSelect"
-          component={selectUserType}
-        />
+        <Stack.Screen name="TypeSelect" component={selectUserType} />
         <Stack.Screen
           name="DrivingNavigationScreen"
           component={DrivingNavigationScreen}
         />
-        <Stack.Screen
-          name="PushNotification"
-          component={PushNotification}
-        />
+        <Stack.Screen name="PushNotification" component={PushNotification} />
         <Stack.Screen
           name="CalendarScreenTabNavigator_Driver"
           component={CalendarScreenTabNavigator_Driver}
@@ -178,10 +184,7 @@ export default function App() {
           name="CalendarScreenTabNavigator_Rider"
           component={CalendarScreenTabNavigator_Rider}
         />
-        <Stack.Screen
-          name="DayPlan_test"
-          component={DayPlan_test}
-        />
+        <Stack.Screen name="DayPlan_test" component={DayPlan_test} />
       </Stack.Navigator>
     </NavigationContainer>
   );
