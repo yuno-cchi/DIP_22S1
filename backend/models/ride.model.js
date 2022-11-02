@@ -8,6 +8,11 @@ const rideSchema = new Schema({
         type: String,
         trim: true
     },
+    startName: {
+        type: String,
+        required: true,
+        trim: true
+    },
     start:{
         type: Object,
         required: true,
@@ -25,6 +30,11 @@ const rideSchema = new Schema({
             unique: false,
             trim: true
         },
+    },
+    destinationName: {
+        type: String,
+        required: true,
+        trim: true
     },
     destination:{
         type: Object,

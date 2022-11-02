@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, StyleSheet, Dimensions, Text } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { View, StyleSheet, Dimensions, Text, Platform } from 'react-native';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { Marker } from 'react-native-maps';
@@ -8,68 +8,139 @@ import AppButton from '../Components/AppButton';
 import { color } from '../Config/Color';
 import BottomTab from '../Components/BottomTab';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Notifications from 'expo-notifications';
 import axios from "axios";
 
-const storeInDatabase = async (
-    startLocation,
-    endLocation,
-    date = null,
-    userID = null,
-    description = ""
-) => {
-    console.log("adding to database");
 
-    console.log("Start: ");
-    console.log(startLocation);
 
-    console.log("Destination: ");
-    console.log(endLocation);
 
-    console.log("Date: ");
-    console.log(date);
 
-    console.log("Route description: ", description)
+const storeInDrive = async (start, end, date, startN, endN, selectedRoute) => {
+    console.log("adding to drives table")
 
-    //userID has to be retrieved from the login
-    let centroid = {
-        latitude: (startLocation.latitude + endLocation.latitude) / 2.0,
-        longitude: (startLocation.longitude + endLocation.longitude) / 2.0,
-    };
+    console.log("Start: ")
+    console.log(start)
 
-    console.log("userID: ");
+    console.log("Destination: ")
+    console.log(end)
+
+    console.log("Date: ")
+    console.log(date)
+
+    console.log("waypoints: ");
+    console.log(selectedRoute);
+
+    console.log("startN:");
+    console.log(startN);
+
+    console.log("endN:", endN);
+
+    console.log("selectedRoute: ", selectedRoute);
+
+    console.log("userID: ")
     // if (userID === null) {
     //     userID = "user" + Math.floor(Math.random() * 100);
     // }
+    const userID = await AsyncStorage.getItem("userId");
+    console.log(userID)
 
-    userID = await AsyncStorage.getItem("userId");
+    console.log("centroid: ")
+    const centroid = { latitude: (start.latitude + end.latitude) / 2.0, longitude: (start.longitude + end.longitude) / 2.0, };
+    console.log(centroid);
 
-    console.log(userID);
 
+    //define an array for storing all the selectedRoute ids
+    let selectedRideIDs = []
+
+    //getting id of route and updating selected to true
+    console.log("list all ids: ");
+    for (let x = 0; x < selectedRoute.length; x++) {
+        //TODO: update 'ride' table w DriverID: drives's _id and selected: true
+        console.log(selectedRoute[x].routeId);
+
+        selectedRideIDs.push(selectedRoute[x].routeId);
+
+    }
+
+    console.log(selectedRideIDs);
+
+
+    //TODO: use axios to post into database
     axios({
-        method: "post",
-        url: "http://secret-caverns-21869.herokuapp.com/ride/add",
+        method: 'post',
+        url: 'http://secret-caverns-21869.herokuapp.com/drive/add',
         headers: {},
         data: {
-            routename: userID,
-            start: startLocation,
-            destination: endLocation,
+            routeUserID: userID, //routeUserID
+            startName: startN,
+            start: start,
+            destinationName: endN,
+            destination: end,
             centroid: centroid,
             date: date,
             selected: false,
-            userID: null,
-            routeDescription: description
-
-        },
-    }).then(
-        (response) => {
-            console.log(response);
-
-        },
-        (error) => {
-            console.log(error);
+            routeIdPair: selectedRideIDs
         }
-    );
-};
+    }).then((response) => {
+        console.log(response);
+        console.log(response.data);
+
+        console.log(response.data._id);
+
+        updateRideTable(selectedRoute, selectedRideIDs, response.data._id, userID)
+
+        // navigateToRecc() //navigate to FinalDriverRouteScreen
+
+
+    }, (error) => {
+        console.log(error);
+    })
+}
+
+async function updateRideTable(selectedRoute, selectedRideIDs, driveID, driveruserID) {
+    //const resp = await axios.get('http://secret-caverns-21869.herokuapp.com/drive');
+    console.log("selectedRoute: ", selectedRoute);
+    console.log("selectedRideIDs:", selectedRideIDs);
+    for (let x = 0; x < selectedRideIDs.length; x++) {
+        //TODO: update 'ride' table w DriverID: drives's _id and selected: true
+        console.log("updating ride table:")
+        console.log(selectedRideIDs[x]);
+        console.log("driveID:", driveID);
+        console.log("date:", selectedRoute[x].date); //Problem here #####
+        console.log("startName: ", selectedRoute[x].routeName);
+        console.log("routename: ", selectedRoute[x].routeRider)
+        console.log("start coor: ", selectedRoute[x].start)
+        console.log("destName: ", selectedRoute[x].routeDescription)
+        console.log("destination: ", selectedRoute[x].destination)
+        console.log("date: ", selectedRoute[x].date)
+
+
+        //once my new drive id has been retrieved, i can run a for loop here
+        axios.post('http://secret-caverns-21869.herokuapp.com/ride/update/' + selectedRideIDs[x], {
+            routename: selectedRoute[x].routeId,//routeId
+            startName: selectedRoute[x].routeName,
+            start: selectedRoute[x].start,
+            destinationName: selectedRoute[x].routeDescription,
+            destination: selectedRoute[x].destination,
+            date: selectedRoute[x].date,
+            centroid: selectedRoute[x].centroid,
+            selected: true, //set selected to tru
+            driverID: driveID
+        })
+            .then(response => {
+                console.log(response);
+
+
+                //navigate to FinalDriverRouteScreen
+
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+}
+
 
 
 const GOOGLE_API_KEY = 'AIzaSyBYDEKY12RzWyP0ACQEpgsr4up2w3CjH88';
@@ -97,8 +168,73 @@ const getWaypoints = (routeParams) => {
     return tempWaypoints
 }
 
+async function schedulePushNotification(timeLeft) {
+    Notifications.scheduleNotificationAsync({
+        content: {
+            title: "Don't forget your ride",
+            body: timeLeft, //getTimeString(timeLeft)
+            data: { data: 'goes here' },
+        },
+        // trigger: { seconds: timeToNotify(selectedDate) - (43200) },
+        trigger: { seconds: 3 }
+    });
+}
+
+async function registerForPushNotificationsAsync() {
+    let token;
+
+    if (Platform.OS === 'android') {
+        await Notifications.setNotificationChannelAsync('default', {
+            name: 'default',
+            importance: Notifications.AndroidImportance.MAX,
+            vibrationPattern: [0, 250, 250, 250],
+            lightColor: '#FF231F7C',
+        });
+    }
+    return token;
+}
+
+
+const timeToNotify = (selectedDate) => {
+    console.log(selectedDate)
+    let timeThen = new Date(selectedDate)
+    let timeNow = new Date()
+    let dateDiff = timeThen - timeNow
+    dateDiff = dateDiff / 1000
+    dateDiff = Math.round(dateDiff)
+    return dateDiff
+    //Notify 2 hours before the ride
+}
+
+const getTimeString = (selectedDate) => {
+    let time = new Date(selectedDate)
+    return (time.getDate() + "/" + time.getMonth() + "/" + time.getFullYear())
+}
+
 
 export default function FinalDriverRouteScreen({ navigation, route }) {
+
+    const [expoPushToken, setExpoPushToken] = useState('');
+    const [notification, setNotification] = useState(false);
+    const notificationListener = useRef();
+    const responseListener = useRef();
+
+    useEffect(() => {
+        registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+            setNotification(notification);
+        });
+
+        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+            console.log(response);
+        });
+
+        return () => {
+            Notifications.removeNotificationSubscription(notificationListener.current);
+            Notifications.removeNotificationSubscription(responseListener.current);
+        };
+    }, []);
 
     let distance = 0;
     let duration = 0;
@@ -165,7 +301,32 @@ export default function FinalDriverRouteScreen({ navigation, route }) {
             <BottomTab style={styles.bottomTab}>
                 <AppButton
                     title={'Confirm'}
-                    onPress={() => { console.log(route.params) }} />
+                    onPress={async () => {
+                        await schedulePushNotification(getTimeString(route.params.selectedDate));
+                        navigation.navigate('CalendarScreenTabNavigator_Driver')
+                        console.log(routeWaypoints)
+                        storeInDrive(
+                            route.params.startLocation,
+                            route.params.endLocation,
+                            route.params.selectedDate,
+                            route.params.startName,
+                            route.params.endName,
+                            routeWaypoints
+                        )
+                    }}
+                // navigation.navigate('CalendarScreenTabNavigator_Driver')
+                // routeUserID: userID, //routeUserID
+                // startName: startN,
+                // start: start,
+                // destinationName: endN,
+                // destination: end,
+                // centroid: centroid,
+                // date: date,
+                // selected: false,
+                // routeIdPair: selectedRideIDs
+
+                />
+
             </BottomTab>
 
 

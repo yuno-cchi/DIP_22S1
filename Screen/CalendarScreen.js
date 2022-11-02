@@ -5,14 +5,19 @@ import data from "./calendarData.json";
 import mydata from "./dayTripData.json";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PlanList from "../Components/PlanList";
 import { FlatList } from "react-native";
 import { color } from "../Config/Color";
 import axios from "axios";
 import mydates from "./GetDriveData";
+import RiderMapScreen from "./RiderMapScreen";
+import DriverPutRouteScreen from "./DriverPutRouteScreen";
+import DriverPutRouteScreen_Android from "./DriverPutRouteScreen_Android";
+import RiderMapScreen_android from "./RiderMapScreen_android";
 //import drivedata from "./GetDriveData";
 
-const Stack = createNativeStackNavigator();
+
 var dataLen = Object.keys(data).length;
 var dayDataLen = Object.keys(mydata).length;
 var selectedday;
@@ -107,8 +112,8 @@ function DayPlan({ navigation }) {
             displayPlan.push(
               <View>
                 <PlanList
-                  start={thisRoute.start.latitude}
-                  destination={thisRoute.destination.latitude}
+                  start={thisRoute.startName}
+                  destination={thisRoute.destinationName}
                   key={thisRoute._id}
                   user={thisRoute.routename}
                   price="$15"
@@ -133,7 +138,7 @@ function DayPlan({ navigation }) {
 
         let arr = Array.from(dateColect);
         arr = arr.map(i => i + ": { 'marked': true, 'selectedColor': 'blue'}")
-        
+
         console.log(JSON.stringify(arr));
 
         setGetDates(JSON.stringify(arr));
@@ -202,7 +207,45 @@ function MarkCalender() {
   for (let i = 0; i < dayDataLen; i++) { }
 }
 
-function CalendarScreen({ navigation }) {
+const PutRouteScreenSelector = (route) => {
+
+
+  console.log(route.params.userType)
+
+  if (Platform.OS === 'ios') {
+    if (route.params.userType === 'rider') {
+      return RiderMapScreen
+    } else {
+      return DriverPutRouteScreen
+    }
+  }
+  else {
+    if (route.params.userType === 'rider') {
+      return RiderMapScreen_android
+    } else {
+      return DriverPutRouteScreen_Android
+    }
+  }
+
+}
+
+const CalendarScreenTabNavigator = ({ navigation, route }) => {
+  const Tab = createBottomTabNavigator();
+  if (route === undefined) {
+    route.params.userType = 'rider' //Set default
+  }
+
+  return (
+    <Tab.Navigator initialRouteName="Calendar">
+      <Tab.Screen name="Calendar" component={CalendarScreen} />
+      <Tab.Screen name="PutRouteScreen" >
+        {() => <PutRouteScreenSelector route={route} />}
+      </Tab.Screen>
+    </Tab.Navigator>
+  )
+}
+
+function CalendarScreen({ navigation, route }) {
   let today = new Date();
   let tryPlanning = new Date();
   tryPlanning.setMonth(tryPlanning.getMonth() + 1);
@@ -230,7 +273,7 @@ function CalendarScreen({ navigation }) {
           //setDbDates()
           //has to use [4] to get date string
           console.log("this date?", response.data[i]);
-          
+
 
           setTimeout(() => {
             setLoading(false);
@@ -241,12 +284,12 @@ function CalendarScreen({ navigation }) {
         let arr = Array.from(dateColect);
         //obj = Object.assign({arr}, "{'marked': true, 'selectedColor': 'blue'}");
         obj = {};
-        arr.forEach((elem,i)=>{
+        arr.forEach((elem, i) => {
           //obj[{${arr[i]}] = "{'marked': true, 'selectedColor': 'blue'}" 
-          obj[`${arr[i]}`]= {'marked': true, 'selectedColor': 'blue'} 
+          obj[`${arr[i]}`] = { 'marked': true, 'selectedColor': 'blue' }
         });
 
-        console.log("dd",obj)
+        console.log("dd", obj)
         let addedarr = [];
 
         // for (var i = 0 ; i < arr.length; i++){
@@ -256,7 +299,7 @@ function CalendarScreen({ navigation }) {
         // arr = JSON.stringify(arr)
         //dateColect = dateColect.map(i => i + ": {'marked': true, 'selectedColor': 'blue'}")
 
-        
+
         //console.log(JSON.stringify(arr));
 
         setGetDates(obj);
@@ -365,4 +408,4 @@ const styles = StyleSheet.create({
   noplan: {},
 });
 
-export default CalendarNavigator;
+export default CalendarScreenTabNavigator;

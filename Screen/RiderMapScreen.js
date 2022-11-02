@@ -29,13 +29,9 @@ export default function RiderMapScreen({ route, navigation }) {
   const [coordinate, updateMarker] = useState([]);
   const [startLocation, setStartLocation] = useState();
   const [endLocation, setEndLocation] = useState();
+  const [startLocationName, setStartLocationName] = useState();
+  const [endLocationName, setEndLocationName] = useState();
   const [selectedDate, setSelectedDate] = useState(new Date());
-  //A function to get lastest markerKey from DB
-
-  const navigateCalendar = () => {
-    navigation.navigate("CalendarScreen", route.params)
-  }
-
 
   const animateToLocation = (coordinates) => {
     mapViewRef.animateToRegion(coordinates, ANIMATE_SPEED);
@@ -45,8 +41,8 @@ export default function RiderMapScreen({ route, navigation }) {
     startLocation,
     endLocation,
     date,
-    key,
-    userID
+    startName,
+    endName
   ) => {
     console.log("adding to database");
 
@@ -58,6 +54,9 @@ export default function RiderMapScreen({ route, navigation }) {
 
     console.log("Date: ");
     console.log(date);
+
+    console.log("startName: ", startName);
+    console.log("endName: ", endName);
 
     //userID has to be retrieved from the login
     centroid = {
@@ -81,18 +80,20 @@ export default function RiderMapScreen({ route, navigation }) {
       headers: {},
       data: {
         routename: userID,
+        startName: startName,
         start: startLocation,
+        destinationName: endName,
         destination: endLocation,
         centroid: centroid,
         date: date,
         selected: false,
         driverID: null,
-      },
+      },//Issue when there's a duplication of userID
     }).then(
       (response) => {
         console.log(response);
 
-        navigateCalendar();
+
       },
       (error) => {
         console.log(error);
@@ -138,7 +139,9 @@ export default function RiderMapScreen({ route, navigation }) {
                 longitude: details.geometry.location.lng,
               };
               setEndLocation(coordinates);
+              setEndLocationName(data.description);
               console.log(coordinates);
+              console.log(data.description);
               animateToLocation(coordinates);
             }}
             on
@@ -167,7 +170,9 @@ export default function RiderMapScreen({ route, navigation }) {
                 longitude: details.geometry.location.lng,
               };
               setStartLocation(coordinates);
+              setStartLocationName(data.description);
               console.log(coordinates);
+              console.log(data.description);
               animateToLocation(coordinates);
             }}
             query={{
@@ -230,9 +235,12 @@ export default function RiderMapScreen({ route, navigation }) {
                   startLocation,
                   endLocation,
                   selectedDate,
-                  null,
-                  null
+                  startLocationName,
+                  endLocationName
                 );
+                navigation.navigate(
+                  "Calendar"
+                )
               }}
             />
           </View>
