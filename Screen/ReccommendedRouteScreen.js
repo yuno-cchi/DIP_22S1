@@ -1,54 +1,42 @@
 import React, { useEffect, useState } from "react";
-import {
-    View,
-    Text,
-    StyleSheet,
-    Image,
-    FlatList,
-    Dimensions,
-    Alert,
-} from "react-native";
+import { View, Text, StyleSheet, Image, FlatList, Dimensions, Alert } from 'react-native';
 // import AppText from "../Components/AppText";
 
-import { color } from "../Config/Color";
-import axios from "axios";
+import { color } from '../Config/Color';
+import axios from 'axios';
 import Card from "../Components/Card";
 import AppButton from "../Components/AppButton";
 import BottomTab from "../Components/BottomTab";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const windowWidth = Dimensions.get("window").width;
-const windowHeight = Dimensions.get("window").height;
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 
 const dummyRoute = [
     {
         routeId: 0,
-        routeName: "Route1",
-        routeDescription: "Route1 so fun",
+        routeName: 'Route1',
+        routeDescription: 'Route1 so fun',
         start: { latitude: 1.33300621554807, longitude: 103.71818707395227 },
-        destination: {
-            latitude: 1.3259478205865913,
-            longitude: 103.81212770732003,
-        },
+        destination: { latitude: 1.3259478205865913, longitude: 103.81212770732003 },
         centroid: { latitude: 1.329477, longitude: 103.765158 },
         selected: false,
+
     },
     {
         routeId: 1,
-        routeName: "Route2",
-        routeDescription: "Route2 so fun",
+        routeName: 'Route2',
+        routeDescription: 'Route2 so fun',
         start: { latitude: 1.3259478205865913, longitude: 103.81212770732003 },
-        destination: {
-            latitude: 1.4057132690528746,
-            longitude: 103.85914023847647,
-        },
+        destination: { latitude: 1.4057132690528746, longitude: 103.85914023847647 },
         centroid: { latitude: 1.3658, longitude: 103.8356 },
         selected: false,
     },
     {
         routeId: 2,
-        routeName: "Route3",
-        routeDescription: "Route3 so fun",
+        routeName: 'Route3',
+        routeDescription: 'Route3 so fun',
         start: { latitude: 1.287764200204629, longitude: 103.84689407843125 },
         destination: { latitude: 1.3521, longitude: 103.8198 },
         centroid: { latitude: 1.31995, longitude: 103.833345 },
@@ -56,26 +44,26 @@ const dummyRoute = [
     },
     {
         routeId: 3,
-        routeName: "Route4",
-        routeDescription: "Route4 so fun",
+        routeName: 'Route4',
+        routeDescription: 'Route4 so fun',
         start: { latitude: 1.4057132690528746, longitude: 103.85914023847647 },
         destination: { latitude: 1.3521, longitude: 103.8198 },
         centroid: { latitude: 1.378905, longitude: 103.83947 },
         selected: false,
-    },
-];
+    }
+]
 
 const route = {
     startLocation: { latitude: 1.302127, longitude: 103.625382 },
     endLocation: { latitude: 1.2988981, longitude: 103.8547574 },
     centroid: { latitude: 1.30051255, longitude: 103.740097 },
-    selectedDate: "2022-10-05T07:22:13.049Z",
-};
+    selectedDate: "2022-10-05T07:22:13.049Z"
+}
 
 const getBestRoutes = (routeObjectArray, driverRoute) => {
     console.log("Starting");
 
-    let tempRouteObjectArray = [...routeObjectArray]; // Copy into another array to prevent altering the original array.
+    let tempRouteObjectArray = [...routeObjectArray];// Copy into another array to prevent altering the original array.
     let tempRouteObject = null;
     let returnRouteObjectArray = [];
     const originalArrayLength = tempRouteObjectArray.length;
@@ -87,22 +75,14 @@ const getBestRoutes = (routeObjectArray, driverRoute) => {
         let tempRouteName = null;
 
         for (let x = 0; x < tempRouteObjectArray.length; x++) {
+
             //Finding the distance of driver coordinates and the given route coordinates
-            dist = Math.sqrt(
-                Math.pow(
-                    tempRouteObjectArray[x].centroid.latitude -
-                    driverRoute.centroid.latitude,
-                    2
-                ) +
-                Math.pow(
-                    tempRouteObjectArray[x].centroid.longitude -
-                    driverRoute.centroid.longitude,
-                    2
-                )
-            );
+            dist = Math.sqrt(Math.pow((tempRouteObjectArray[x].centroid.latitude - driverRoute.centroid.latitude), 2)
+                + Math.pow((tempRouteObjectArray[x].centroid.longitude - driverRoute.centroid.longitude), 2));
 
             //console.log("Route ID", tempRouteObjectArray[x].routeId, ": ", dist);
             if (dist < leastDist) {
+
                 leastDist = dist;
                 tempRouteName = tempRouteObjectArray[x].routeName;
                 leastDistId = tempRouteObjectArray[x].routeId;
@@ -114,55 +94,53 @@ const getBestRoutes = (routeObjectArray, driverRoute) => {
         // console.log("Final leastDistId: ", leastDistId);
         // console.log("Best route is: ", tempRouteObject.routeId, " dist: ", leastDist, "Route name: ", tempRouteName)
 
-        returnRouteObjectArray.push({
-            routeId: tempRouteObject.routeId,
-            routeRider: tempRouteObject.routeRider,
-            routeName: tempRouteObject.routeName,
-            date: tempRouteObject.date,
-            routeDescription: tempRouteObject.routeDescription,
-            start: {
-                latitude: tempRouteObject.start.latitude,
-                longitude: tempRouteObject.start.longitude,
-            },
-            destination: {
-                latitude: tempRouteObject.destination.latitude,
-                longitude: tempRouteObject.destination.longitude,
-            },
-            centroid: {
-                latitude: tempRouteObject.centroid.latitude,
-                longitude: tempRouteObject.centroid.longitude,
-            },
-            selected: tempRouteObject.selected,
-            bestRouteKey: y,
-        });
+        returnRouteObjectArray.push(
+            {
+                routeId: tempRouteObject.routeId,
+                routeRider: tempRouteObject.routeRider,
+                routeName: tempRouteObject.routeName,
+                date: tempRouteObject.date,
+                routeDescription: tempRouteObject.routeDescription,
+                start: { latitude: tempRouteObject.start.latitude, longitude: tempRouteObject.start.longitude },
+                destination: { latitude: tempRouteObject.destination.latitude, longitude: tempRouteObject.destination.longitude },
+                centroid: { latitude: tempRouteObject.centroid.latitude, longitude: tempRouteObject.centroid.longitude },
+                selected: tempRouteObject.selected,
+                bestRouteKey: y
+            }
+        )
 
-        tempRouteObjectArray = tempRouteObjectArray.filter(
-            (routeObj) => routeObj.routeId !== leastDistId
-        );
-        console.log(tempRouteObjectArray.length);
+        tempRouteObjectArray = tempRouteObjectArray.filter(routeObj => routeObj.routeId !== leastDistId)
+        console.log(tempRouteObjectArray.length)
+
+
     }
-    console.log(returnRouteObjectArray);
+    console.log(returnRouteObjectArray)
     return returnRouteObjectArray;
-};
+}
 let selectCount = 0;
 
 export default function ReccommendedRouteScreen({ navigation, route }) {
+
     const [initialDummyRoute, setDummyroute] = useState([]);
     const [isRefrehing, setRefreshing] = useState(false);
     const [selectedRoute, setSelectedRoute] = useState([]);
 
-    const [newDriveId, setIdapp] = useState("empty");
+    const [newDriveId, setIdapp] = useState('empty');
+
 
     //const [ routeArrays, setLoadRoutes ] = useState({bestRouteKey: null, centroid: null, destination: null, routeDescription: null, routeName: null, routeId: null, selected: false, start: null});
     const [loading, setLoading] = useState(true);
 
-    const { startLocation, endLocation, selectedDate } = route; //route has to be route.param, use const route in place for testing
+    const { startLocation, endLocation, selectedDate } = route; //route has to be route.param, use const route in place for testing 
 
     const deleteThisCard = (deleteRoute) => {
-        setDummyroute(
-            initialDummyRoute.filter((route) => route.routeId !== deleteRoute.routeId)
-        );
-    };
+        setDummyroute(initialDummyRoute.filter(route => route.routeId !== deleteRoute.routeId));
+
+    }
+
+
+
+
 
     //update 'ride' table w DriverID: drives's _id and selected: true
     // async function updateRideTable(selectedRoute, selectedRideIDs, driveID, driveruserID) {
@@ -173,6 +151,7 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
     //         console.log("updating ride table:")
     //         console.log(selectedRideIDs[x]);
     //         console.log(driveID);
+
 
     //         //once my new drive id has been retrieved, i can run a for loop here
     //         axios.post('http://secret-caverns-21869.herokuapp.com/ride/update/' + selectedRideIDs[x], {
@@ -188,6 +167,7 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
     //         })
     //             .then(response => {
     //                 console.log(response);
+
 
     //                 //navigate to FinalDriverRouteScreen
     //                 navigation.navigate('FinalDriverRouteScreen', {
@@ -208,83 +188,85 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
 
     // }
 
+
     const selectThisCard = (selectedRouteId) => {
+
         let tempRoute2 = selectedRoute;
         if (selectedRouteId.selected === false && selectCount < 3) {
-            tempRoute2.push(
-                initialDummyRoute.filter(
-                    (prop) => prop.routeId === selectedRouteId.routeId
-                )
-            );
+            tempRoute2.push(initialDummyRoute.filter(prop => prop.routeId === selectedRouteId.routeId));
             setSelectedRoute(tempRoute2);
             selectCount++;
         } else if (selectedRouteId.selected === true) {
-            tempRoute2.pop(
-                initialDummyRoute.filter(
-                    (prop) => prop.routeId === selectedRouteId.routeId
-                )
-            );
+            tempRoute2.pop(initialDummyRoute.filter(prop => prop.routeId === selectedRouteId.routeId));
             setSelectedRoute(tempRoute2);
             selectCount--;
         } else {
-            Alert.alert("Alert", "You've reached the limit!", [
-                { text: "OK", onPress: () => console.log("OK Pressed") },
-            ]);
+            Alert.alert(
+                "Alert",
+                "You've reached the limit!",
+                [
+                    { text: "OK", onPress: () => console.log("OK Pressed") }
+                ]
+            );
         }
         //console.log(selectedRouteId)
         selectedRouteId.selected = !selectedRouteId.selected;
-        let tempRoute = initialDummyRoute.map((route) =>
-            route.routeId !== selectedRouteId.routeId ? route : selectedRouteId
-        );
+        let tempRoute = initialDummyRoute.map(route => route.routeId !== selectedRouteId.routeId ? route : selectedRouteId);
         setDummyroute(tempRoute);
-    };
+
+    }
 
     const clean2DArray = (inputArray = [0][0]) => {
-        let tempArray = [];
+        let tempArray = []
         for (let i = 0; i < inputArray.length; i++) {
             tempArray.push({
                 routeId: inputArray[i][0].routeId,
                 routeName: inputArray[i][0].routeName,
                 routeDescription: inputArray[i][0].routeDescription,
                 date: inputArray[i][0].date,
-                start: {
-                    latitude: inputArray[i][0].start.latitude,
-                    longitude: inputArray[i][0].start.longitude,
-                },
-                destination: {
-                    latitude: inputArray[i][0].destination.latitude,
-                    longitude: inputArray[i][0].destination.longitude,
-                },
-                centroid: {
-                    latitude: inputArray[i][0].centroid.latitude,
-                    longitude: inputArray[i][0].centroid.longitude,
-                },
+                start: { latitude: inputArray[i][0].start.latitude, longitude: inputArray[i][0].start.longitude },
+                destination: { latitude: inputArray[i][0].destination.latitude, longitude: inputArray[i][0].destination.longitude },
+                centroid: { latitude: inputArray[i][0].centroid.latitude, longitude: inputArray[i][0].centroid.longitude },
                 selected: inputArray[i][0].selected,
-                bestRouteKey: inputArray[i][0].bestRouteKey,
-            });
+                bestRouteKey: inputArray[i][0].bestRouteKey
+            }
+            )
         }
-        return tempArray;
-    };
+        return tempArray
+    }
+
 
     useEffect(() => {
-        console.log("\n start of recommendedroutesscreen");
+        console.log("\n start of recommendedroutesscreen")
         try {
             getNearestRoutes();
-        } catch (error) { }
+        } catch (error) {
+
+        }
+
     }, []);
 
     const getNearestRoutes = async () => {
+
         let routeArray = [];
-        const resp = await axios.get(
-            "http://secret-caverns-21869.herokuapp.com/ride"
-        );
+        const resp = await axios.get('http://secret-caverns-21869.herokuapp.com/ride');
         ridedata = resp.data;
 
-        // console.log(ridedata);
+        //get and slice tdy date
+        var dateobj = new Date();
+        var B = dateobj.toISOString();
+        B = str.slice(0, 10)
+
+        console.log(B);
 
         for (let i = 0; i < ridedata.length; i++) {
             //console.log("inside now")
-            if (ridedata[i].selected == false) {
+
+            //get and slice retrieved date from the database (temporarily store it in a variable)
+            var dateSliced = ridedata[i].date;
+            dateSliced = str.slice(0, 10)
+
+            if (ridedata[i].selected == false && B == dateSliced) {
                 // if (ridedata[i].centroid.latitude <= centroid1.latitude + 0.5 && ridedata[i].centroid.latitude >= centroid1.latitude - 0.5) {
                 //     routeArray.push({centroid: ridedata[i].centroid, destination: ridedata[i].destination, routeDescription: ridedata[i].routeName, routeId: ridedata[i]._id, selected: false,
                 //     start: ridedata[i].start});
@@ -298,7 +280,7 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
                     routeRider: ridedata[i].routename, //ride user's id, to store as hidden
                     routeId: ridedata[i]._id,
                     selected: false,
-                    start: ridedata[i].start,
+                    start: ridedata[i].start
                 });
             }
         }
@@ -311,87 +293,89 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
         // console.log(initialDummyRoute);
 
         setLoading(false);
-    };
+    }
 
-    const sortedRoutes = getBestRoutes(initialDummyRoute, route.params);
+
+
+
+
+    const sortedRoutes = getBestRoutes(initialDummyRoute, route.params)
     //console.log("Route parrams", route.params.centroid)
     return (
-        <View style={styles.container}>
-            <View
-                style={{
-                    height: windowHeight * 0.75,
-                    width: windowWidth,
-                    backgroundColor: color.lightGray,
-                    alignItems: "center",
-                }}
-            >
+        <View
+            style={styles.container}>
+            <View style={{ height: windowHeight * 0.75, width: windowWidth, backgroundColor: color.lightGray, alignItems: 'center' }}>
                 <FlatList
                     data={sortedRoutes}
-                    keyExtractor={(item) => item.bestRouteKey}
-                    renderItem={({ item }) => (
+                    keyExtractor={item => item.bestRouteKey}
+                    renderItem={({ item }) =>
                         <Card
                             title={item.routeName}
                             subTitle={item.routeDescription}
                             route={item}
                             driverRoute={route.params}
-                            style={
-                                item.selected
-                                    ? { backgroundColor: color.primary }
-                                    : { backgroundColor: color.white }
-                            }
-                            onPress={() => selectThisCard(item)}
-                        />
-                    )}
+                            style={item.selected ? { backgroundColor: color.primary } : { backgroundColor: color.white }}
+                            onPress={() => selectThisCard(item)} />}
                     refreshing={isRefrehing}
                     onRefresh={() => {
                         try {
-                            getNearestRoutes();
-                        } catch (error) { }
+                            getNearestRoutes()
+                        } catch (error) {
+
+                        }
                     }}
                 />
             </View>
 
             <BottomTab style={styles.bottomTab}>
                 <AppButton
-                    title="Select"
+                    title='Select'
                     style={styles.confirmButton}
-                    onPress={() => {
-                        selectCount = 0;
-                        const tempSelectedRoute = clean2DArray(selectedRoute);
-                        // console.log("The selected route is", route.params.selectedDate)
-                        // console.log("Hello there")
-                        console.log(tempSelectedRoute);
+                    onPress={
+                        () => {
+                            selectCount = 0;
+                            const tempSelectedRoute = clean2DArray(selectedRoute)
+                            // console.log("The selected route is", route.params.selectedDate)
+                            // console.log("Hello there")
+                            console.log(tempSelectedRoute)
 
-                        navigation.navigate("FinalDriverRouteScreen", {
-                            startLocation: route.params.startLocation,
-                            startName: route.params.startName,
-                            destinationName: route.params.destinationName,
-                            endLocation: route.params.endLocation,
-                            selectedDate: route.params.selectedDate,
-                            userId: route.params.userId,
-                            waypoints: tempSelectedRoute,
-                            startName: route.params.startName,
-                            endName: route.params.endName,
-                        });
-                    }}
+
+
+                            navigation.navigate('FinalDriverRouteScreen', {
+                                startLocation: route.params.startLocation,
+                                startName: route.params.startName,
+                                destinationName: route.params.destinationName,
+                                endLocation: route.params.endLocation,
+                                selectedDate: route.params.selectedDate,
+                                userId: route.params.userId,
+                                waypoints: tempSelectedRoute,
+                                startName: route.params.startName,
+                                endName: route.params.endName
+                            })
+
+                        }
+                    }
                 />
                 <AppButton
-                    title="Back"
+                    title='Back'
                     style={styles.confirmButton}
-                    onPress={() => {
-                        // console.log("There are: ", selectedRoute.length, "routes")
-                        // console.log("Selected route: ", selectedRoute[0])
-                        // console.log("The selected route is/are")
-                        // for (let x = 0; x < selectedRoute.length; x++) {
-                        //     console.log(selectedRoute[x][0].routeId)
+                    onPress={
+                        () => {
+                            // console.log("There are: ", selectedRoute.length, "routes")
+                            // console.log("Selected route: ", selectedRoute[0])
+                            // console.log("The selected route is/are")
+                            // for (let x = 0; x < selectedRoute.length; x++) {
+                            //     console.log(selectedRoute[x][0].routeId)
 
-                        // }
-                        selectCount = 0;
-                        navigation.navigate("CalendarScreenTabNavigator_Driver");
-                    }}
+                            // }
+                            selectCount = 0;
+                            navigation.navigate('CalendarScreenTabNavigator_Driver')
+                        }
+                    }
                 />
+
             </BottomTab>
-        </View>
+        </View >
     );
 }
 
@@ -400,12 +384,12 @@ const styles = StyleSheet.create({
         minWidth: "80%",
         height: windowHeight,
         backgroundColor: "white",
-        alignItems: "center",
+        alignItems: "center"
     },
     title: {
         marginTop: 15,
         marginBottom: 10,
-        marginLeft: 20,
+        marginLeft: 20
     },
     topFreeSpace: {
         height: 50,
@@ -415,7 +399,7 @@ const styles = StyleSheet.create({
         color: color.green,
         marginTop: 10,
         marginBottom: 10,
-        marginLeft: 20,
+        marginLeft: 20
     },
     confirmButton: {
         backgroundColor: color.red,
@@ -423,6 +407,7 @@ const styles = StyleSheet.create({
     },
     bottomTab: {
         alignItems: "center",
-        height: windowHeight * 0.25,
-    },
-});
+        height: windowHeight * 0.25
+    }
+
+})
