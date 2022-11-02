@@ -6,11 +6,13 @@ const Schema = mongoose.Schema;
 const rideSchema = new Schema({
     routename:{ //to store userID/username from session inside
         type: String,
+        unique: false,
         trim: true
     },
     startName: {
         type: String,
         required: true,
+        unique: false,
         trim: true
     },
     start:{
@@ -34,6 +36,7 @@ const rideSchema = new Schema({
     destinationName: {
         type: String,
         required: true,
+        unique: false,
         trim: true
     },
     destination:{
