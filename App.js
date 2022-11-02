@@ -121,18 +121,6 @@ export default function App() {
 
   return (
     <NavigationContainer>
-<<<<<<< HEAD
-      <Stack.Navigator initialRouteName={"Login"}>
-        <Stack.Screen  
-          name="Login" 
-          component={Login} 
-          options={{
-            title : 'Welcome Back!'
-          }}  
-        />
-        <Stack.Screen name="SignUpPage" component={NewUser} options={{ title:'Account Creation'}}/>
-        <Stack.Screen name="SelectUserType" component={selectUserType} options={{title: ' '}}/>
-=======
       {/* <TabNavigator> */}
       <Stack.Navigator
         initialRouteName={"Login"}
@@ -143,7 +131,6 @@ export default function App() {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="SignUpPage" component={NewUser} />
         <Stack.Screen name="SelectUserType" component={selectUserType} />
->>>>>>> ed24b45cc777ce892ec9bb2ab0c306d50e3a41bf
         <Stack.Screen
           name="RiderMapScreen"
           component={
@@ -158,13 +145,13 @@ export default function App() {
               : DriverPutRouteScreen_Android
           }
           options={{
-            title:'Where are you going?'
+            title: 'Where are you going?'
           }}
         />
         <Stack.Screen
           name="ReccommendedRouteScreen"
           component={ReccommendedRouteScreen}
-          options={{ title : "Recommended Routes" }}
+          options={{ title: "Recommended Routes" }}
         />
         <Stack.Screen
           name="FinalDriverRouteScreen"
