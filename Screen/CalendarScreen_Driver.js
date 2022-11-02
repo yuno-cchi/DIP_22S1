@@ -102,7 +102,9 @@ const PutRouteScreenSelector = (route) => {
 }
 
 const CalendarScreenTabNavigator_Driver = ({ navigation, route }) => {
-    const Tab = createBottomTabNavigator();
+    const Tab = createBottomTabNavigator(
+
+    );
 
     return (
         <Tab.Navigator initialRouteName="Calendar" screenOptions={{
@@ -231,13 +233,13 @@ function CalendarScreen({ navigation, route }) {
                     backgroundColor: "#ffffff",
                     calendarBackground: "#ffffff",
                     textSectionTitleColor: "orange",
-                    textSectionTitleDisabledColor: "#d9e1e8",
-                    selectedDayBackgroundColor: "#00adf5",
+                    textSectionTitleDisabledColor: "#f52d00",
+                    selectedDayBackgroundColor: "#f52d00",
                     selectedDayTextColor: "#ffffff",
                     todayTextColor: "#00adf5",
                     dayTextColor: "#2d4150",
                     textDisabledColor: "#d9e1e8",
-                    dotColor: "#00adf5",
+                    dotColor: "#f52d00",
                     selectedDotColor: "#ffffff",
                     arrowColor: "orange",
                     disabledArrowColor: "#d9e1e8",

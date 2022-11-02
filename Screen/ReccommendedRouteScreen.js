@@ -360,7 +360,7 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
 
                             // }
                             selectCount = 0;
-                            navigation.navigate('CalendarScreen_Driver')
+                            navigation.navigate('CalendarScreenTabNavigator_Driver')
                         }
                     }
                 />

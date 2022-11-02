@@ -44,6 +44,15 @@ export default function RiderMapScreen({ route, navigation }) {
     startName,
     endName
   ) => {
+
+
+    //userID has to be retrieved from the login
+    centroid = {
+      latitude: (startLocation.latitude + endLocation.latitude) / 2.0,
+      longitude: (startLocation.longitude + endLocation.longitude) / 2.0,
+    };
+
+
     console.log("adding to database");
 
     console.log("Start: ");
@@ -57,22 +66,16 @@ export default function RiderMapScreen({ route, navigation }) {
 
     console.log("startName: ", startName);
     console.log("endName: ", endName);
-
-    //userID has to be retrieved from the login
-    centroid = {
-      latitude: (startLocation.latitude + endLocation.latitude) / 2.0,
-      longitude: (startLocation.longitude + endLocation.longitude) / 2.0,
-    };
-
     console.log("userID: ");
     // if (userID === null) {
     //     userID = "user" + Math.floor(Math.random() * 100);
     // }
 
-    userID = await AsyncStorage.getItem("userId");
+    const userID = await AsyncStorage.getItem("userId");
 
     console.log(userID);
 
+    console.log("Centroid: ", centroid)
     //TODO: use axios to post into database
     axios({
       method: "post",
@@ -88,7 +91,7 @@ export default function RiderMapScreen({ route, navigation }) {
         date: date,
         selected: false,
         driverID: null,
-      },//Issue when there's a duplication of userID
+      },
     }).then(
       (response) => {
         console.log(response);
