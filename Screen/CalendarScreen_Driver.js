@@ -15,6 +15,7 @@ import RiderMapScreen from "./RiderMapScreen";
 import DriverPutRouteScreen from "./DriverPutRouteScreen";
 import DriverPutRouteScreen_Android from "./DriverPutRouteScreen_Android";
 import RiderMapScreen_android from "./RiderMapScreen_android";
+import { FontAwesome5 } from '@expo/vector-icons';
 import AppButton from "../Components/AppButton";
 
 //import drivedata from "./GetDriveData";
@@ -207,13 +208,34 @@ const CalendarScreenTabNavigator_Driver = ({ navigation, route }) => {
     const Tab = createBottomTabNavigator();
 
     return (
-        <Tab.Navigator initialRouteName="Calendar" screenOptions={{
-            headerShown: false,
-        }}>
-            <Tab.Screen name="Calendar" component={CalendarScreen} />
-            <Tab.Screen name="DriverMap" component={DriverPutRouteScreen}>
-                {/* {() => <PutRouteScreenSelector route={route} />} */}
-            </Tab.Screen>
+
+        <Tab.Navigator
+            initialRouteName="Calendar"
+            screenOptions={{
+                headerShown: false,
+                tabBarActiveTintColor: color.primary,
+            }}
+        >
+            <Tab.Screen
+                name="Calendar"
+                component={CalendarScreen}
+                options={{
+                    tabBarLabel: 'Calendar',
+                    tabBarIcon: ({ color, size }) => (
+                        <FontAwesome5 name="calendar-alt" color={color} size={size} />
+                    ),
+                }}
+            />
+            <Tab.Screen
+                name="DriverMap"
+                component={DriverPutRouteScreen}
+                options={{
+                    tabBarLabel: 'DriverMap',
+                    tabBarIcon: ({ color, size }) => (
+                        <FontAwesome5 name="map-marked-alt" color={color} size={size} />
+                    ),
+                }}
+            />
         </Tab.Navigator>
     )
 }

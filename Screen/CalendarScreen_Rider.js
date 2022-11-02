@@ -23,6 +23,7 @@ import DriverPutRouteScreen_Android from "./DriverPutRouteScreen_Android";
 import RiderMapScreen_android from "./RiderMapScreen_android";
 import * as Notifications from "expo-notifications";
 import AppButton from "../Components/AppButton";
+import { FontAwesome5 } from '@expo/vector-icons';
 
 //import drivedata from "./GetDriveData";
 
@@ -74,12 +75,35 @@ function showDayPlan(displayPlan) {
     console.log("inside showdayplan", displayPlan);
 
     return (
-        <View style={styles.plan}>
-            <ScrollView>
-                <View style={styles.component}>{displayPlan}</View>
-            </ScrollView>
-        </View>
-    );
+        <Tab.Navigator
+            initialRouteName="Calendar"
+            screenOptions={{
+                headerShown: false,
+                tabBarActiveTintColor: color.primary,
+            }}
+        >
+            <Tab.Screen
+                name="Calendar"
+                component={CalendarScreen}
+                options={{
+                    tabBarLabel: 'Calendar',
+                    tabBarIcon: ({ color, size }) => (
+                        <FontAwesome5 name="calendar-alt" color={color} size={size} />
+                    ),
+                }}
+            />
+            <Tab.Screen
+                name="RiderMap"
+                component={RiderMapScreen}
+                options={{
+                    tabBarLabel: 'RiderMap',
+                    tabBarIcon: ({ color, size }) => (
+                        <FontAwesome5 name="map-marked-alt" color={color} size={size} />
+                    ),
+                }}
+            />
+        </Tab.Navigator>
+    )
 }
 
 function DayPlan({ navigation }) {
@@ -240,7 +264,7 @@ const CalendarScreenTabNavigator_Rider = ({ navigation, route }) => {
             }}
         >
             <Tab.Screen name="Calendar" component={CalendarScreen} />
-            <Tab.Screen name="RiderMap" component={RiderMapScreen}>
+            <Tab.Screen name="RiderMap" component={Platform.OS === "ios" ? RiderMapScreen : RiderMapScreen_android}>
                 {/* {() => <PutRouteScreenSelector route={route} />} */}
             </Tab.Screen>
         </Tab.Navigator>
