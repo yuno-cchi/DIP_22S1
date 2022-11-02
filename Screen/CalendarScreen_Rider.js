@@ -239,7 +239,7 @@ const CalendarScreenTabNavigator_Rider = ({ navigation, route }) => {
       }}
     >
       <Tab.Screen name="Calendar" component={CalendarScreen} />
-      <Tab.Screen name="RiderMap" component={RiderMapScreen}>
+      <Tab.Screen name="RiderMap" component={Platform.OS === "ios" ? RiderMapScreen : RiderMapScreen_android}>
         {/* {() => <PutRouteScreenSelector route={route} />} */}
       </Tab.Screen>
     </Tab.Navigator>
