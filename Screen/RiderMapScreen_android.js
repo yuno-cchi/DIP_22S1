@@ -109,7 +109,10 @@ export default function RiderMapScreen_android() {
             console.log(response);
 
 
-            navigateToRecc()
+            //navigateToRecc()
+            navigation.navigate(
+                "Calendar"
+              )
 
 
         }, (error) => {
@@ -119,18 +122,18 @@ export default function RiderMapScreen_android() {
 
     }
 
-    function navigateToRecc(){
-        //alert successful and move to next page
-        navigation.navigate('ReccommendedRouteScreen', {
-            startLocation: startLocation,
-            endLocation: endLocation,
-            selectedDate: selectedDate,
-            centroid: {
-                latitude: (startLocation.latitude + endLocation.latitude) / 2, 
-                longitude: (startLocation.longitude + endLocation.longitude) / 2
-            }
-        })
-    }
+    // function navigateToRecc(){
+    //     //alert successful and move to next page
+    //     navigation.navigate('ReccommendedRouteScreen', {
+    //         startLocation: startLocation,
+    //         endLocation: endLocation,
+    //         selectedDate: selectedDate,
+    //         centroid: {
+    //             latitude: (startLocation.latitude + endLocation.latitude) / 2, 
+    //             longitude: (startLocation.longitude + endLocation.longitude) / 2
+    //         }
+    //     })
+    // }
 
     //for setting time
     const functionSetTime = () => {

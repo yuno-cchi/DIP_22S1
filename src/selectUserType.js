@@ -12,14 +12,15 @@
  *
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
     Text,
     View,
     Image,
     TouchableOpacity,
-    StyleSheet
+    StyleSheet,
+    ActivityIndicator
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Notifications from 'expo-notifications';
@@ -27,6 +28,8 @@ import styles from '../assets/styles/styles.js'
 import { color } from '../Config/Color.js';
 
 export default function SelectUserType({ route, navigation }) {
+
+    const [loading, setLoading] = useState(true);
 
     const userParams = route.params;
     const selectUserType = (userType) => {
@@ -50,11 +53,25 @@ export default function SelectUserType({ route, navigation }) {
         }
     }
 
+    useEffect(() => {
+        setInterval(
+            function(){ setLoading(false) }
+            , 200);
+
+    });
+
+    if (loading){
+        return (
+            <View>
+                <ActivityIndicator size="large" />
+            </View>
+        )
+    }
 
     return (
         <View style={styles.container}>
             <View style={{ height: 90 }} />
-            <Text style={localStyles.fontStyle}>Today I am</Text>
+            <Text style={localStyles.fontStyle}>Today I am:</Text>
 
             <View style={{ height: 35 }} />
 
@@ -74,8 +91,8 @@ export default function SelectUserType({ route, navigation }) {
 
 const localStyles = StyleSheet.create({
     fontStyle: {
-        fontSize: 30,
-
-        color: color.primary
+        fontSize: 20,
+        color: color.primary,
+        fontStyle: 'italic',
     }
 })
