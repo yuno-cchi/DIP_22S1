@@ -26,6 +26,7 @@ import AppButton from "../Components/AppButton";
 import { FontAwesome5 } from '@expo/vector-icons';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ActivityIndicator, MD2Colors } from 'react-native-paper';
+import { ImageBackground } from "react-native";
 
 //import drivedata from "./GetDriveData";
 
@@ -61,7 +62,7 @@ const CalendarScreenTabNavigator_Rider = ({ navigation, route }) => {
                 name="RiderMap"
                 component={Platform.OS === "ios" ? RiderMapScreen : RiderMapScreen_android}
                 options={{
-                    tabBarLabel: 'DriverMap',
+                    tabBarLabel: 'RiderMap',
                     tabBarIcon: ({ color, size }) => (
                         <FontAwesome5 name="map-marked-alt" color={color} size={size} />
                     ),
@@ -143,7 +144,7 @@ function CalendarScreen({ navigation, route }) {
 
     return (
         <View style={styles.container}>
-
+            {/* <ImageBackground source={require('../assets/img/background02.jpg')} resizeMode="repeat" style={{ ...StyleSheet.absoluteFill }}/> */}
             <TouchableOpacity style={{
                 position: 'absolute',
                 top: 60,
@@ -195,8 +196,8 @@ function CalendarScreen({ navigation, route }) {
                 disableAllTouchEventsForDisabledDays={false}
                 enableSwipeMonths={false}
                 theme={{
-                    backgroundColor: "#fafafa",
-                    calendarBackground: "#fafafa",
+                    backgroundColor: "#ffffff",
+                    calendarBackground: "#ffffff",
                     textSectionTitleColor: "orange",
                     textSectionTitleDisabledColor: "#ff0000",
                     selectedDayBackgroundColor: "#f50000",

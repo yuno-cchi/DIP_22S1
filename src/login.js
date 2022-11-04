@@ -218,9 +218,9 @@ export default function Login({ navigation }) {
                     />
                 </View>
 
-                <TouchableOpacity>
+                {/* <TouchableOpacity>
                     <Text style={styles.textLinks} onPress={(event) => showToast("we're probably not gonna implement this any time soon hehe >:)")}>Forgot Password?</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
                 <TouchableOpacity style={styles.buttonNormal} onPress={(event) => {
                     setLoading(true);
@@ -251,8 +251,8 @@ const styles = StyleSheet.create({
     inputView: {
         marginTop: 10,
         backgroundColor: "#ffcccc",
-        borderRadius: 5,
-        width: "70%",
+        borderRadius: 20,
+        width: "86%",
         height: 45,
         marginBottom: 20,
         alignItems: 'center',
@@ -262,6 +262,9 @@ const styles = StyleSheet.create({
         height: 50,
         flex: 1,
         padding: 10,
+        fontSize: 20,
+        fontFamily: 'Menlo',
+        fontWeight: '600'
     },
 
     logoView: {
@@ -280,9 +283,10 @@ const styles = StyleSheet.create({
     buttonNormal: {
         backgroundColor: "#e76850",
         borderRadius: 30,
-        width: "70%",
+        width: "60%",
         height: 45,
-        marginBottom: 20,
+        marginTop: 20,
+        marginBottom: 0,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -325,6 +329,9 @@ const styles = StyleSheet.create({
         color: "#f5f5f5",
         alignContent: "center",
         justifyContent: "center",
+        fontSize: 20,
+        fontFamily: 'Menlo',
+        fontWeight: '600'
     },
 
     errorText: {

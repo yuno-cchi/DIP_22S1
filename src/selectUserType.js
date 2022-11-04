@@ -109,9 +109,11 @@ export default function SelectUserType({ route, navigation }) {
 
 const localStyles = StyleSheet.create({
     fontStyle: {
-        fontSize: 20,
+        fontSize: 40,
         color: color.primary,
         fontStyle: 'italic',
+        fontWeight: '500',
+        fontFamily: 'Menlo'
     }
 })
 
@@ -176,6 +178,8 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         textAlignVertical: 'center',
         fontSize: 25,
+        fontWeight: '700',
+        fontFamily: 'Menlo'
     },
 
     buttonIcon: {

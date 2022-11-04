@@ -78,6 +78,10 @@ export default function DayPlan_test({ navigation, route }) {
                                                     backgroundColor: color.white,
                                                 }
                                         }
+                                        onPress={() => {
+
+                                            navigation.navigate("DrivingNavigationScreen", thisRoute)
+                                        }}
                                     />
                                 </View>
                             );
