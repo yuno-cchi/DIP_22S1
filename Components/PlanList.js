@@ -41,7 +41,7 @@ export default function PlanList({
   }
 
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity style={{ marginVertical: 40 }} onPress={onPress}>
       <MapViewDirections
         style={{ flex: 0 }}
         origin={start}
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: color.lightGray,
     width: windowWidth * 0.9,
-    height: windowHeight * 0.18,
+    height: windowHeight * 0.2,
     marginTop: 15,
     borderRadius: 10,
   },
@@ -101,9 +101,10 @@ const styles = StyleSheet.create({
     height: "75%",
   },
   title: {
-    fontWeight: "200",
+    fontWeight: "500",
     marginTop: 5,
     marginLeft: 5,
+    fontSize: 15
   },
   subTitle: {
     color: color.green,
@@ -135,7 +136,7 @@ const styles = StyleSheet.create({
     height: "20%",
   },
   mylocation: {
-    width: "85%",
+    width: "100%",
     //flexDirection: "row",
     marginLeft: "auto",
   },

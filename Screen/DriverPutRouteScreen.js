@@ -6,6 +6,7 @@ import {
     Button,
     Platform,
     Dimensions,
+    Alert,
 } from "react-native";
 import BottomTab from "../Components/BottomTab";
 import AppButton from "../Components/AppButton";
@@ -287,93 +288,139 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                     />
                 </View>
             </HeaderTab>
-            <BottomTab style={{ alignItems: "center", height: windowHeight * 0.17 }}>
-                <AppButton
-                    style={styles.showRoute}
-                    title="Drive"
-                    onPress={() => {
-                        console.log(
-                            "Driver info:",
-                            startLocation,
-                            endLocation,
-                            selectedDate
-                        );
+            {/* <BottomTab>
 
-                        navigation.navigate("ReccommendedRouteScreen", {
-                            startName: startLocationName,
-                            endName: endLocationName,
-                            startLocation: startLocation,
-                            endLocation: endLocation,
-                            selectedDate: selectedDate.toISOString(),
-                            centroid: {
-                                latitude: (startLocation.latitude + endLocation.latitude) / 2,
-                                longitude:
-                                    (startLocation.longitude + endLocation.longitude) / 2,
-                            },
-                        });
-                    }}
-                />
 
                 <View style={styles.timeContainer}>
-                    <DateTimePicker
-                        value={selectedDate}
-                        mode={DATE_MODE}
-                        onChange={(event, selectedDate1) => {
-                            console.log("ios");
-                            const currentDate = selectedDate1 || selecteddate;
-                            setSelectedDate(currentDate);
-                            console.log(selectedDate);
-                            let tempDate = new Date(currentDate);
-                            let fDate =
-                                tempDate.getFullYear() +
-                                "/" +
-                                (tempDate.getMonth() + 1) +
-                                "/" +
-                                tempDate.getDay();
-                            let fTime =
-                                "Hours: " +
-                                tempDate.getHours() +
-                                " | Minutes: " +
-                                tempDate.getMinutes();
-                            setText(fDate + "\n" + fTime);
-                            console.log(fDate + " || " + fTime);
-                        }}
-                        minimumDate={new Date()}
-                        accentColor={color.red}
-                        textColor={color.medium}
-                        display="default"
-                        style={{
-                            width: 200,
-                            transform: [{ scale: 1.5 }],
-                        }}
-                    />
+                    <View style={styles.flextime}>
+                        <DateTimePicker
+                            value={selectedDate}
+                            mode={DATE_MODE}
+                            onChange={(event, selectedDate1) => {
+                                console.log("ios");
+                                const currentDate = selectedDate1 || selecteddate;
+                                setSelectedDate(currentDate);
+                                console.log(selectedDate);
+                                let tempDate = new Date(currentDate);
+                                let fDate =
+                                    tempDate.getFullYear() +
+                                    "/" +
+                                    (tempDate.getMonth() + 1) +
+                                    "/" +
+                                    tempDate.getDay();
+                                let fTime =
+                                    "Hours: " +
+                                    tempDate.getHours() +
+                                    " | Minutes: " +
+                                    tempDate.getMinutes();
+                                setText(fDate + "\n" + fTime);
+                                console.log(fDate + " || " + fTime);
+                            }}
+                            minimumDate={new Date()}
+                            accentColor={color.red}
+                            textColor={color.medium}
+                            display="default"
+                            style={{
+                                justifyContent: 'center',
+                                alignContent: 'center',
+                                alignItems: 'center',
+                                width: 200,
+                                height: 100,
+                                transform: [{ scale: 1.4 }],
+                            }}
+                        />
+                    </View>
                 </View>
 
-                {/* <View style={styles.flexbtn}>
-          <AppButton
-            style={styles.showRoute}
-            title="Go"
-            onPress={() => {
-              console.log(
-                "Driver info:",
-                startLocation,
-                endLocation,
-                selectedDate
-              );
+                
 
-              navigation.navigate("ReccommendedRouteScreen", {
-                startLocation: startLocation,
-                endLocation: endLocation,
-                selectedDate: selectedDate.toISOString(),
-                centroid: {
-                  latitude: (startLocation.latitude + endLocation.latitude) / 2,
-                  longitude:
-                    (startLocation.longitude + endLocation.longitude) / 2,
-                },
-              });
-            }}
-          />
-        </View> */}
+            </BottomTab> */}
+            <BottomTab>
+                <View style={styles.timeContainer}>
+                    <View style={styles.flextime}>
+                        <DateTimePicker
+                            value={selectedDate}
+                            mode={DATE_MODE}
+                            onChange={(event, selectedDate1) => {
+                                console.log("ios rider");
+                                const currentDate = selectedDate1 || selecteddate;
+                                setSelectedDate(currentDate);
+                                console.log(selectedDate);
+                                let tempDate = new Date(currentDate);
+                                let fDate =
+                                    tempDate.getFullYear() +
+                                    "/" +
+                                    (tempDate.getMonth() + 1) +
+                                    "/" +
+                                    tempDate.getDay();
+                                let fTime =
+                                    "Hours: " +
+                                    tempDate.getHours() +
+                                    " | Minutes: " +
+                                    tempDate.getMinutes();
+                                console.log(fDate + " || " + fTime);
+                            }}
+                            minimumDate={new Date()}
+                            accentColor={color.red}
+                            textColor={color.medium}
+                            display="default"
+                            style={{
+                                justifyContent: 'center',
+                                alignContent: 'center',
+                                alignItems: 'center',
+                                width: 200,
+                                height: 100,
+                                transform: [{ scale: 1.4 }],
+                            }}
+                        />
+                    </View>
+
+                    <AppButton
+                        style={styles.sendButton}
+                        thisColor={color.danger}
+                        title="Drive"
+                        onPress={() => {
+                            console.log(
+                                "Driver info:",
+                                startLocation,
+                                endLocation,
+                                selectedDate
+                            );
+                            if (startLocation !== undefined && endLocation !== undefined) {
+                                navigation.navigate("ReccommendedRouteScreen", {
+                                    startName: startLocationName,
+                                    endName: endLocationName,
+                                    startLocation: startLocation,
+                                    endLocation: endLocation,
+                                    selectedDate: selectedDate.toISOString(),
+                                    centroid: {
+                                        latitude: (startLocation.latitude + endLocation.latitude) / 2,
+                                        longitude:
+                                            (startLocation.longitude + endLocation.longitude) / 2,
+                                    },
+                                });
+                            } else {
+                                Alert.alert(
+                                    "Empty destination fields!",
+                                    "Please enter the destination",
+                                    [
+                                        {
+                                            text: "Ok",
+                                            onPress: () => {
+
+                                            },
+                                            style: "default",
+                                        },
+                                    ],
+                                    {
+                                        cancelable: false,
+                                    })
+                            }
+
+                        }}
+                    />
+
+                </View>
             </BottomTab>
         </View >
     );
@@ -383,53 +430,29 @@ const styles = StyleSheet.create({
     container: {
         ...StyleSheet.absoluteFill,
     },
-    showRoute: {
+    searchBar: {
         position: "absolute",
-        bottom: 40,
-        width: 100,
+        marginTop: 60,
         right: 20,
-        height: 80,
     },
-    showLoc: {
+    dashButton: {
         position: "absolute",
-        bottom: 40,
-        width: 200,
-        left: 20,
+        width: 40,
+        height: 40,
+        left: 30,
+        marginTop: 60,
     },
     tab: {
         position: "absolute",
         backgroundColor: color.lightGray,
         width: "100%",
-        height: 200,
+        height: 500,
         bottom: 0,
     },
-    searchBar: {
-        height: "5%",
-        width: "60%",
-        borderRadius: 20,
-        backgroundColor: color.lightGray,
-        borderColor: color.black,
-        borderWidth: 2,
-        padding: 15,
-    },
-    confirmButtonStyle: {
-        position: "absolute",
-        backgroundColor: color.primary,
-        color: color.primary,
-        height: 40,
-        width: 80,
-        borderRadius: 15,
-        padding: 5,
-        right: 10,
-        top: 130,
-    },
-    textInput: {
-        backgroundColor: color.white,
-        width: 250,
-        height: 40,
-        borderRadius: 10,
-        margin: 4,
-        padding: 5,
+    sendButton: {
+        width: 130,
+        marginLeft: 50
+
     },
     locationTextBoxContainer: {
         top: 50,
@@ -456,29 +479,24 @@ const styles = StyleSheet.create({
             left: 40,
         },
     },
-    textboxContainer: {
-        width: "100%",
-        height: 400,
-        backgroundColor: color.lightGray,
-        justifyContent: "center",
-        alignItems: "center",
-    },
     timeContainer: {
-        position: "absolute",
-        left: 0,
-        top: 10,
-        width: 300,
-        height: 100,
-        justifyContent: "center",
-        alignItems: "center",
+        flexDirection: "row",
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 150,
+
     },
-    androidTimeContainer: {
-        position: "absolute",
-        left: 0,
-        top: 10,
-        width: 100,
-        height: 100,
-        justifyContent: "center",
+    flextime: {
         alignItems: "center",
+        justifyContent: "center",
+        alignContent: 'center',
+        marginLeft: 0
+        //alignItems: "center",
+    },
+    flexbtn: {
+        flex: 1,
+        //justifyContent: "center",
+        alignItems: "center",
+        //alignItems: "right",
     },
 });

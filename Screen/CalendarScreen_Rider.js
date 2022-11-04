@@ -5,7 +5,7 @@ import React, {
     useState,
     useRef,
 } from "react";
-import { View, StyleSheet, Text, ScrollView } from "react-native";
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity } from "react-native";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 import data from "./calendarData.json";
 import mydata from "./dayTripData.json";
@@ -42,6 +42,7 @@ const CalendarScreenTabNavigator_Rider = ({ navigation, route }) => {
             initialRouteName="Calendar"
             screenOptions={{
                 headerShown: false,
+                tabBarActiveTintColor: color.primary,
             }}
         >
             <Tab.Screen
@@ -139,17 +140,24 @@ function CalendarScreen({ navigation, route }) {
 
     return (
         <View style={styles.container}>
-            <AppButton style={{
+            <TouchableOpacity style={{
                 position: 'absolute',
                 top: 20,
                 left: 10,
-                width: 45
+                width: 40,
+                height: 40,
+                backgroundColor: color.primary,
+                borderRadius: 10,
+                alignItems: "center",
+                justifyContent: "center",
             }}
                 onPress={() => {
                     console.log("Logging out")
                     /*CheeHean!*/
                 }}
-            />
+            >
+                <FontAwesome5 name="sign-out-alt" size={25} color={'white'} />
+            </TouchableOpacity>
             <Calendar
                 //minDate={today}
                 //maxDate={tryPlanning}

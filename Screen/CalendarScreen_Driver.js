@@ -1,5 +1,5 @@
 import React, { ReactNode, SyntheticEvent, useEffect, useState } from "react";
-import { View, StyleSheet, Text, ScrollView } from "react-native";
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity } from "react-native";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 import data from "./calendarData.json";
 import mydata from "./dayTripData.json";
@@ -58,150 +58,6 @@ async function axiosTest(displayPlan, selectedday) {
         .catch(function (error) {
             console.log(error);
         });
-}
-
-// const CalendarNavigator = () => (
-//   <Stack.Navigator initialRouteName="CalendarScreen">
-//     <Stack.Screen name="CalendarScreen" component={CalendarScreen} />
-//     <Stack.Screen name="DayPlan" component={DayPlan} />
-//     {/* <Stack.Screen name="DayPlan" component={PlannedRouteDetails} /> */}
-//   </Stack.Navigator>
-// );
-
-function showDayPlan(displayPlan) {
-    console.log("inside showdayplan", displayPlan);
-
-    return (
-        <View style={styles.plan}>
-            <ScrollView>
-                <View style={styles.component}>{displayPlan}</View>
-            </ScrollView>
-        </View>
-    );
-}
-
-
-function DayPlan({ navigation }) {
-    let displayPlan = [];
-    const [forDisplay, setForDisplay] = useState();
-    const [isLoading, setLoading] = useState(true);
-    //axiosTest(displayPlan, selectedday);
-    console.log("can i get my dates?", mydates);
-
-
-    //set to store date no duplicate
-
-
-    //object array for post process
-
-
-    useEffect(() => {
-
-        let dateColect = new Set();
-        let returnRouteObjectArray = [];
-
-        axios
-            .get("http://secret-caverns-21869.herokuapp.com/ride")
-            .then((response) => {
-                //console.log("resp", response.data.length);
-                for (let i = 0; i < response.data.length; i++) {
-                    let thisRoute = response.data[i];
-
-                    dateColect.add(thisRoute.date.slice(0, 10));
-
-                    //setDbDates()
-                    //has to use [4] to get date string
-                    console.log("this date?", response.data[i]);
-                    if (Object.values(selectedday)[4] === thisRoute.date.slice(0, 10)) {
-                        console.log("select", Object.values(selectedday)[4]);
-                        console.log("route ", thisRoute.date.slice(0, 10));
-                        displayPlan.push(
-                            <View>
-                                <PlanList
-                                    start={thisRoute.startName}
-                                    destination={thisRoute.destinationName}
-                                    key={thisRoute._id}
-                                    user={thisRoute.routename}
-                                    price="$15"
-                                    style={
-                                        thisRoute.selected
-                                            ? { backgroundColor: color.primary }
-                                            : { backgroundColor: color.white }
-                                    }
-                                />
-                            </View>
-                        );
-                    }
-
-                    console.log("in display", displayPlan);
-                    setForDisplay(displayPlan);
-                    console.log("for display?", forDisplay);
-
-                    setTimeout(() => {
-                        setLoading(false);
-                    }, 300);
-                }
-
-                let arr = Array.from(dateColect);
-                arr = arr.map(i => i + ": { 'marked': true, 'selectedColor': 'blue'}")
-
-                console.log(JSON.stringify(arr));
-
-                setGetDates(JSON.stringify(arr));
-
-            });
-    }, []);
-
-    if (isLoading) {
-        return (
-            <View
-                style={{
-                    flexDirection: "row",
-                    height: "100%",
-                    padding: 30,
-                    justifyContent: "center",
-                    alignContent: "center",
-                }}
-            >
-                <Text>Loading...</Text>
-            </View>
-        );
-    } else {
-        console.log("can display?", forDisplay);
-        return (
-            <View style={styles.plan}>
-                {/* <Text>done</Text> */}
-                <View style={styles.component}>{forDisplay}</View>
-            </View>
-        );
-    }
-
-}
-
-function MarkCalender() {
-    for (let i = 0; i < dayDataLen; i++) { }
-}
-
-const PutRouteScreenSelector = (route) => {
-
-
-    console.log(route.params.userType)
-
-    if (Platform.OS === 'ios') {
-        if (route.params.userType === 'rider') {
-            return RiderMapScreen
-        } else {
-            return DriverPutRouteScreen
-        }
-    }
-    else {
-        if (route.params.userType === 'rider') {
-            return RiderMapScreen_android
-        } else {
-            return DriverPutRouteScreen_Android
-        }
-    }
-
 }
 
 const CalendarScreenTabNavigator_Driver = ({ navigation, route }) => {
@@ -321,17 +177,24 @@ function CalendarScreen({ navigation, route }) {
 
     return (
         <View style={styles.container}>
-            <AppButton style={{
+            <TouchableOpacity style={{
                 position: 'absolute',
                 top: 20,
                 left: 10,
-                width: 45
+                width: 40,
+                height: 40,
+                backgroundColor: color.primary,
+                borderRadius: 10,
+                alignItems: "center",
+                justifyContent: "center",
             }}
                 onPress={() => {
                     console.log("Logging out")
                     /*CheeHean!*/
                 }}
-            />
+            >
+                <FontAwesome5 name="sign-out-alt" size={25} color={'white'} />
+            </TouchableOpacity>
             < Calendar
                 //minDate={today}
                 //maxDate={tryPlanning}
