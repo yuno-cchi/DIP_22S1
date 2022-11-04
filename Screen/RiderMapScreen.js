@@ -280,6 +280,7 @@ export default function RiderMapScreen({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFill,
+    backgroundColor: color.white
   },
   searchBar: {
     position: "absolute",
@@ -320,11 +321,16 @@ const styles = StyleSheet.create({
       left: 40,
 
     },
-    textInputContainer: {
-      backgroundColor: "darkgrey",
-      borderRadius: 5,
-      height: 47
+    textInput: {
+      backgroundColor: color.lightGray,
+      height: 44,
+      borderRadius: 20,
+      paddingVertical: 5,
+      paddingHorizontal: 10,
+      fontSize: 15,
+      flex: 1,
     },
+
 
   },
   endTextBox: {
@@ -336,10 +342,14 @@ const styles = StyleSheet.create({
       top: 60,
       left: 40,
     },
-    textInputContainer: {
-      backgroundColor: "darkgrey",
-      borderRadius: 5,
-      height: 47
+    textInput: {
+      backgroundColor: color.lightGray,
+      height: 44,
+      borderRadius: 20,
+      paddingVertical: 5,
+      paddingHorizontal: 10,
+      fontSize: 15,
+      flex: 1,
     },
   },
   timeContainer: {

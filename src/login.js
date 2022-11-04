@@ -195,7 +195,7 @@ export default function Login({ navigation }) {
     }
     else {
         return (
-            <SafeAreaView style={styles.container}>
+            <View style={styles.container}>
                 <Image style={styles.logoView} source={require("../assets/img/logo.png")} />
                 <StatusBar style="auto" />
 
@@ -231,7 +231,7 @@ export default function Login({ navigation }) {
                 <TouchableOpacity style={styles.buttonNormal} onPress={(event) => navigation.navigate("SignUpPage", userParams)}>
                     <Text style={styles.buttonText} >New user?</Text>
                 </TouchableOpacity>
-            </SafeAreaView>
+            </View>
         );
     }
 }
@@ -240,8 +240,9 @@ export default function Login({ navigation }) {
 const styles = StyleSheet.create({
 
     container: {
-        marginTop: "30%",
-        //backgroundColor: "#f5f5f5",
+        flex: 1,
+        marginTop: 0,
+        backgroundColor: color.white,
         justifyContent: "center",
         alignItems: "center",
         width: "100%",

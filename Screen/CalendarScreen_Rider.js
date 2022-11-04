@@ -195,8 +195,8 @@ function CalendarScreen({ navigation, route }) {
                 disableAllTouchEventsForDisabledDays={false}
                 enableSwipeMonths={false}
                 theme={{
-                    backgroundColor: "#ffffff",
-                    calendarBackground: "#ffffff",
+                    backgroundColor: "#fafafa",
+                    calendarBackground: "#fafafa",
                     textSectionTitleColor: "orange",
                     textSectionTitleDisabledColor: "#ff0000",
                     selectedDayBackgroundColor: "#f50000",
@@ -234,6 +234,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: "center",
+        backgroundColor: color.white
     },
     plan: {
         flex: 2,
