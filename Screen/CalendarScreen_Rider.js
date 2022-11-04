@@ -25,6 +25,7 @@ import * as Notifications from "expo-notifications";
 import AppButton from "../Components/AppButton";
 import { FontAwesome5 } from '@expo/vector-icons';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ActivityIndicator, MD2Colors } from 'react-native-paper';
 
 //import drivedata from "./GetDriveData";
 
@@ -130,16 +131,19 @@ function CalendarScreen({ navigation, route }) {
                     height: "100%",
                     padding: 30,
                     justifyContent: "center",
-                    alignContent: "center",
+                    alignItems: "center",
                 }}
             >
-                <Text>Loading...</Text>
+
+
+                <ActivityIndicator size="large" color={color.primary} />
             </View>
         );
     }
 
     return (
         <View style={styles.container}>
+
             <TouchableOpacity style={{
                 position: 'absolute',
                 top: 60,
@@ -204,11 +208,11 @@ function CalendarScreen({ navigation, route }) {
                     selectedDotColor: "#ffffff",
                     arrowColor: "orange",
                     disabledArrowColor: "#d9e1e8",
-                    monthTextColor: "orange",
+                    monthTextColor: "red",
                     indicatorColor: "orange",
-                    textDayFontWeight: "300",
+                    textDayFontWeight: "400",
                     textMonthFontWeight: "bold",
-                    textDayHeaderFontWeight: "200",
+                    textDayHeaderFontWeight: "700",
                     textDayFontSize: 16,
                     textMonthFontSize: 16,
                     textDayHeaderFontSize: 14,

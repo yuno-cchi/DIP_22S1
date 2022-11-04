@@ -17,6 +17,7 @@ import DriverPutRouteScreen_Android from "./DriverPutRouteScreen_Android";
 import RiderMapScreen_android from "./RiderMapScreen_android";
 import { FontAwesome5 } from '@expo/vector-icons';
 import AppButton from "../Components/AppButton";
+import { ActivityIndicator, MD2Colors } from 'react-native-paper';
 
 //import drivedata from "./GetDriveData";
 
@@ -167,10 +168,12 @@ function CalendarScreen({ navigation, route }) {
                     height: "100%",
                     padding: 30,
                     justifyContent: "center",
-                    alignContent: "center",
+                    alignItems: "center",
                 }}
             >
-                <Text>Loading...</Text>
+
+
+                <ActivityIndicator size="large" color={color.primary} />
             </View>
         );
     }
@@ -241,11 +244,11 @@ function CalendarScreen({ navigation, route }) {
                     selectedDotColor: "#ffffff",
                     arrowColor: "orange",
                     disabledArrowColor: "#d9e1e8",
-                    monthTextColor: "orange",
+                    monthTextColor: "red",
                     indicatorColor: "orange",
-                    textDayFontWeight: "300",
+                    textDayFontWeight: "400",
                     textMonthFontWeight: "bold",
-                    textDayHeaderFontWeight: "200",
+                    textDayHeaderFontWeight: "700",
                     textDayFontSize: 16,
                     textMonthFontSize: 16,
                     textDayHeaderFontSize: 14,

@@ -114,6 +114,7 @@ export default function RiderMapScreen({ route, navigation }) {
         style={{ ...StyleSheet.absoluteFill }}
         showsUserLocation={true}
         showsPointsOfInterest={true}
+        userInterfaceStyle='light'
       >
         <MapViewDirections
           origin={startLocation}
@@ -317,7 +318,14 @@ const styles = StyleSheet.create({
       height: 200,
       top: 0,
       left: 40,
+
     },
+    textInputContainer: {
+      backgroundColor: "darkgrey",
+      borderRadius: 5,
+      height: 47
+    },
+
   },
   endTextBox: {
     container: {
@@ -327,6 +335,11 @@ const styles = StyleSheet.create({
       height: 200,
       top: 60,
       left: 40,
+    },
+    textInputContainer: {
+      backgroundColor: "darkgrey",
+      borderRadius: 5,
+      height: 47
     },
   },
   timeContainer: {

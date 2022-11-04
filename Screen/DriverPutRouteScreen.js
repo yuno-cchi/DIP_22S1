@@ -212,6 +212,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                 style={styles.container}
                 showsPointsOfInterest={true}
                 showsUserLocation={true}
+                userInterfaceStyle='light'
             >
                 <MapViewDirections
                     origin={startLocation}
@@ -422,6 +423,11 @@ const styles = StyleSheet.create({
             top: 0,
             left: 40,
         },
+        textInputContainer: {
+            backgroundColor: "darkgrey",
+            borderRadius: 5,
+            height: 47
+        },
     },
     endTextBox: {
         container: {
@@ -431,6 +437,11 @@ const styles = StyleSheet.create({
             height: 200,
             top: 60,
             left: 40,
+        },
+        textInputContainer: {
+            backgroundColor: "darkgrey",
+            borderRadius: 5,
+            height: 47
         },
     },
     timeContainer: {

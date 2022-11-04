@@ -25,18 +25,20 @@ import {
     ToastAndroid,
     Alert,
     Platform,
-    ActivityIndicator,
-    StyleSheet
+    StyleSheet,
+    SafeAreaView
 } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import IsValidString from './IsValidString.js';
+import { color } from '../Config/Color.js';
+import { ActivityIndicator, MD2Colors } from 'react-native-paper';
 
 
 export default function Login({ navigation }) {
     const [user, setUser] = useState("");;
     const [pass, setPass] = useState("");
 
-    const [loading, setLoading] = useState();
+    const [isLoading, setLoading] = useState();
 
     const userParams = {
         username: null,
@@ -174,14 +176,26 @@ export default function Login({ navigation }) {
         }
     }
 
-    if (loading) {
-        <View style={[styles.container, styles.horizontal]}>
-            <ActivityIndicator size="large" color="#00ff00" />
-        </View>
+    if (isLoading) {
+        return (
+            <View
+                style={{
+                    flexDirection: "row",
+                    height: "100%",
+                    padding: 30,
+                    justifyContent: "center",
+                    alignItems: "center",
+                }}
+            >
+
+
+                <ActivityIndicator size="large" color={color.primary} />
+            </View>
+        );
     }
     else {
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <Image style={styles.logoView} source={require("../assets/img/logo.png")} />
                 <StatusBar style="auto" />
 
@@ -217,7 +231,7 @@ export default function Login({ navigation }) {
                 <TouchableOpacity style={styles.buttonNormal} onPress={(event) => navigation.navigate("SignUpPage", userParams)}>
                     <Text style={styles.buttonText} >New user?</Text>
                 </TouchableOpacity>
-            </View>
+            </SafeAreaView>
         );
     }
 }
@@ -226,7 +240,7 @@ export default function Login({ navigation }) {
 const styles = StyleSheet.create({
 
     container: {
-        marginTop: "20%",
+        marginTop: "30%",
         //backgroundColor: "#f5f5f5",
         justifyContent: "center",
         alignItems: "center",
