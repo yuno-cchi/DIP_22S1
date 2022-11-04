@@ -288,53 +288,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                     />
                 </View>
             </HeaderTab>
-            {/* <BottomTab>
 
-
-                <View style={styles.timeContainer}>
-                    <View style={styles.flextime}>
-                        <DateTimePicker
-                            value={selectedDate}
-                            mode={DATE_MODE}
-                            onChange={(event, selectedDate1) => {
-                                console.log("ios");
-                                const currentDate = selectedDate1 || selecteddate;
-                                setSelectedDate(currentDate);
-                                console.log(selectedDate);
-                                let tempDate = new Date(currentDate);
-                                let fDate =
-                                    tempDate.getFullYear() +
-                                    "/" +
-                                    (tempDate.getMonth() + 1) +
-                                    "/" +
-                                    tempDate.getDay();
-                                let fTime =
-                                    "Hours: " +
-                                    tempDate.getHours() +
-                                    " | Minutes: " +
-                                    tempDate.getMinutes();
-                                setText(fDate + "\n" + fTime);
-                                console.log(fDate + " || " + fTime);
-                            }}
-                            minimumDate={new Date()}
-                            accentColor={color.red}
-                            textColor={color.medium}
-                            display="default"
-                            style={{
-                                justifyContent: 'center',
-                                alignContent: 'center',
-                                alignItems: 'center',
-                                width: 200,
-                                height: 100,
-                                transform: [{ scale: 1.4 }],
-                            }}
-                        />
-                    </View>
-                </View>
-
-                
-
-            </BottomTab> */}
             <BottomTab>
                 <View style={styles.timeContainer}>
                     <View style={styles.flextime}>

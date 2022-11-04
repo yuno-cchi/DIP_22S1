@@ -65,8 +65,8 @@ export default function PlanList({
               {/* <Image source={require("./pic/Arrow.png")} /> */}
             </View>
             <View style={styles.mylocation}>
-              <AppText style={styles.title}>{start}</AppText>
-              <AppText style={styles.title}>{destination}</AppText>
+              <AppText style={styles.title}>{String.fromCodePoint(128663) + start}</AppText>
+              <AppText style={styles.title}>{String.fromCodePoint(128665) + destination}</AppText>
             </View>
           </View>
           {/* </View> */}
@@ -79,7 +79,7 @@ export default function PlanList({
 
           <View style={styles.botcontainer}>
             <AppText style={styles.subTitle}>{user}</AppText>
-            <AppText style={styles.subTitle}>
+            <AppText style={styles.subTitle2}>
               {price}{/* Price calculation here */}
             </AppText>
           </View>
@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
     backgroundColor: color.lightGray,
     width: windowWidth * 0.9,
     height: windowHeight * 0.2,
-    marginTop: 15,
     borderRadius: 10,
   },
   image: {
@@ -102,12 +101,18 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: "500",
-    marginTop: 5,
+    marginTop: 2,
     marginLeft: 5,
-    fontSize: 15
+    fontSize: 18
   },
   subTitle: {
-    color: color.green,
+    color: color.primary,
+    fontWeight: "120",
+    marginTop: 2,
+    marginLeft: 5,
+  },
+  subTitle2: {
+    color: color.secondary,
     fontWeight: "120",
     marginTop: 2,
     marginLeft: 5,
@@ -126,9 +131,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   wraptext: {
-    padding: "5%",
+    paddingHorizontal: "5%",
   },
   topcontainer: {
+    marginTop: 0,
     height: "80%",
   },
   botcontainer: {

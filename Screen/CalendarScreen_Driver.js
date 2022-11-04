@@ -138,7 +138,7 @@ function CalendarScreen({ navigation, route }) {
                 obj = {};
                 arr.forEach((elem, i) => {
                     //obj[{${arr[i]}] = "{'marked': true, 'selectedColor': 'blue'}" 
-                    obj[`${arr[i]}`] = { 'marked': true, 'selectedColor': 'blue' }
+                    obj[`${arr[i]}`] = { marked: true, selectedColor: 'red' }
                 });
 
                 console.log("dd", obj)
@@ -179,7 +179,7 @@ function CalendarScreen({ navigation, route }) {
         <View style={styles.container}>
             <TouchableOpacity style={{
                 position: 'absolute',
-                top: 20,
+                top: 60,
                 left: 10,
                 width: 40,
                 height: 40,
@@ -190,6 +190,10 @@ function CalendarScreen({ navigation, route }) {
             }}
                 onPress={() => {
                     console.log("Logging out")
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'Login' }],
+                    });
                     /*CheeHean!*/
                 }}
             >
@@ -227,13 +231,13 @@ function CalendarScreen({ navigation, route }) {
                     backgroundColor: "#ffffff",
                     calendarBackground: "#ffffff",
                     textSectionTitleColor: "orange",
-                    textSectionTitleDisabledColor: "#d9e1e8",
-                    selectedDayBackgroundColor: "#00adf5",
+                    textSectionTitleDisabledColor: "#ff0000",
+                    selectedDayBackgroundColor: "#f50000",
                     selectedDayTextColor: "#ffffff",
-                    todayTextColor: "#00adf5",
+                    todayTextColor: "#ff0000",
                     dayTextColor: "#2d4150",
                     textDisabledColor: "#d9e1e8",
-                    dotColor: "#00adf5",
+                    dotColor: "#ff0000",
                     selectedDotColor: "#ffffff",
                     arrowColor: "orange",
                     disabledArrowColor: "#d9e1e8",

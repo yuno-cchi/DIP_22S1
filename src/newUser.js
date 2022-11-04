@@ -18,12 +18,14 @@ import {
     View,
     TextInput,
     TouchableOpacity,
+    StyleSheet
 } from 'react-native';
-import styles from '../assets/styles/styles.js'
 import IsValidString from './IsValidString';
 import showToast from './showToast.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Logs } from 'expo'
+import { Logs } from 'expo';
+import { color } from '../Config/Color';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 Logs.enableExpoCliLogging();
 
@@ -55,7 +57,7 @@ export default function NewUser({ route, navigation }) {
 
         var usernameError = "";
         toggleIsValidUsername(true);
-        
+
         // string length check failed
         if (!(/^.{5,25}$/.test(enteredUser))) {
             usernameError += "Username must have 5-25 characters\n";
@@ -63,7 +65,7 @@ export default function NewUser({ route, navigation }) {
         }
 
         // alphanumeric or fullstop check failed
-        if (!(/^[\.a-zA-Z0-9]+$/.test(enteredUser))){
+        if (!(/^[\.a-zA-Z0-9]+$/.test(enteredUser))) {
             usernameError += "Username must only contain A-Z, 0-9 or fullstops\n";
             toggleIsValidUsername(false);
         }
@@ -127,7 +129,7 @@ export default function NewUser({ route, navigation }) {
     }
 
     const generateConfirmPassError = (enteredConfirm) => {
-    
+
         var passwordConfirmError = ""
 
         if (!(enteredConfirm == password)) {
@@ -143,7 +145,7 @@ export default function NewUser({ route, navigation }) {
     }
 
     const generateEmailError = (enteredEmail) => {
-	    var emailError = "";
+        var emailError = "";
         var emailRegex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
 
         if (!(emailRegex.test(enteredEmail))) {
@@ -153,12 +155,12 @@ export default function NewUser({ route, navigation }) {
         }
 
         setEmailErrorMessage(emailError);
-      
+
     }
-   
-   const onChangeEmail = (enteredEmail) => {
+
+    const onChangeEmail = (enteredEmail) => {
         var emailRegex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
-	    setEmail(enteredEmail);
+        setEmail(enteredEmail);
         toggleIsValidEmail(emailRegex.test(enteredEmail));
         generateEmailError(enteredEmail);
     }
@@ -181,7 +183,7 @@ export default function NewUser({ route, navigation }) {
             onChangeEmail(email);
 
             //debug
-            if(!(isValidEmail)) {
+            if (!(isValidEmail)) {
                 toastmessage += "Email error. "
             }
 
@@ -201,19 +203,19 @@ export default function NewUser({ route, navigation }) {
     }
 
 
-    async function addUserToDb(username, password, email){
+    async function addUserToDb(username, password, email) {
         console.log("load");
         axios({
             method: 'post',
             url: 'http://secret-caverns-21869.herokuapp.com/user/add',
-            headers: {}, 
+            headers: {},
             data: {
                 username: username,
                 password: password,
                 email: email,
-                
+
             }
-          }).then((response) => {
+        }).then((response) => {
             console.log(response);
 
             //TODO: add user to asyncstorage
@@ -222,44 +224,63 @@ export default function NewUser({ route, navigation }) {
             navigation.navigate("TypeSelect", userParams);
 
 
-          }, (error) => {
+        }, (error) => {
             console.log(error);
-          });;
+        });;
     }
 
     return (
         <View style={styles.container}>
-            <Text>Enter e-mail Address</Text>
-	        <View style={styles.inputView}>
-	    	    <TextInput
-	    	        style={styles.TextInput}
-	    	        placeholder="email"
-	                placeholderTextColor="#fef2f0"
-                    onChangeText={(email) => (onChangeEmail(email))}
-	                autoCorrect={false}
-	            />
+            <View style={{ flexDirection: 'row', alignItems: 'flex-start', width: '100%', marginBottom: 40 }}>
+                <TouchableOpacity
+                    style={{
+                        top: 20,
+                        left: 10,
+                        width: 40,
+                        height: 40,
+                        backgroundColor: color.primary,
+                        borderRadius: 10,
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                    onPress={() => {
+                        navigation.pop()
+                    }}>
+                    <FontAwesome5 name={"backward"} size={24} color={'white'} />
+
+                </TouchableOpacity>
             </View>
-            <Text style={styles.errorText}>{emailErrorMessage}</Text> 
-	        <Text>Set Username:</Text>
+            <Text>Enter e-mail Address</Text>
             <View style={styles.inputView}>
-               <TextInput 
-                  style={styles.TextInput}
-                  placeholder="username"
-                  placeholderTextColor="#fef2f0"
-                  onChangeText={(username) => (onChangeUser(username))}
-                  autoCorrect={false}
-               />
+                <TextInput
+                    style={styles.TextInput}
+                    placeholder="email"
+                    placeholderTextColor="#fef2f0"
+                    onChangeText={(email) => (onChangeEmail(email))}
+                    autoCorrect={false}
+                />
+            </View>
+            <Text style={styles.errorText}>{emailErrorMessage}</Text>
+            <Text>Set Username:</Text>
+            <View style={styles.inputView}>
+                <TextInput
+                    style={styles.TextInput}
+                    placeholder="username"
+                    placeholderTextColor="#fef2f0"
+                    onChangeText={(username) => (onChangeUser(username))}
+                    autoCorrect={false}
+                />
             </View>
             <Text style={styles.errorText}>{usernameErrorMessage}</Text>
             <Text>Set Password:</Text>
             <View style={styles.inputView}>
-               <TextInput 
-                  style={styles.TextInput}
-                  placeholder="password"
-                  placeholderTextColor="#fef2f0"
-                  onChangeText={(password) => (onChangePass(password))}
-                  secureTextEntry={true}
-               />
+                <TextInput
+                    style={styles.TextInput}
+                    placeholder="password"
+                    placeholderTextColor="#fef2f0"
+                    onChangeText={(password) => (onChangePass(password))}
+                    secureTextEntry={true}
+                />
             </View>
             <Text style={styles.errorText}>{passwordErrorMessage}</Text>
             <Text>Confirm Password:</Text>
@@ -274,8 +295,107 @@ export default function NewUser({ route, navigation }) {
             </View>
             <Text style={styles.errorText}>{passwordConfirmErrorMessage}</Text>
             <TouchableOpacity style={styles.buttonNormal} onPress={(event) => sendIt()}>
-                    <Text style={styles.buttonText}>Create Account</Text>
+                <Text style={styles.buttonText}>Create Account</Text>
             </TouchableOpacity>
-        </View>   
+        </View>
     );
 }
+
+
+
+
+
+const styles = StyleSheet.create({
+
+    container: {
+        marginTop: "20%",
+        //backgroundColor: "#f5f5f5",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+    },
+
+    inputView: {
+        marginTop: 10,
+        backgroundColor: "#ffcccc",
+        borderRadius: 5,
+        width: "70%",
+        height: 45,
+        marginBottom: 20,
+        alignItems: 'center',
+    },
+
+    TextInput: {
+        height: 50,
+        flex: 1,
+        padding: 10,
+    },
+
+    logoView: {
+        width: 400,
+        height: 200,
+        marginBottom: 10,
+    },
+
+    textLinks: {
+        fontSize: 15,
+        marginBottom: 5,
+        alignContent: "center",
+        justifyContent: "center",
+    },
+
+    buttonNormal: {
+        backgroundColor: "#e76850",
+        borderRadius: 30,
+        width: "70%",
+        height: 45,
+        marginBottom: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    iconButtonBig: {
+        //backgroundColor: "#e76850", //debug
+        width: 150,
+        height: 180,
+        marginLeft: 20,
+        marginRight: 20,
+    },
+
+    iconButtonText: {
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        fontSize: 25,
+    },
+
+    buttonIcon: {
+        height: 100,
+        width: 100,
+        marginTop: 10,
+        marginLeft: 25,
+    },
+
+    buttonDisabled: {
+        backgroundColor: "#e76850",
+        borderRadius: 30,
+        width: "70%",
+        height: 45,
+        marginBottom: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+        opacity: 0.5,
+    },
+
+    buttonText: {
+        marginTop: 30,
+        height: 50,
+        color: "#f5f5f5",
+        alignContent: "center",
+        justifyContent: "center",
+    },
+
+    errorText: {
+        color: "#ff0000",
+        fontStyle: 'italic',
+    }
+})
