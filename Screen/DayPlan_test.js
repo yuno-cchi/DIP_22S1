@@ -62,7 +62,7 @@ export default function DayPlan_test({ navigation, route }) {
                                     justifyContent: 'center'
                                 }}>
 
-
+                                    {/*Change to use FlatList, maximum render is 3 elements */}
                                     <PlanList
                                         start={thisRoute.startName}
                                         destination={thisRoute.destinationName}
@@ -131,7 +131,7 @@ export default function DayPlan_test({ navigation, route }) {
                 <View style={{ flexDirection: 'row', alignItems: 'flex-start', width: '100%', marginBottom: 40 }}>
                     <TouchableOpacity
                         style={{
-                            top: 40,
+                            top: 20,
                             left: 10,
                             width: 40,
                             height: 40,

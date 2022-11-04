@@ -57,6 +57,8 @@ export default function DrivingNavigationScreen({ navigation, route }) {
     let dataObj = route.params
     const [myLocation, setMyLocation] = useState();
     const [myHeading, setMyHeading] = useState();
+    const [location, setLocation] = useState(null);
+    const [errorMsg, setErrorMsg] = useState(null);
     // const routeDestination = route.params.endLocation;
     // const routeWaypoints = route.params.waypoints;
     const animateToLocation = (coordinates) => {
@@ -94,7 +96,6 @@ export default function DrivingNavigationScreen({ navigation, route }) {
         let location = await Location.getCurrentPositionAsync();
         setLocation(location);
 
-        setLoading(false);
 
         const userCoordinate = {
             latitude: location.coords.latitude,
@@ -117,7 +118,7 @@ export default function DrivingNavigationScreen({ navigation, route }) {
             <MapView
                 provider={null}
                 showsUserLocation={true}
-                ref={thisObj => mapView = thisObj}
+                ref={thisObj => mapViewRef = thisObj}
                 style={{ ...StyleSheet.absoluteFill }}
                 showsBuildings={true}
                 showsTraffic={true}
@@ -125,16 +126,20 @@ export default function DrivingNavigationScreen({ navigation, route }) {
                 showsPointsOfInterest={true}
                 showsCompass={true}
                 userLocationPriority={'high'}
-                //followsUserLocation={true}
-                onUserLocationChange={() => {
-                    setQuickLocation()
-                    mapView.setCamera({
-                        center: myLocation,
-                        pitch: 40,
-                        heading: myHeading,
-                        altitude: 1000
-                    })
+
+                onMapLoaded={() => {
+                    animateToLocation(route.params.centroid)
                 }}
+            //followsUserLocation={true}
+            // onUserLocationChange={() => {
+            //     setQuickLocation()
+            //     mapView.setCamera({
+            //         center: myLocation,
+            //         pitch: 40,
+            //         heading: myHeading,
+            //         altitude: 1000
+            //     })
+            // }}
             // onMapReady={() => {
             //     mapView.setCamera({
             //         center: myLocation,
@@ -160,9 +165,7 @@ export default function DrivingNavigationScreen({ navigation, route }) {
                     strokeColor={color.danger}
                     mode={'DRIVING'}
                     resetOnChange={true}
-                    onReady={() => {
-                        animateToLocation(route.params.centroid)
-                    }}
+
                 />
 
                 <BottomTab style={{ height: 100 }}>
@@ -171,7 +174,7 @@ export default function DrivingNavigationScreen({ navigation, route }) {
                             title={"Location"}
                             style={styles.button}
                             onPress={() => {
-
+                                // animateToLocation(route.params.centroid)
                                 navigation.pop()
                             }}
                         />
