@@ -25,8 +25,6 @@ export default function PlanList({
   onPress,
   ...otherProps
 }) {
-
-
   const [distance, setDistance] = useState(0);
   const [duration, setDuration] = useState(0);
   const [price, setPrice] = useState(0);
@@ -34,11 +32,11 @@ export default function PlanList({
   const getPrice = (distance, duration) => {
     //Calculate price based on ditance and time
     var fare = 0;
-    const distFactor = (50 / distance)
-    const timeFactor = (duration / 30)
+    const distFactor = 50 / distance;
+    const timeFactor = duration / 30;
     fare = distFactor * timeFactor;
     return fare;
-  }
+  };
 
   return (
     <TouchableOpacity onPress={onPress}>
@@ -47,22 +45,23 @@ export default function PlanList({
         origin={start}
         destination={destination}
         apikey={GOOGLE_API_KEY}
-        onReady={result => {
-          console.log(`Distance: ${result.distance} km`)
-          console.log(`Duration: ${result.duration} min.`)
-          setDistance(result.distance)
-          setDuration(result.duration)
-          setPrice("$" + Math.round(getPrice(result.distance, result.duration)))
+        onReady={(result) => {
+          console.log(`Distance: ${result.distance} km`);
+          console.log(`Duration: ${result.duration} min.`);
+          setDistance(result.distance);
+          setDuration(result.duration);
+          setPrice(
+            "$" + Math.round(getPrice(result.distance, result.duration))
+          );
           dist = result.distance;
-          console.log("distance is ", dist)
+          console.log("distance is ", dist);
         }}
       />
       <View style={[styles.card, style]} {...otherProps}>
         <View style={styles.wraptext}>
           <View style={styles.topcontainer}>
             <View style={styles.image}>
-              {/* <Image source={require("./pic/pulse.png")} /> */}
-              {/* <Image source={require("./pic/Arrow.png")} /> */}
+              <Image source={require("./pic/Arrow.png")} />
             </View>
             <View style={styles.mylocation}>
               <AppText style={styles.title}>{start}</AppText>
@@ -74,13 +73,15 @@ export default function PlanList({
             style={{
               borderBottomColor: "black",
               borderBottomWidth: 1,
+              marginBottom: 5,
             }}
           />
 
           <View style={styles.botcontainer}>
             <AppText style={styles.subTitle}>{user}</AppText>
             <AppText style={styles.subTitle}>
-              {price}{/* Price calculation here */}
+              {price}
+              {/* Price calculation here */}
             </AppText>
           </View>
         </View>
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: color.lightGray,
     width: windowWidth * 0.9,
-    height: windowHeight * 0.18,
+    height: "auto",
     marginTop: 15,
     borderRadius: 10,
   },
@@ -101,7 +102,7 @@ const styles = StyleSheet.create({
     height: "75%",
   },
   title: {
-    fontWeight: "200",
+    fontWeight: "100",
     marginTop: 5,
     marginLeft: 5,
   },
@@ -115,34 +116,25 @@ const styles = StyleSheet.create({
     height: "70%",
     width: "100%",
   },
-  deleteButton: {
-    height: 30,
-    width: 30,
-    position: "absolute",
-    right: 10,
-    top: 10,
-    justifyContent: "center",
-    alignItems: "center",
-  },
   wraptext: {
     padding: "5%",
   },
   topcontainer: {
-    height: "80%",
+    //height: "80%",
+    //flex: 4,
+    flexDirection: "row",
   },
   botcontainer: {
-    flexDirection: "row",
-    height: "20%",
+    //flexDirection: "row",
+    //height: "20%",
   },
   mylocation: {
     width: "85%",
     //flexDirection: "row",
     marginLeft: "auto",
+    marginBottom: windowHeight * 0.02,
   },
   image: {
-    //flex: 1,
-    width: 20,
-    height: 20,
     resizeMode: "contain",
   },
 });
