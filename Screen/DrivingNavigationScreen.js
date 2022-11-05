@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import MapView, { Marker, Overlay } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import * as Location from 'expo-location';
@@ -66,7 +66,7 @@ export default function DrivingNavigationScreen({ navigation, route }) {
     };
 
     useEffect(() => {
-        console.log(route.params)
+        console.log("Route pararms:", route.params)
         getLiveLocation()
         setQuickLocation()
 
@@ -117,7 +117,7 @@ export default function DrivingNavigationScreen({ navigation, route }) {
         <View style={styles.container}>
             <MapView
                 provider={null}
-                showsUserLocation={true}
+                showsUserLocation={false}
                 ref={thisObj => mapViewRef = thisObj}
                 style={{ ...StyleSheet.absoluteFill }}
                 showsBuildings={true}
@@ -126,37 +126,23 @@ export default function DrivingNavigationScreen({ navigation, route }) {
                 showsPointsOfInterest={true}
                 showsCompass={true}
                 userLocationPriority={'high'}
-
-                onMapLoaded={() => {
-                    animateToLocation(route.params.centroid)
+                userInterfaceStyle="light"
+                onMapReady={() => {
+                    console.log("Console route params", route.params)
+                    mapViewRef.animateToRegion(route.params.centroid)
                 }}
-            //followsUserLocation={true}
-            // onUserLocationChange={() => {
-            //     setQuickLocation()
-            //     mapView.setCamera({
-            //         center: myLocation,
-            //         pitch: 40,
-            //         heading: myHeading,
-            //         altitude: 1000
-            //     })
-            // }}
-            // onMapReady={() => {
-            //     mapView.setCamera({
-            //         center: myLocation,
-            //         pitch: 40,
-            //         heading: myHeading,
-            //         altitude: 1000
-            //     })
-            // }}
-
 
             >
-                {/* {myLocation && <Marker
-                    coordinate={myLocation}
-                    //image={require("../assets/img/navigation_arrow.png")}
-                    flat={true}
+                <Marker
+                    coordinate={route.params.start}
+                    title="Start"
+                />
+                <Marker
+                    coordinate={route.params.destination}
+                    title="End"
+                />
 
-                />} */}
+
                 <MapViewDirections
                     origin={route.params.start}
                     destination={route.params.destination}
@@ -168,22 +154,24 @@ export default function DrivingNavigationScreen({ navigation, route }) {
 
                 />
 
-                <BottomTab style={{ height: 100 }}>
-                    <View>
-                        <AppButton
-                            title={"Location"}
-                            style={styles.button}
-                            onPress={() => {
-                                // animateToLocation(route.params.centroid)
-                                navigation.pop()
-                            }}
-                        />
-                    </View>
 
-
-
-                </BottomTab>
             </MapView>
+            <BottomTab style={{ height: 100, justifyContent: 'center', alignItems: 'center' }}>
+
+                <AppButton
+                    title={"Backs"}
+                    style={styles.button}
+                    onPress={() => {
+                        //mapViewRef.animateToRegion(route.params.centroid)
+                        navigation.pop()
+
+                    }}
+                />
+
+
+
+
+            </BottomTab>
         </View >
     );
 }
@@ -193,6 +181,8 @@ const styles = StyleSheet.create({
         flex: 1
     },
     button: {
+        width: '80%',
+        position: 'relative',
         justifyContent: 'center',
         alignItems: 'center'
     }

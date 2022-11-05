@@ -50,7 +50,7 @@ async function axiosTest(displayPlan, selectedday) {
                 title={thisRoute.date}
                 key={thisRoute.routename}
                 user={thisRoute.routename}
-                //style={thisRoute.selected}
+              //style={thisRoute.selected}
               />
             </View>
           );
@@ -118,7 +118,7 @@ function CalendarScreen({ navigation, route }) {
         //console.log("resp", response.data.length);
         for (let i = 0; i < response.data.length; i++) {
           let thisRoute = response.data[i];
-          if (response.data[i].routename === userParams.userID) {
+          if (response.data[i].driverID || response.data[i].routename === userParams.userID) {
             dateColect.add(thisRoute.date.slice(0, 10));
           }
           //setDbDates()

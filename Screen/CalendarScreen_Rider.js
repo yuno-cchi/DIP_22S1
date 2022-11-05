@@ -36,6 +36,37 @@ var selectedday;
 let drivedata;
 var userParams = null;
 
+async function schedulePushNotification(timeLeft) {
+    Notifications.scheduleNotificationAsync({
+        content: {
+            title: "Don't forget your ride",
+            body: timeLeft, //getTimeString(timeLeft)
+            data: { data: 'goes here' },
+        },
+        // trigger: { seconds: timeToNotify(selectedDate) - (43200) },
+        trigger: { seconds: 3 }
+    });
+}
+
+async function registerForPushNotificationsAsync() {
+    let token;
+
+    if (Platform.OS === 'android') {
+        await Notifications.setNotificationChannelAsync('default', {
+            name: 'default',
+            importance: Notifications.AndroidImportance.MAX,
+            vibrationPattern: [0, 250, 250, 250],
+            lightColor: '#FF231F7C',
+        });
+    }
+    return token;
+}
+
+const getTimeString = (selectedDate) => {
+    let time = new Date(selectedDate)
+    return (time.getDate() + "/" + time.getMonth() + "/" + time.getFullYear())
+}
+
 const CalendarScreenTabNavigator_Rider = ({ navigation, route }) => {
     const Tab = createBottomTabNavigator();
     userParams = route.params;
@@ -78,10 +109,25 @@ function CalendarScreen({ navigation, route }) {
     let tryPlanning = new Date();
     tryPlanning.setMonth(tryPlanning.getMonth() + 1);
 
+    const [expoPushToken, setExpoPushToken] = useState('');
+    const [notification, setNotification] = useState(false);
+    const notificationListener = useRef();
+    const responseListener = useRef();
+
     const [isLoading, setLoading] = useState(true);
     const [getDates, setGetDates] = useState([]);
 
     useEffect(() => {
+        registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+            setNotification(notification);
+        });
+
+        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+            console.log(response);
+        });
+
         // const userID = AsyncStorage.getItem("userId")
         let dateColect = new Set();
         let returnRouteObjectArray = [];
@@ -89,13 +135,19 @@ function CalendarScreen({ navigation, route }) {
         axios
             .get("http://secret-caverns-21869.herokuapp.com/ride")
             .then((response) => {
-                console.log("resp", response.data.length);
+                console.log("Response length: ", response.data.length);
+                console.log("Response data: ", response.data);
                 for (let i = 0; i < response.data.length; i++) {
                     let thisRoute = response.data[i];
                     console.log("Compare id: ", response.data[i].routename, " with ", userParams.userID)
                     if (response.data[i].routename === userParams.userID) {
-                        dateColect.add(thisRoute.date.slice(0, 10));
+                        let tempDate = new Date(thisRoute.date[i])
+                        dateColect.add(response.data[i].date.slice(0, 10));
                         console.log("Add data[", i, "]")
+                        if (response.data[i].selected === true) {
+                            schedulePushNotification(getTimeString(response.data[i].date));
+                        }
+
                     }
                     //setDbDates()
                     //has to use [4] to get date string
@@ -116,12 +168,22 @@ function CalendarScreen({ navigation, route }) {
                     obj[`${arr[i]}`] = { marked: true, selectedColor: "red" };
 
                 });
-
+                // let tempMarkedDate = []
+                // for (let i = 0; i < dateColect.length; i++) {
+                //     tempMarkedDate.push({
+                //         dateColect: { marked: true, selectedColor: 'red' }
+                //     })
+                // }
                 console.log("dd", obj);
                 let addedarr = [];
 
                 setGetDates(obj);
             });
+        return () => {
+            Notifications.removeNotificationSubscription(notificationListener.current);
+            Notifications.removeNotificationSubscription(responseListener.current);
+            setLoading(false);
+        };
     }, []);
 
     if (isLoading) {
@@ -144,7 +206,6 @@ function CalendarScreen({ navigation, route }) {
 
     return (
         <View style={styles.container}>
-            {/* <ImageBackground source={require('../assets/img/background02.jpg')} resizeMode="repeat" style={{ ...StyleSheet.absoluteFill }}/> */}
             <TouchableOpacity style={{
                 position: 'absolute',
                 top: 60,

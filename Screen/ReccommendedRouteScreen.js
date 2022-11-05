@@ -314,7 +314,7 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
                             subTitle={item.routeDescription}
                             route={item}
                             driverRoute={route.params}
-                            style={item.selected ? { backgroundColor: color.primary } : { backgroundColor: color.white }}
+                            style={item.selected ? { backgroundColor: color.selected } : { backgroundColor: color.white }}
                             onPress={() => selectThisCard(item)} />}
                     refreshing={isRefrehing}
                     onRefresh={() => {
@@ -369,7 +369,7 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
 
                             // }
                             selectCount = 0;
-                            navigation.navigate('CalendarScreenTabNavigator_Driver')
+                            navigation.pop()
                         }
                     }
                 />

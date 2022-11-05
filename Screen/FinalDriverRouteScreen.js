@@ -148,7 +148,7 @@ const ANIMATE_SPEED = 1000;
 const ANIMATE_ZOOM = 1;
 const INITIAL_POINT = null;
 const STROKE_WIDTH = 5;
-const STROKE_COLOR = 'blue';
+const STROKE_COLOR = color.stroke;
 const DATE_MODE = "datetime";
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -247,6 +247,7 @@ export default function FinalDriverRouteScreen({ navigation, route }) {
                 style={styles.mapStyle}
                 showsPointsOfInterest={true}
                 showsUserLocation={true}
+                userInterfaceStyle='light'
             >
                 <MapViewDirections
                     origin={route.params.startLocation}
@@ -303,7 +304,7 @@ export default function FinalDriverRouteScreen({ navigation, route }) {
                     title={'Confirm'}
                     onPress={async () => {
                         await schedulePushNotification(getTimeString(route.params.selectedDate));
-                        navigation.navigate('CalendarScreenTabNavigator_Driver')
+                        navigation.navigate('CalendarScreenTabNavigator_Driver', { userId: route.params.userId })
                         console.log(routeWaypoints)
                         storeInDrive(
                             route.params.startLocation,
@@ -325,6 +326,14 @@ export default function FinalDriverRouteScreen({ navigation, route }) {
                 // selected: false,
                 // routeIdPair: selectedRideIDs
 
+                />
+                <AppButton
+                    title={'Back'}
+                    onPress={async () => {
+
+                        navigation.pop()
+
+                    }}
                 />
 
             </BottomTab>

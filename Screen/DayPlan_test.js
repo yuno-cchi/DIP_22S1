@@ -5,6 +5,7 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
+  Dimensions
 } from "react-native";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 import data from "./calendarData.json";
@@ -24,11 +25,16 @@ import RiderMapScreen_android from "./RiderMapScreen_android";
 import MapViewDirections from "react-native-maps-directions";
 import { FontAwesome5 } from "@expo/vector-icons";
 
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 export default function DayPlan_test({ navigation, route }) {
   let displayPlan = [];
+  let routeArray = [];
   const [forDisplay, setForDisplay] = useState();
   const [isLoading, setLoading] = useState(false);
   const [getDates, setGetDates] = useState([]);
+  const [plan, setPlan] = useState([]);
 
   //axiosTest(displayPlan, selectedday);
   console.log("can i get my dates?", mydates);
@@ -47,64 +53,39 @@ export default function DayPlan_test({ navigation, route }) {
         .get("http://secret-caverns-21869.herokuapp.com/ride")
         .then((response) => {
           //console.log("resp", response.data.length);
+          console.log("Data length: ", response.data.length)
+          console.log("Data shape: ", response.data[0])
+          console.log("selected day is: ", selectedday)
+          console.log("Date format is: ", new Date(selectedday.dateString))
+          selectedDateObj = new Date(selectedday.dateString);
           for (let i = 0; i < response.data.length; i++) {
-            let thisRoute = response.data[i];
+            let tempDate = new Date(response.data[i].date)
+            // console.log("Date: [", i, "]:", response.data[i].date)
+            // console.log("Compare date: ", tempDate.getUTCDate(), selectedDateObj.getUTCDate())
+            // console.log("Compage month: ", tempDate.getMonth(), selectedDateObj.getMonth())
+            // console.log("Compare year: ", tempDate.getFullYear(), selectedDateObj.getFullYear())
+            if (tempDate.getUTCDate() === selectedDateObj.getUTCDate() && tempDate.getMonth() === selectedDateObj.getMonth()
+              && tempDate.getFullYear() === selectedDateObj.getFullYear()) {
+              routeArray.push({
+                start: response.data[i].start,
+                destination: response.data[i].destination,
+                centroid: response.data[i].centroid,
+                routename: response.data[i].routename,
+                startName: response.data[i].startName,
+                destinationName: response.data[i].destinationName,
+                driverID: response.data[i].driverID,
+                selected: response.data[i].selected,
+                date: response.data[i].date,
+                key: i
 
-            dateColect.add(thisRoute.date.slice(0, 10));
-
-            //setDbDates()
-            //has to use [4] to get date string
-            console.log("this date?", response.data[i]);
-            if (Object.values(selectedday)[4] === thisRoute.date.slice(0, 10)) {
-              console.log("select", Object.values(selectedday)[4]);
-              console.log("route ", thisRoute.date.slice(0, 10));
-              displayPlan.push(
-                <View
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginTop: "10%",
-                  }}
-                >
-                  <PlanList
-                    start={thisRoute.startName}
-                    destination={thisRoute.destinationName}
-                    key={thisRoute._id}
-                    user={thisRoute.routename}
-                    //Price is removed, the calculated is done inside the JSX
-                    style={
-                      thisRoute.selected
-                        ? {
-                            backgroundColor: color.primary,
-                          }
-                        : {
-                            backgroundColor: color.white,
-                          }
-                    }
-                  />
-                </View>
-              );
+              })
             }
 
-            console.log("in display", displayPlan);
-            setForDisplay(displayPlan);
-            console.log("for display?", forDisplay);
-
-            setTimeout(() => {
-              setLoading(false);
-            }, 300);
           }
+          setPlan(routeArray)
 
-          let arr = Array.from(dateColect);
-          arr = arr.map(
-            (i) => i + ": { 'marked': true, 'selectedColor': 'blue'}"
-          );
-
-          console.log(JSON.stringify(arr));
-
-          setGetDates(JSON.stringify(arr));
         });
-    } catch (error) {}
+    } catch (error) { }
   }, []);
 
   if (isLoading) {
@@ -135,6 +116,7 @@ export default function DayPlan_test({ navigation, route }) {
         >
           <TouchableOpacity
             style={{
+              marginTop: 40,
               top: 20,
               left: 10,
               width: 40,
@@ -152,9 +134,39 @@ export default function DayPlan_test({ navigation, route }) {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.plan}>
-          {/* <Text>done</Text> */}
-          <View style={styles.component}>{forDisplay}</View>
+        <View style={{ height: windowHeight * 0.75, width: windowWidth, alignItems: 'center' }}>
+          <FlatList
+            data={plan}
+            keyExtractor={item => item.key}
+            renderItem={({ item }) =>
+
+              <PlanList
+                start={item.startName}
+                destination={item.destinationName}
+                key={item.key}
+                user={item.routename}
+                style={
+                  item.selected
+                    ? {
+                      backgroundColor: color.selected,
+                    }
+                    : {
+                      backgroundColor: color.white,
+                    }
+                }
+                onPress={() => {
+                  navigation.navigate("DrivingNavigationScreen", {
+                    start: item.start,
+                    destination: item.destination,
+                    user: item.routename,
+                    centroid: item.centroid
+                  })
+                }}
+              />
+            }
+
+          />
+          {/* <View style={styles.component}>{forDisplay}</View> */}
         </View>
       </View>
     );
@@ -169,10 +181,10 @@ const styles = StyleSheet.create({
   },
   plan: {
     flex: 1,
-    justifyContent: "start",
+    justifyContent: "center",
     alignItems: "center",
     marginTop: 10,
-    marginBottm: 10,
+    marginBottom: 10,
   },
   component: {
     fontSize: 10,

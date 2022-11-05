@@ -39,7 +39,7 @@ export default function PlanList({
   };
 
   return (
-    <TouchableOpacity style={{ marginVertical: 40 }} onPress={onPress}>
+    <TouchableOpacity style={{ marginVertical: 5 }} onPress={onPress}>
       <MapViewDirections
         style={{ flex: 0 }}
         origin={start}
@@ -60,9 +60,9 @@ export default function PlanList({
       <View style={[styles.card, style]} {...otherProps}>
         <View style={styles.wraptext}>
           <View style={styles.topcontainer}>
-            <View style={styles.image}>
-              <Image source={require("./pic/Arrow.png")} />
-            </View>
+
+            <Image source={require("./pic/Arrow.png")} style={{ marginTop: 25, marginLeft: 0 }} />
+
             <View style={styles.mylocation}>
               <AppText style={styles.title}>
                 {String.fromCodePoint(128663) + start}
@@ -98,12 +98,12 @@ const styles = StyleSheet.create({
     backgroundColor: color.lightGray,
     width: windowWidth * 0.9,
     height: "auto",
-    marginTop: 15,
+    marginTop: 2,
     borderRadius: 10,
   },
   image: {
-    width: "100%",
-    height: "75%",
+    width: 50,
+    height: 100
   },
   title: {
     fontWeight: "100",
@@ -118,22 +118,23 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   subTitle2: {
-    color: color.secondary,
+    color: 'white',
     fontWeight: "120",
-    marginTop: 2,
+    marginVertical: 5,
     marginLeft: 5,
+    fontWeight: '900'
   },
   mapStyle: {
     height: "70%",
     width: "100%",
   },
   wraptext: {
-    paddingHorizontal: "5%",
+    paddingHorizontal: "4%",
+
   },
   topcontainer: {
-    //height: "80%",
-    //flex: 4,
     flexDirection: "row",
+    marginHorizontal: 2
   },
   botcontainer: {
     //flexDirection: "row",
@@ -142,8 +143,9 @@ const styles = StyleSheet.create({
   mylocation: {
     width: "100%",
     //flexDirection: "row",
-    marginLeft: "auto",
+    marginHorizontal: 3,
     marginBottom: windowHeight * 0.02,
+
   },
   image: {
     resizeMode: "contain",

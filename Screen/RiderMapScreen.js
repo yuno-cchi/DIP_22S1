@@ -20,7 +20,7 @@ import MapViewDirections from "react-native-maps-directions";
 const GOOGLE_API_KEY = "AIzaSyBYDEKY12RzWyP0ACQEpgsr4up2w3CjH88";
 const ANIMATE_SPEED = 1000;
 const STROKE_WIDTH = 5;
-const STROKE_COLOR = color.danger;
+const STROKE_COLOR = color.stroke;
 const DATE_MODE = "datetime";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
