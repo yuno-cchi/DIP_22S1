@@ -57,10 +57,17 @@ export default function DrivingNavigationScreen({ navigation, route }) {
     let dataObj = route.params
     const [myLocation, setMyLocation] = useState();
     const [myHeading, setMyHeading] = useState();
+    const [location, setLocation] = useState(null);
+    const [errorMsg, setErrorMsg] = useState(null);
     // const routeDestination = route.params.endLocation;
     // const routeWaypoints = route.params.waypoints;
+    const animateToLocation = (coordinates) => {
+        mapViewRef.animateToRegion(coordinates, ANIMATE_SPEED);
+    };
 
     useEffect(() => {
+        console.log(route.params)
+        getLiveLocation()
         setQuickLocation()
 
         // const interval = setInterval(() => {
@@ -78,6 +85,25 @@ export default function DrivingNavigationScreen({ navigation, route }) {
 
     }, [])
 
+    async function getLiveLocation() {
+        console.log("getting location");
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+            setErrorMsg("Permission to access location was denied");
+            return;
+        }
+
+        let location = await Location.getCurrentPositionAsync();
+        setLocation(location);
+
+
+        const userCoordinate = {
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+        };
+        console.log("User coordinates:", userCoordinate);
+    }
+
     const setQuickLocation = async () => {
         let location = await Location.getLastKnownPositionAsync()
         let heading = await Location.getHeadingAsync()
@@ -92,7 +118,7 @@ export default function DrivingNavigationScreen({ navigation, route }) {
             <MapView
                 provider={null}
                 showsUserLocation={true}
-                ref={thisObj => mapView = thisObj}
+                ref={thisObj => mapViewRef = thisObj}
                 style={{ ...StyleSheet.absoluteFill }}
                 showsBuildings={true}
                 showsTraffic={true}
@@ -100,16 +126,20 @@ export default function DrivingNavigationScreen({ navigation, route }) {
                 showsPointsOfInterest={true}
                 showsCompass={true}
                 userLocationPriority={'high'}
-                //followsUserLocation={true}
-                onUserLocationChange={() => {
-                    setQuickLocation()
-                    mapView.setCamera({
-                        center: myLocation,
-                        pitch: 40,
-                        heading: myHeading,
-                        altitude: 1000
-                    })
+
+                onMapLoaded={() => {
+                    animateToLocation(route.params.centroid)
                 }}
+            //followsUserLocation={true}
+            // onUserLocationChange={() => {
+            //     setQuickLocation()
+            //     mapView.setCamera({
+            //         center: myLocation,
+            //         pitch: 40,
+            //         heading: myHeading,
+            //         altitude: 1000
+            //     })
+            // }}
             // onMapReady={() => {
             //     mapView.setCamera({
             //         center: myLocation,
@@ -128,40 +158,28 @@ export default function DrivingNavigationScreen({ navigation, route }) {
 
                 />} */}
                 <MapViewDirections
-                    origin={myLocation}
-                    destination={{ latitude: 1.3644, longitude: 103.9915 }}
+                    origin={route.params.start}
+                    destination={route.params.destination}
                     apikey={GOOGLE_API_KEY}
                     strokeWidth={10}
                     strokeColor={color.danger}
                     mode={'DRIVING'}
                     resetOnChange={true}
+
                 />
 
-                <BottomTab>
-                    <AppButton
-                        title={"Location"}
-                        style={styles.button}
-                        onPress={() => {
+                <BottomTab style={{ height: 100 }}>
+                    <View>
+                        <AppButton
+                            title={"Location"}
+                            style={styles.button}
+                            onPress={() => {
+                                // animateToLocation(route.params.centroid)
+                                navigation.pop()
+                            }}
+                        />
+                    </View>
 
-                            try {
-                                setQuickLocation()
-
-                            } catch (error) {
-
-                            }
-                            let camera = {
-                                center: myLocation,
-                                pitch: 40,
-                                heading: myHeading,
-                                altitude: 1000
-                            }
-                            mapView.setCamera(camera)
-
-                            //console.log("User location: ", myLocation, "Heading: ", myHeading)
-                            //mapView.animateCamera(userLocation, {duration: 100 })
-                        }
-                        }
-                    />
 
 
                 </BottomTab>

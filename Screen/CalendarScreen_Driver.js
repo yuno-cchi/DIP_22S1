@@ -1,5 +1,11 @@
 import React, { ReactNode, SyntheticEvent, useEffect, useState } from "react";
-import { View, StyleSheet, Text, ScrollView } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 import data from "./calendarData.json";
 import mydata from "./dayTripData.json";
@@ -15,6 +21,9 @@ import RiderMapScreen from "./RiderMapScreen";
 import DriverPutRouteScreen from "./DriverPutRouteScreen";
 import DriverPutRouteScreen_Android from "./DriverPutRouteScreen_Android";
 import RiderMapScreen_android from "./RiderMapScreen_android";
+import { FontAwesome5 } from "@expo/vector-icons";
+import AppButton from "../Components/AppButton";
+import { ActivityIndicator, MD2Colors } from "react-native-paper";
 
 //import drivedata from "./GetDriveData";
 
@@ -22,6 +31,7 @@ var dataLen = Object.keys(data).length;
 var dayDataLen = Object.keys(mydata).length;
 var selectedday;
 let drivedata;
+var userParams = null;
 
 async function axiosTest(displayPlan, selectedday) {
   await axios
@@ -54,155 +64,38 @@ async function axiosTest(displayPlan, selectedday) {
     });
 }
 
-// const CalendarNavigator = () => (
-//   <Stack.Navigator initialRouteName="CalendarScreen">
-//     <Stack.Screen name="CalendarScreen" component={CalendarScreen} />
-//     <Stack.Screen name="DayPlan" component={DayPlan} />
-//     {/* <Stack.Screen name="DayPlan" component={PlannedRouteDetails} /> */}
-//   </Stack.Navigator>
-// );
-
-function showDayPlan(displayPlan) {
-  console.log("inside showdayplan", displayPlan);
-
-  return (
-    <View style={styles.plan}>
-      <ScrollView>
-        <View style={styles.component}>{displayPlan}</View>
-      </ScrollView>
-    </View>
-  );
-}
-
-function DayPlan({ navigation }) {
-  let displayPlan = [];
-  const [forDisplay, setForDisplay] = useState();
-  const [isLoading, setLoading] = useState(true);
-  //axiosTest(displayPlan, selectedday);
-  console.log("can i get my dates?", mydates);
-
-  //set to store date no duplicate
-
-  //object array for post process
-
-  useEffect(() => {
-    let dateColect = new Set();
-    let returnRouteObjectArray = [];
-
-    axios
-      .get("http://secret-caverns-21869.herokuapp.com/ride")
-      .then((response) => {
-        //console.log("resp", response.data.length);
-        for (let i = 0; i < response.data.length; i++) {
-          let thisRoute = response.data[i];
-
-          dateColect.add(thisRoute.date.slice(0, 10));
-
-          //setDbDates()
-          //has to use [4] to get date string
-          console.log("this date?", response.data[i]);
-          if (Object.values(selectedday)[4] === thisRoute.date.slice(0, 10)) {
-            console.log("select", Object.values(selectedday)[4]);
-            console.log("route ", thisRoute.date.slice(0, 10));
-            displayPlan.push(
-              <View>
-                <PlanList
-                  start={thisRoute.startName}
-                  destination={thisRoute.destinationName}
-                  key={thisRoute._id}
-                  user={thisRoute.routename}
-                  price="$15"
-                  style={
-                    thisRoute.selected
-                      ? { backgroundColor: color.primary }
-                      : { backgroundColor: color.white }
-                  }
-                />
-              </View>
-            );
-          }
-
-          console.log("in display", displayPlan);
-          setForDisplay(displayPlan);
-          console.log("for display?", forDisplay);
-
-          setTimeout(() => {
-            setLoading(false);
-          }, 300);
-        }
-
-        let arr = Array.from(dateColect);
-        arr = arr.map(
-          (i) => i + ": { 'marked': true, 'selectedColor': 'blue'}"
-        );
-
-        console.log(JSON.stringify(arr));
-
-        setGetDates(JSON.stringify(arr));
-      });
-  }, []);
-
-  if (isLoading) {
-    return (
-      <View
-        style={{
-          flexDirection: "row",
-          height: "100%",
-          padding: 30,
-          justifyContent: "center",
-          alignContent: "center",
-        }}
-      >
-        <Text>Loading...</Text>
-      </View>
-    );
-  } else {
-    console.log("can display?", forDisplay);
-    return (
-      <View style={styles.plan}>
-        {/* <Text>done</Text> */}
-        <View style={styles.component}>{forDisplay}</View>
-      </View>
-    );
-  }
-}
-
-function MarkCalender() {
-  for (let i = 0; i < dayDataLen; i++) {}
-}
-
-const PutRouteScreenSelector = (route) => {
-  console.log(route.params.userType);
-
-  if (Platform.OS === "ios") {
-    if (route.params.userType === "rider") {
-      return RiderMapScreen;
-    } else {
-      return DriverPutRouteScreen;
-    }
-  } else {
-    if (route.params.userType === "rider") {
-      return RiderMapScreen_android;
-    } else {
-      return DriverPutRouteScreen_Android;
-    }
-  }
-};
-
 const CalendarScreenTabNavigator_Driver = ({ navigation, route }) => {
   const Tab = createBottomTabNavigator();
-
+  userParams = route.params;
   return (
     <Tab.Navigator
       initialRouteName="Calendar"
       screenOptions={{
         headerShown: false,
+        tabBarActiveTintColor: color.primary,
       }}
     >
-      <Tab.Screen name="Calendar" component={CalendarScreen} />
-      <Tab.Screen name="DriverMap" component={DriverPutRouteScreen}>
-        {/* {() => <PutRouteScreenSelector route={route} />} */}
-      </Tab.Screen>
+      <Tab.Screen
+        name="Calendar"
+        component={CalendarScreen}
+        options={{
+          unmountOnBlur: true,
+          tabBarLabel: "Calendar",
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome5 name="calendar-alt" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="DriverMap"
+        component={DriverPutRouteScreen}
+        options={{
+          tabBarLabel: "DriverMap",
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome5 name="map-marked-alt" color={color} size={size} />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 };
@@ -218,16 +111,16 @@ function CalendarScreen({ navigation, route }) {
   useEffect(() => {
     let dateColect = new Set();
     let returnRouteObjectArray = [];
-
+    console.log("userID is ", userParams.userID);
     axios
       .get("http://secret-caverns-21869.herokuapp.com/ride")
       .then((response) => {
         //console.log("resp", response.data.length);
         for (let i = 0; i < response.data.length; i++) {
           let thisRoute = response.data[i];
-
-          dateColect.add(thisRoute.date.slice(0, 10));
-
+          if (response.data[i].routename === userParams.userID) {
+            dateColect.add(thisRoute.date.slice(0, 10));
+          }
           //setDbDates()
           //has to use [4] to get date string
           console.log("this date?", response.data[i]);
@@ -243,7 +136,7 @@ function CalendarScreen({ navigation, route }) {
         obj = {};
         arr.forEach((elem, i) => {
           //obj[{${arr[i]}] = "{'marked': true, 'selectedColor': 'blue'}"
-          obj[`${arr[i]}`] = { marked: true, selectedColor: "blue" };
+          obj[`${arr[i]}`] = { marked: true, selectedColor: "red" };
         });
 
         console.log("dd", obj);
@@ -270,16 +163,39 @@ function CalendarScreen({ navigation, route }) {
           height: "100%",
           padding: 30,
           justifyContent: "center",
-          alignContent: "center",
+          alignItems: "center",
         }}
       >
-        <Text>Loading...</Text>
+        <ActivityIndicator size="large" color={color.primary} />
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity
+        style={{
+          position: "absolute",
+          top: 60,
+          left: 10,
+          width: 40,
+          height: 40,
+          backgroundColor: color.primary,
+          borderRadius: 10,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+        onPress={() => {
+          console.log("Logging out");
+          navigation.reset({
+            index: 0,
+            routes: [{ name: "Login" }],
+          });
+          /*CheeHean!*/
+        }}
+      >
+        <FontAwesome5 name="sign-out-alt" size={25} color={"white"} />
+      </TouchableOpacity>
       <Calendar
         //minDate={today}
         //maxDate={tryPlanning}
@@ -311,22 +227,22 @@ function CalendarScreen({ navigation, route }) {
         theme={{
           backgroundColor: "#ffffff",
           calendarBackground: "#ffffff",
-          textSectionTitleColor: color.primary,
-          textSectionTitleDisabledColor: "#d9e1e8",
-          selectedDayBackgroundColor: "#00adf5",
+          textSectionTitleColor: "orange",
+          textSectionTitleDisabledColor: "#ff0000",
+          selectedDayBackgroundColor: "#f50000",
           selectedDayTextColor: "#ffffff",
-          todayTextColor: color.green,
+          todayTextColor: "#ff0000",
           dayTextColor: "#2d4150",
           textDisabledColor: "#d9e1e8",
-          dotColor: color.primary,
+          dotColor: "#ff0000",
           selectedDotColor: "#ffffff",
-          arrowColor: color.red,
+          arrowColor: "orange",
           disabledArrowColor: "#d9e1e8",
-          monthTextColor: color.primary,
-          indicatorColor: color.secondary,
-          textDayFontWeight: "300",
+          monthTextColor: "red",
+          indicatorColor: "orange",
+          textDayFontWeight: "400",
           textMonthFontWeight: "bold",
-          textDayHeaderFontWeight: "200",
+          textDayHeaderFontWeight: "700",
           textDayFontSize: 16,
           textMonthFontSize: 16,
           textDayHeaderFontSize: 14,
@@ -348,6 +264,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+    backgroundColor: color.white,
   },
   plan: {
     flex: 2,

@@ -125,7 +125,7 @@ export default function App() {
       <Stack.Navigator
         initialRouteName={"Login"}
         screenOptions={{
-          headerShown: true,
+          headerShown: false,
         }}
       >
         <Stack.Screen name="Login" component={Login} />
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
   textboxContainer: {
     width: "100%",
     height: 400,
-    backgroundColor: color.lightGray,
+    backgroundColor: color.white,
     justifyContent: "center",
     alignItems: "center",
   },

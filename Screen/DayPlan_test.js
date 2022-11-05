@@ -1,5 +1,11 @@
 import React, { ReactNode, SyntheticEvent, useEffect, useState } from "react";
-import { View, StyleSheet, Text, ScrollView } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 import data from "./calendarData.json";
 import mydata from "./dayTripData.json";
@@ -16,6 +22,7 @@ import DriverPutRouteScreen from "./DriverPutRouteScreen";
 import DriverPutRouteScreen_Android from "./DriverPutRouteScreen_Android";
 import RiderMapScreen_android from "./RiderMapScreen_android";
 import MapViewDirections from "react-native-maps-directions";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 export default function DayPlan_test({ navigation, route }) {
   let displayPlan = [];
@@ -117,9 +124,38 @@ export default function DayPlan_test({ navigation, route }) {
   } else {
     console.log("can display?", forDisplay);
     return (
-      <View style={styles.plan}>
-        {/* <Text>done</Text> */}
-        <View style={styles.component}>{forDisplay}</View>
+      <View>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "flex-start",
+            width: "100%",
+            marginBottom: 40,
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              top: 20,
+              left: 10,
+              width: 40,
+              height: 40,
+              backgroundColor: color.primary,
+              borderRadius: 10,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onPress={() => {
+              navigation.pop();
+            }}
+          >
+            <FontAwesome5 name={"backward"} size={24} color={"white"} />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.plan}>
+          {/* <Text>done</Text> */}
+          <View style={styles.component}>{forDisplay}</View>
+        </View>
       </View>
     );
   }

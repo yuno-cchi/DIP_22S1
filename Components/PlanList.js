@@ -39,7 +39,7 @@ export default function PlanList({
   };
 
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity style={{ marginVertical: 40 }} onPress={onPress}>
       <MapViewDirections
         style={{ flex: 0 }}
         origin={start}
@@ -64,8 +64,12 @@ export default function PlanList({
               <Image source={require("./pic/Arrow.png")} />
             </View>
             <View style={styles.mylocation}>
-              <AppText style={styles.title}>{start}</AppText>
-              <AppText style={styles.title}>{destination}</AppText>
+              <AppText style={styles.title}>
+                {String.fromCodePoint(128663) + start}
+              </AppText>
+              <AppText style={styles.title}>
+                {String.fromCodePoint(128665) + destination}
+              </AppText>
             </View>
           </View>
           {/* </View> */}
@@ -79,7 +83,7 @@ export default function PlanList({
 
           <View style={styles.botcontainer}>
             <AppText style={styles.subTitle}>{user}</AppText>
-            <AppText style={styles.subTitle}>
+            <AppText style={styles.subTitle2}>
               {price}
               {/* Price calculation here */}
             </AppText>
@@ -105,9 +109,16 @@ const styles = StyleSheet.create({
     fontWeight: "100",
     marginTop: 5,
     marginLeft: 5,
+    fontSize: 18,
   },
   subTitle: {
-    color: color.green,
+    color: color.primary,
+    fontWeight: "120",
+    marginTop: 2,
+    marginLeft: 5,
+  },
+  subTitle2: {
+    color: color.secondary,
     fontWeight: "120",
     marginTop: 2,
     marginLeft: 5,
@@ -117,7 +128,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   wraptext: {
-    padding: "5%",
+    paddingHorizontal: "5%",
   },
   topcontainer: {
     //height: "80%",
@@ -129,7 +140,7 @@ const styles = StyleSheet.create({
     //height: "20%",
   },
   mylocation: {
-    width: "85%",
+    width: "100%",
     //flexDirection: "row",
     marginLeft: "auto",
     marginBottom: windowHeight * 0.02,

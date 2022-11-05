@@ -25,19 +25,25 @@ import {
     ToastAndroid,
     Alert,
     Platform,
+    StyleSheet,
+    SafeAreaView
 } from "react-native";
-import styles from '../assets/styles/styles.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import IsValidString from './IsValidString.js';
+import { color } from '../Config/Color.js';
+import { ActivityIndicator, MD2Colors } from 'react-native-paper';
 
 
 export default function Login({ navigation }) {
     const [user, setUser] = useState("");;
     const [pass, setPass] = useState("");
 
+    const [isLoading, setLoading] = useState();
+
     const userParams = {
         username: null,
         userType: null,
+        userID: null
     };
 
     var userdata; //global var for getting user cred.
@@ -74,16 +80,16 @@ export default function Login({ navigation }) {
 
                         userParams.username = username;
 
-                        console.log(userdata[i]._id);
+                        console.log("UserID: ", userdata[x]._id, "Entry: ", i);
 
                         AsyncStorage.setItem("isLoggedIn", "true");
-                        AsyncStorage.setItem("userId", userdata[i]._id);
-
+                        AsyncStorage.setItem("userId", userdata[x]._id);
+                        userParams.userID = userdata[x]._id;
 
 
                         //navigation.navigate("TypeSelect", userParams); //ACTUAL
                         navigation.navigate("SelectUserType", userParams); //FOR DEBUGGING
-
+                        setLoading(false)
 
 
                         // sessionStorage.setItem("isLoggedIn", true); //setlogin state to true, set to false once logged out
@@ -94,6 +100,8 @@ export default function Login({ navigation }) {
                         return;
                     }
                     else if (i == userdata.length - 1 && userdata[i].password != password) {
+
+                        setLoading(false)
 
                         message = '(Password) Username invalid / User does not exist!'
                         if (Platform.OS == 'android') {
@@ -106,6 +114,8 @@ export default function Login({ navigation }) {
                 }
             }
             else if (x == userdata.length - 1 && userdata[x].username != username) {
+
+                setLoading(false)
 
                 message = 'Username invalid / User does not exist!'
                 if (Platform.OS == 'android') {
@@ -138,13 +148,22 @@ export default function Login({ navigation }) {
 
         var errorToastMessage = ""
         if (!userToValidate) { // an empty string is falsy
+
+            setLoading(false)
+
             errorToastMessage += "Empty or invalid username; ";
         }
         if (!passToValidate) { // an empty string is falsy
+
+            setLoading(false)
+
             errorToastMessage += "Empty password;"
         }
 
         if (errorToastMessage) { // if the error message is NOT an empty string, there is an error, so we print it out
+
+            setLoading(false)
+
             showToast(errorToastMessage);
         } else { // otherwise we attempt a log-in
             //showToast("WIP: Login Function; entered username: ("+ userToValidate + "); entered password: (" + passToValidate +"); "); //comment this out once we implement logins
@@ -157,41 +176,167 @@ export default function Login({ navigation }) {
         }
     }
 
-    return (
-        <View style={styles.container}>
-            <Image style={styles.logoView} source={require("../assets/img/logo.png")} />
-            <StatusBar style="auto" />
+    if (isLoading) {
+        return (
+            <View
+                style={{
+                    flexDirection: "row",
+                    height: "100%",
+                    padding: 30,
+                    justifyContent: "center",
+                    alignItems: "center",
+                }}
+            >
 
-            <View style={styles.inputView}>
-                <TextInput
-                    style={styles.TextInput}
-                    placeholder="username"
-                    placeholderTextColor="#fef2f0"
-                    onChangeText={(user) => setUser(user)}
-                />
+
+                <ActivityIndicator size="large" color={color.primary} />
             </View>
+        );
+    }
+    else {
+        return (
+            <View style={styles.container}>
+                <Image style={styles.logoView} source={require("../assets/img/logo.png")} />
+                <StatusBar style="auto" />
 
-            <View style={styles.inputView}>
-                <TextInput
-                    style={styles.TextInput}
-                    placeholder="password"
-                    placeholderTextColor="#fef2f0"
-                    secureTextEntry={true}
-                    onChangeText={(pass) => setPass(pass)}
-                />
+                <View style={styles.inputView}>
+                    <TextInput
+                        style={styles.TextInput}
+                        placeholder="username"
+                        placeholderTextColor="#fef2f0"
+                        onChangeText={(user) => setUser(user)}
+                    />
+                </View>
+
+                <View style={styles.inputView}>
+                    <TextInput
+                        style={styles.TextInput}
+                        placeholder="password"
+                        placeholderTextColor="#fef2f0"
+                        secureTextEntry={true}
+                        onChangeText={(pass) => setPass(pass)}
+                    />
+                </View>
+
+                {/* <TouchableOpacity>
+                    <Text style={styles.textLinks} onPress={(event) => showToast("we're probably not gonna implement this any time soon hehe >:)")}>Forgot Password?</Text>
+                </TouchableOpacity> */}
+
+                <TouchableOpacity style={styles.buttonNormal} onPress={(event) => {
+                    setLoading(true);
+                    loginEvent(user, pass)
+                }}>
+                    <Text style={styles.buttonText}>Log in</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonNormal} onPress={(event) => navigation.navigate("SignUpPage", userParams)}>
+                    <Text style={styles.buttonText} >New user?</Text>
+                </TouchableOpacity>
             </View>
-
-            <TouchableOpacity>
-                <Text style={styles.textLinks} onPress={(event) => showToast("we're probably not gonna implement this any time soon hehe >:)")}>Forgot Password?</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.buttonNormal} onPress={(event) => loginEvent(user, pass)}>
-                <Text style={styles.buttonText}>Log in</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonNormal}>
-                <Text style={styles.buttonText} onPress={(event) => navigation.navigate("SignUpPage", userParams)}>New user?</Text>
-            </TouchableOpacity>
-        </View>
-    );
+        );
+    }
 }
+
+
+const styles = StyleSheet.create({
+
+    container: {
+        flex: 1,
+        marginTop: 0,
+        backgroundColor: color.white,
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+    },
+
+    inputView: {
+        marginTop: 10,
+        backgroundColor: "#ffcccc",
+        borderRadius: 20,
+        width: "86%",
+        height: 45,
+        marginBottom: 20,
+        alignItems: 'center',
+    },
+
+    TextInput: {
+        height: 50,
+        flex: 1,
+        padding: 10,
+        fontSize: 20,
+        fontFamily: 'Menlo',
+        fontWeight: '600'
+    },
+
+    logoView: {
+        width: 400,
+        height: 200,
+        marginBottom: 10,
+    },
+
+    textLinks: {
+        fontSize: 15,
+        marginBottom: 5,
+        alignContent: "center",
+        justifyContent: "center",
+    },
+
+    buttonNormal: {
+        backgroundColor: "#e76850",
+        borderRadius: 30,
+        width: "60%",
+        height: 45,
+        marginTop: 20,
+        marginBottom: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    iconButtonBig: {
+        //backgroundColor: "#e76850", //debug
+        width: 150,
+        height: 180,
+        marginLeft: 20,
+        marginRight: 20,
+    },
+
+    iconButtonText: {
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        fontSize: 25,
+    },
+
+    buttonIcon: {
+        height: 100,
+        width: 100,
+        marginTop: 10,
+        marginLeft: 25,
+    },
+
+    buttonDisabled: {
+        backgroundColor: "#e76850",
+        borderRadius: 30,
+        width: "70%",
+        height: 45,
+        marginBottom: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+        opacity: 0.5,
+    },
+
+    buttonText: {
+        marginTop: 30,
+        height: 50,
+        color: "#f5f5f5",
+        alignContent: "center",
+        justifyContent: "center",
+        fontSize: 20,
+        fontFamily: 'Menlo',
+        fontWeight: '600'
+    },
+
+    errorText: {
+        color: "#ff0000",
+        fontStyle: 'italic',
+    }
+})
 
