@@ -17,7 +17,7 @@ const GOOGLE_MAPS_APIKEY = 'AIzaSyBYDEKY12RzWyP0ACQEpgsr4up2w3CjH88';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-export default function Card({ title, subTitle, onPress, driverRoute, route, style, ...otherProps }) {
+export default function Card({ title, subTitle, subTitle2, onPress, driverRoute, route, style, ...otherProps }) {
 
 
 
@@ -43,7 +43,7 @@ export default function Card({ title, subTitle, onPress, driverRoute, route, sty
                         strokeWidth={3}
                         apikey={GOOGLE_MAPS_APIKEY}
                         optimizeWaypoints={true}
-                        strokeColor="red"
+                        strokeColor={color.primary}
                     >
 
                     </MapViewDirections>
@@ -51,16 +51,20 @@ export default function Card({ title, subTitle, onPress, driverRoute, route, sty
                     <MapViewDirections
                         origin={driverRoute.startLocation}
                         destination={driverRoute.endLocation}
-                        strokeWidth={5}
+                        strokeWidth={3}
                         apikey={GOOGLE_MAPS_APIKEY}
                         optimizeWaypoints={true}
-                        strokeColor="blue"
+                        strokeColor={color.selected}
                     >
 
                     </MapViewDirections>
                 </MapView>
-                <AppText style={styles.title}>{title}</AppText>
-                <AppText style={styles.subTitle}>{subTitle}</AppText>
+                <View>
+                    <AppText style={styles.title}>{title}</AppText>
+                    <AppText style={styles.subTitle}>{subTitle}</AppText>
+                    <AppText style={styles.subTitle2}>{subTitle2}</AppText>
+                </View>
+
 
             </View>
         </TouchableOpacity>
@@ -91,8 +95,14 @@ const styles = StyleSheet.create({
         marginTop: 2,
         marginLeft: 5
     },
+    subTitle: {
+        color: color.green,
+        fontWeight: "150",
+        marginTop: 2,
+        marginLeft: 5
+    },
     mapStyle: {
-        height: '70%',
+        height: '50%',
         width: '100%',
     },
     deleteButton: {

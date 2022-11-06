@@ -293,7 +293,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
             <BottomTab>
                 <View style={styles.timeContainer}>
                     <View style={styles.flextime}>
-                        <DateTimePicker
+                        {/* <DateTimePicker
                             value={selectedDate}
                             mode={DATE_MODE}
                             onChange={(event, selectedDate1) => {
@@ -327,7 +327,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                                 height: 100,
                                 transform: [{ scale: 1.4 }],
                             }}
-                        />
+                        /> */}
                     </View>
 
                     <AppButton
@@ -405,8 +405,9 @@ const styles = StyleSheet.create({
         bottom: 0,
     },
     sendButton: {
-        width: 130,
-        marginLeft: 50
+        width: 200,
+        height: 70,
+        borderRadius: 90
 
     },
     locationTextBoxContainer: {

@@ -312,6 +312,7 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
                         <Card
                             title={item.routeName}
                             subTitle={item.routeDescription}
+                            subTitle2={" " + item.date.slice(0, 10)}
                             route={item}
                             driverRoute={route.params}
                             style={item.selected ? { backgroundColor: color.selected } : { backgroundColor: color.white }}
