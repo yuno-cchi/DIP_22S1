@@ -219,6 +219,10 @@ function CalendarScreen({ navigation, route }) {
             }}
                 onPress={() => {
                     console.log("Logging out")
+
+                    AsyncStorage.removeItem("isLoggedIn");
+                    AsyncStorage.removeItem("userId");
+
                     navigation.reset({
                         index: 0,
                         routes: [{ name: 'Login' }],

@@ -24,6 +24,7 @@ import RiderMapScreen_android from "./RiderMapScreen_android";
 import { FontAwesome5 } from "@expo/vector-icons";
 import AppButton from "../Components/AppButton";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //import drivedata from "./GetDriveData";
 
@@ -187,6 +188,12 @@ function CalendarScreen({ navigation, route }) {
         }}
         onPress={() => {
           console.log("Logging out");
+
+          //remove isLoggedIn and userId from the session
+          AsyncStorage.removeItem("isLoggedIn");
+          AsyncStorage.removeItem("userId");
+
+
           navigation.reset({
             index: 0,
             routes: [{ name: "Login" }],
