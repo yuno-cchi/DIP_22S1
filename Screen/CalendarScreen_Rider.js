@@ -137,6 +137,7 @@ function CalendarScreen({ navigation, route }) {
             .then((response) => {
                 console.log("Response length: ", response.data.length);
                 console.log("Response data: ", response.data);
+
                 for (let i = 0; i < response.data.length; i++) {
                     let thisRoute = response.data[i];
                     console.log("Compare id: ", response.data[i].routename, " with ", userParams.userID)
@@ -238,7 +239,10 @@ function CalendarScreen({ navigation, route }) {
                 onDayPress={(day) => {
                     //setPickday(day);
                     selectedday = day;
-                    navigation.navigate("DayPlan_test", { selectedday: day });
+                    navigation.navigate("DayPlan_test", {
+                        selectedday: day,
+                        userID: userParams.userID
+                    });
                 }}
                 onDayLongPress={(day) => {
                     console.log("selected day", day);
