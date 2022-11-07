@@ -161,20 +161,14 @@ function CalendarScreen({ navigation, route }) {
 
                 console.log("Collected data:", dateColect);
                 let arr = Array.from(dateColect);
-                //obj = Object.assign({arr}, "{'marked': true, 'selectedColor': 'blue'}");
+
                 obj = {};
                 arr.forEach((elem, i) => {
-                    //obj[{${arr[i]}] = "{'marked': true, 'selectedColor': 'blue'}"
 
                     obj[`${arr[i]}`] = { marked: true, selectedColor: "red" };
 
                 });
-                // let tempMarkedDate = []
-                // for (let i = 0; i < dateColect.length; i++) {
-                //     tempMarkedDate.push({
-                //         dateColect: { marked: true, selectedColor: 'red' }
-                //     })
-                // }
+
                 console.log("dd", obj);
                 let addedarr = [];
 
@@ -234,10 +228,9 @@ function CalendarScreen({ navigation, route }) {
                 <FontAwesome5 name="sign-out-alt" size={25} color={'white'} />
             </TouchableOpacity>
             <Calendar
-                //minDate={today}
-                //maxDate={tryPlanning}
+
                 onDayPress={(day) => {
-                    //setPickday(day);
+
                     selectedday = day;
                     navigation.navigate("DayPlan_test", {
                         selectedday: day,

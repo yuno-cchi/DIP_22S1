@@ -100,6 +100,7 @@ const storeInDatabase = (startLocation, endLocation, date, key, userID) => {
 export default function DriverPutRouteScreen({ navigation, route }) {
     //for datetimepicker
     const [selectedDate, setSelectedDate] = useState(new Date());
+    const [trueSelectedDate, setTrueSelectedDate] = useState(new Date());
     const [mode, setMode] = useState("date");
     //const [show, setShow] = useState(false);
     const [text, setText] = useState("Empty");
@@ -164,7 +165,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                     mode="datetime"
                     onChange={(event, selectedDate) => {
                         setSelectedDate(selectedDate);
-                        console.log(selectedDate);
+                        console.log("Selected date is", selectedDate);
                         const d = new Date(selectedDate);
 
                         // setTimeDisplay(true);
@@ -293,14 +294,20 @@ export default function DriverPutRouteScreen({ navigation, route }) {
             <BottomTab>
                 <View style={styles.timeContainer}>
                     <View style={styles.flextime}>
-                        {/* <DateTimePicker
+                        <DateTimePicker
                             value={selectedDate}
                             mode={DATE_MODE}
                             onChange={(event, selectedDate1) => {
-                                console.log("ios rider");
+                                console.log("ios rider:", selectedDate1);
+
+                                const tempDate1 = new Date(selectedDate1)
+
+                                tempDate1.setDate(tempDate1.getDate() + 1)
+                                console.log("Selected date1 is", tempDate1)
                                 const currentDate = selectedDate1 || selecteddate;
                                 setSelectedDate(currentDate);
-                                console.log(selectedDate);
+                                setTrueSelectedDate(tempDate1);
+                                console.log("True Selected date is", trueSelectedDate);
                                 let tempDate = new Date(currentDate);
                                 let fDate =
                                     tempDate.getFullYear() +
@@ -327,7 +334,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                                 height: 100,
                                 transform: [{ scale: 1.4 }],
                             }}
-                        /> */}
+                        />
                     </View>
 
                     <AppButton
@@ -347,7 +354,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                                     endName: endLocationName,
                                     startLocation: startLocation,
                                     endLocation: endLocation,
-                                    selectedDate: selectedDate.toISOString(),
+                                    selectedDate: trueSelectedDate.toISOString(),
                                     centroid: {
                                         latitude: (startLocation.latitude + endLocation.latitude) / 2,
                                         longitude:
@@ -405,10 +412,8 @@ const styles = StyleSheet.create({
         bottom: 0,
     },
     sendButton: {
-        width: 200,
-        height: 70,
-        borderRadius: 90
-
+        width: 130,
+        marginLeft: 50
     },
     locationTextBoxContainer: {
         top: 50,
