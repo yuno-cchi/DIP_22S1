@@ -16,6 +16,7 @@ import DriverPutRouteScreen from "./DriverPutRouteScreen";
 import DriverPutRouteScreen_Android from "./DriverPutRouteScreen_Android";
 import RiderMapScreen_android from "./RiderMapScreen_android";
 import { FontAwesome5 } from '@expo/vector-icons';
+import AppButton from "../Components/AppButton";
 
 //import drivedata from "./GetDriveData";
 
@@ -24,6 +25,9 @@ var dataLen = Object.keys(data).length;
 var dayDataLen = Object.keys(mydata).length;
 var selectedday;
 let drivedata;
+
+
+
 
 async function axiosTest(displayPlan, selectedday) {
     await axios
@@ -172,37 +176,6 @@ function DayPlan({ navigation }) {
         );
     }
 
-    // setTimeout(() => {
-    //   setShowPlan(true);
-    //   console.log("my displayplan after 2s,", displayPlan);
-    //   // return (
-    //   //   <View style={styles.plan}>
-    //   //     <View style={styles.component}>{displayPlan}</View>
-    //   //   </View>
-    //   // );
-    // }, 2000);
-
-    // useEffect(() => {
-    //   console.log("use effect");
-    //   showDayPlan();
-    // }, [showPlan]);
-    // }
-
-    // useEffect(() => {
-    //   setTimeout(() => {
-    //     console.log("useeffect now", displayPlan);
-
-    //     if (displayPlan != null) {
-    //       setShowPlan(true);
-    //     }
-    //     //console.log("i suppose to be end ", displayPlan);
-    //     return (
-    //       <View style={styles.plan}>
-    //         <View style={styles.component}>{displayPlan}</View>
-    //       </View>
-    //     );
-    //   }, 2000);
-    // }, [showPlan]);
 }
 
 function MarkCalender() {
@@ -235,35 +208,35 @@ const CalendarScreenTabNavigator_Driver = ({ navigation, route }) => {
     const Tab = createBottomTabNavigator();
 
     return (
-        
-        <Tab.Navigator 
+
+        <Tab.Navigator
             initialRouteName="Calendar"
-            screenOptions={{ 
+            screenOptions={{
                 headerShown: false,
-                tabBarActiveTintColor: color.primary, 
+                tabBarActiveTintColor: color.primary,
             }}
         >
-        <Tab.Screen
-            name="Calendar"
-            component={CalendarScreen}
-            options={{
-                tabBarLabel: 'Calendar',
-                tabBarIcon: ({ color, size }) => (
-                    <FontAwesome5 name="calendar-alt" color={color} size={size} />
-                ),
-            }}
-        />
-        <Tab.Screen
-            name="DriverMap"
-            component={DriverPutRouteScreen}
-            options={{
-                tabBarLabel: 'DriverMap',
-                tabBarIcon: ({ color, size }) => (
-                    <FontAwesome5 name="map-marked-alt" color={color} size={size} />
-                ),
-            }}
-        />
-    </Tab.Navigator>
+            <Tab.Screen
+                name="Calendar"
+                component={CalendarScreen}
+                options={{
+                    tabBarLabel: 'Calendar',
+                    tabBarIcon: ({ color, size }) => (
+                        <FontAwesome5 name="calendar-alt" color={color} size={size} />
+                    ),
+                }}
+            />
+            <Tab.Screen
+                name="DriverMap"
+                component={DriverPutRouteScreen}
+                options={{
+                    tabBarLabel: 'DriverMap',
+                    tabBarIcon: ({ color, size }) => (
+                        <FontAwesome5 name="map-marked-alt" color={color} size={size} />
+                    ),
+                }}
+            />
+        </Tab.Navigator>
     )
 }
 
@@ -347,7 +320,18 @@ function CalendarScreen({ navigation, route }) {
 
     return (
         <View style={styles.container}>
-            <Calendar
+            <AppButton style={{
+                position: 'absolute',
+                top: 20,
+                left: 10,
+                width: 45
+            }}
+                onPress={() => {
+                    console.log("Logging out")
+                    /*CheeHean!*/
+                }}
+            />
+            < Calendar
                 //minDate={today}
                 //maxDate={tryPlanning}
                 onDayPress={(day) => {
@@ -407,7 +391,7 @@ function CalendarScreen({ navigation, route }) {
                 // }}
                 markingType={"period"}
             ></Calendar>
-        </View>
+        </View >
     );
 }
 
