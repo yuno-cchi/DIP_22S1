@@ -5,7 +5,7 @@ import React, {
     useState,
     useRef,
 } from "react";
-import { View, StyleSheet, Text, ScrollView } from "react-native";
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity } from "react-native";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 import data from "./calendarData.json";
 import mydata from "./dayTripData.json";
@@ -22,7 +22,11 @@ import DriverPutRouteScreen from "./DriverPutRouteScreen";
 import DriverPutRouteScreen_Android from "./DriverPutRouteScreen_Android";
 import RiderMapScreen_android from "./RiderMapScreen_android";
 import * as Notifications from "expo-notifications";
+import AppButton from "../Components/AppButton";
 import { FontAwesome5 } from '@expo/vector-icons';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ActivityIndicator, MD2Colors } from 'react-native-paper';
+import { ImageBackground } from "react-native";
 
 //import drivedata from "./GetDriveData";
 
@@ -30,204 +34,42 @@ var dataLen = Object.keys(data).length;
 var dayDataLen = Object.keys(mydata).length;
 var selectedday;
 let drivedata;
+var userParams = null;
 
-async function axiosTest(displayPlan, selectedday) {
-    await axios
-        .get("http://secret-caverns-21869.herokuapp.com/ride")
-        .then(function (response) {
-            for (let i = 0; i < dayDataLen; i++) {
-                let thisRoute = response.data[i];
-                console.log("selected date", Object.values(selectedday)[4]);
-                //has to use [4] to get date string
-                if (Object.values(selectedday)[4] == thisRoute.date.slice(0, 10)) {
-                    console.log("display in loop ", thisRoute.routename);
+async function schedulePushNotification(timeLeft) {
+    Notifications.scheduleNotificationAsync({
+        content: {
+            title: "Don't forget your ride",
+            body: timeLeft, //getTimeString(timeLeft)
+            data: { data: 'goes here' },
+        },
+        // trigger: { seconds: timeToNotify(selectedDate) - (43200) },
+        trigger: { seconds: 3 }
+    });
+}
 
-                    displayPlan.push(
-                        <View>
-                            <PlanList
-                                title={thisRoute.date}
-                                key={thisRoute.routename}
-                                user={thisRoute.routename}
-                            //style={thisRoute.selected}
-                            />
-                        </View>
-                    );
-                }
+async function registerForPushNotificationsAsync() {
+    let token;
 
-                //console.log("in display", displayPlan);
-            }
-        })
-        .catch(function (error) {
-            console.log(error);
+    if (Platform.OS === 'android') {
+        await Notifications.setNotificationChannelAsync('default', {
+            name: 'default',
+            importance: Notifications.AndroidImportance.MAX,
+            vibrationPattern: [0, 250, 250, 250],
+            lightColor: '#FF231F7C',
         });
-}
-
-// const CalendarNavigator = () => (
-//   <Stack.Navigator initialRouteName="CalendarScreen">
-//     <Stack.Screen name="CalendarScreen" component={CalendarScreen} />
-//     <Stack.Screen name="DayPlan" component={DayPlan} />
-//     {/* <Stack.Screen name="DayPlan" component={PlannedRouteDetails} /> */}
-//   </Stack.Navigator>
-// );
-
-// function showDayPlan(displayPlan) {
-//     console.log("inside showdayplan", displayPlan);
-
-//     return (
-
-//     )
-// }
-
-function DayPlan({ navigation }) {
-    let displayPlan = [];
-    const [forDisplay, setForDisplay] = useState();
-    const [isLoading, setLoading] = useState(true);
-    //axiosTest(displayPlan, selectedday);
-    console.log("can i get my dates?", mydates);
-
-    //set to store date no duplicate
-
-    //object array for post process
-
-    useEffect(() => {
-        let dateColect = new Set();
-        let returnRouteObjectArray = [];
-
-        axios
-            .get("http://secret-caverns-21869.herokuapp.com/ride")
-            .then((response) => {
-                //console.log("resp", response.data.length);
-                for (let i = 0; i < response.data.length; i++) {
-                    let thisRoute = response.data[i];
-
-                    dateColect.add(thisRoute.date.slice(0, 10));
-
-                    //setDbDates()
-                    //has to use [4] to get date string
-                    console.log("this date?", response.data[i]);
-                    if (Object.values(selectedday)[4] === thisRoute.date.slice(0, 10)) {
-                        console.log("select", Object.values(selectedday)[4]);
-                        console.log("route ", thisRoute.date.slice(0, 10));
-                        displayPlan.push(
-                            <View>
-                                <PlanList
-                                    start={thisRoute.startName}
-                                    destination={thisRoute.destinationName}
-                                    key={thisRoute._id}
-                                    user={thisRoute.routename}
-                                    price="$15"
-                                    style={
-                                        thisRoute.selected
-                                            ? { backgroundColor: color.primary }
-                                            : { backgroundColor: color.white }
-                                    }
-                                />
-                            </View>
-                        );
-                    }
-
-                    console.log("in display", displayPlan);
-                    setForDisplay(displayPlan);
-                    console.log("for display?", forDisplay);
-
-                    setTimeout(() => {
-                        setLoading(false);
-                    }, 300);
-                }
-
-                let arr = Array.from(dateColect);
-                arr = arr.map(
-                    (i) => i + ": { 'marked': true, 'selectedColor': 'blue'}"
-                );
-
-                console.log(JSON.stringify(arr));
-
-                setGetDates(JSON.stringify(arr));
-            });
-    }, []);
-
-    if (isLoading) {
-        return (
-            <View
-                style={{
-                    flexDirection: "row",
-                    height: "100%",
-                    padding: 30,
-                    justifyContent: "center",
-                    alignContent: "center",
-                }}
-            >
-                <Text>Loading...</Text>
-            </View>
-        );
-    } else {
-        console.log("can display?", forDisplay);
-        return (
-            <View style={styles.plan}>
-                {/* <Text>done</Text> */}
-                <View style={styles.component}>{forDisplay}</View>
-            </View>
-        );
     }
-
-    // setTimeout(() => {
-    //   setShowPlan(true);
-    //   console.log("my displayplan after 2s,", displayPlan);
-    //   // return (
-    //   //   <View style={styles.plan}>
-    //   //     <View style={styles.component}>{displayPlan}</View>
-    //   //   </View>
-    //   // );
-    // }, 2000);
-
-    // useEffect(() => {
-    //   console.log("use effect");
-    //   showDayPlan();
-    // }, [showPlan]);
-    // }
-
-    // useEffect(() => {
-    //   setTimeout(() => {
-    //     console.log("useeffect now", displayPlan);
-
-    //     if (displayPlan != null) {
-    //       setShowPlan(true);
-    //     }
-    //     //console.log("i suppose to be end ", displayPlan);
-    //     return (
-    //       <View style={styles.plan}>
-    //         <View style={styles.component}>{displayPlan}</View>
-    //       </View>
-    //     );
-    //   }, 2000);
-    // }, [showPlan]);
+    return token;
 }
 
-function MarkCalender() {
-    for (let i = 0; i < dayDataLen; i++) { }
+const getTimeString = (selectedDate) => {
+    let time = new Date(selectedDate)
+    return (time.getDate() + "/" + time.getMonth() + "/" + time.getFullYear())
 }
-
-const PutRouteScreenSelector = (route) => {
-    console.log(route.params.userType);
-
-    if (Platform.OS === "ios") {
-        if (route.params.userType === "rider") {
-            return RiderMapScreen;
-        } else {
-            return DriverPutRouteScreen;
-        }
-    } else {
-        if (route.params.userType === "rider") {
-            return RiderMapScreen_android;
-        } else {
-            return DriverPutRouteScreen_Android;
-        }
-    }
-};
 
 const CalendarScreenTabNavigator_Rider = ({ navigation, route }) => {
     const Tab = createBottomTabNavigator();
-
+    userParams = route.params;
     return (
         <Tab.Navigator
             initialRouteName="Calendar"
@@ -240,22 +82,24 @@ const CalendarScreenTabNavigator_Rider = ({ navigation, route }) => {
                 name="Calendar"
                 component={CalendarScreen}
                 options={{
+                    unmountOnBlur: true,
                     tabBarLabel: 'Calendar',
                     tabBarIcon: ({ color, size }) => (
                         <FontAwesome5 name="calendar-alt" color={color} size={size} />
                     ),
-                }}
-            />
+
+                }} />
             <Tab.Screen
                 name="RiderMap"
-                component={RiderMapScreen}
+                component={Platform.OS === "ios" ? RiderMapScreen : RiderMapScreen_android}
                 options={{
                     tabBarLabel: 'RiderMap',
                     tabBarIcon: ({ color, size }) => (
                         <FontAwesome5 name="map-marked-alt" color={color} size={size} />
                     ),
                 }}
-            />
+            >
+            </Tab.Screen>
         </Tab.Navigator>
     );
 };
@@ -265,22 +109,47 @@ function CalendarScreen({ navigation, route }) {
     let tryPlanning = new Date();
     tryPlanning.setMonth(tryPlanning.getMonth() + 1);
 
+    const [expoPushToken, setExpoPushToken] = useState('');
+    const [notification, setNotification] = useState(false);
+    const notificationListener = useRef();
+    const responseListener = useRef();
+
     const [isLoading, setLoading] = useState(true);
     const [getDates, setGetDates] = useState([]);
 
     useEffect(() => {
+        registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+            setNotification(notification);
+        });
+
+        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+            console.log(response);
+        });
+
+        // const userID = AsyncStorage.getItem("userId")
         let dateColect = new Set();
         let returnRouteObjectArray = [];
-
+        console.log("userID is ", userParams.userID);
         axios
             .get("http://secret-caverns-21869.herokuapp.com/ride")
             .then((response) => {
-                //console.log("resp", response.data.length);
+                console.log("Response length: ", response.data.length);
+                console.log("Response data: ", response.data);
+
                 for (let i = 0; i < response.data.length; i++) {
                     let thisRoute = response.data[i];
+                    console.log("Compare id: ", response.data[i].routename, " with ", userParams.userID)
+                    if (response.data[i].routename === userParams.userID) {
+                        let tempDate = new Date(thisRoute.date[i])
+                        dateColect.add(response.data[i].date.slice(0, 10));
+                        console.log("Add data[", i, "]")
+                        if (response.data[i].selected === true) {
+                            schedulePushNotification(getTimeString(response.data[i].date));
+                        }
 
-                    dateColect.add(thisRoute.date.slice(0, 10));
-
+                    }
                     //setDbDates()
                     //has to use [4] to get date string
                     console.log("this date?", response.data[i]);
@@ -290,30 +159,32 @@ function CalendarScreen({ navigation, route }) {
                     }, 300);
                 }
 
-                console.log(dateColect);
+                console.log("Collected data:", dateColect);
                 let arr = Array.from(dateColect);
                 //obj = Object.assign({arr}, "{'marked': true, 'selectedColor': 'blue'}");
                 obj = {};
                 arr.forEach((elem, i) => {
                     //obj[{${arr[i]}] = "{'marked': true, 'selectedColor': 'blue'}"
-                    obj[`${arr[i]}`] = { marked: true, selectedColor: "blue" };
-                });
 
+                    obj[`${arr[i]}`] = { marked: true, selectedColor: "red" };
+
+                });
+                // let tempMarkedDate = []
+                // for (let i = 0; i < dateColect.length; i++) {
+                //     tempMarkedDate.push({
+                //         dateColect: { marked: true, selectedColor: 'red' }
+                //     })
+                // }
                 console.log("dd", obj);
                 let addedarr = [];
 
-                // for (var i = 0 ; i < arr.length; i++){
-                //     addedarr.push({ arr[i]: {'marked': true, 'selectedColor': 'blue'}})
-                // }
-
-                // arr = JSON.stringify(arr)
-                //dateColect = dateColect.map(i => i + ": {'marked': true, 'selectedColor': 'blue'}")
-
-                //console.log(JSON.stringify(arr));
-
                 setGetDates(obj);
-                setLoading(false);
             });
+        return () => {
+            Notifications.removeNotificationSubscription(notificationListener.current);
+            Notifications.removeNotificationSubscription(responseListener.current);
+            setLoading(false);
+        };
     }, []);
 
     if (isLoading) {
@@ -324,23 +195,54 @@ function CalendarScreen({ navigation, route }) {
                     height: "100%",
                     padding: 30,
                     justifyContent: "center",
-                    alignContent: "center",
+                    alignItems: "center",
                 }}
             >
-                <Text>Loading...</Text>
+
+
+                <ActivityIndicator size="large" color={color.primary} />
             </View>
         );
     }
 
     return (
         <View style={styles.container}>
+            <TouchableOpacity style={{
+                position: 'absolute',
+                top: 60,
+                left: 10,
+                width: 40,
+                height: 40,
+                backgroundColor: color.primary,
+                borderRadius: 10,
+                alignItems: "center",
+                justifyContent: "center",
+            }}
+                onPress={() => {
+                    console.log("Logging out")
+
+                    AsyncStorage.removeItem("isLoggedIn");
+                    AsyncStorage.removeItem("userId");
+
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'Login' }],
+                    });
+                    /*CheeHean!*/
+                }}
+            >
+                <FontAwesome5 name="sign-out-alt" size={25} color={'white'} />
+            </TouchableOpacity>
             <Calendar
                 //minDate={today}
                 //maxDate={tryPlanning}
                 onDayPress={(day) => {
                     //setPickday(day);
                     selectedday = day;
-                    navigation.navigate("DayPlan_test", { selectedday: day });
+                    navigation.navigate("DayPlan_test", {
+                        selectedday: day,
+                        userID: userParams.userID
+                    });
                 }}
                 onDayLongPress={(day) => {
                     console.log("selected day", day);
@@ -366,21 +268,21 @@ function CalendarScreen({ navigation, route }) {
                     backgroundColor: "#ffffff",
                     calendarBackground: "#ffffff",
                     textSectionTitleColor: "orange",
-                    textSectionTitleDisabledColor: "#d9e1e8",
-                    selectedDayBackgroundColor: "#00adf5",
+                    textSectionTitleDisabledColor: "#ff0000",
+                    selectedDayBackgroundColor: "#f50000",
                     selectedDayTextColor: "#ffffff",
-                    todayTextColor: "#00adf5",
+                    todayTextColor: "#ff0000",
                     dayTextColor: "#2d4150",
                     textDisabledColor: "#d9e1e8",
-                    dotColor: "#00adf5",
+                    dotColor: "#ff0000",
                     selectedDotColor: "#ffffff",
                     arrowColor: "orange",
                     disabledArrowColor: "#d9e1e8",
-                    monthTextColor: "orange",
+                    monthTextColor: "red",
                     indicatorColor: "orange",
-                    textDayFontWeight: "300",
+                    textDayFontWeight: "400",
                     textMonthFontWeight: "bold",
-                    textDayHeaderFontWeight: "200",
+                    textDayHeaderFontWeight: "700",
                     textDayFontSize: 16,
                     textMonthFontSize: 16,
                     textDayHeaderFontSize: 14,
@@ -402,6 +304,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: "center",
+        backgroundColor: color.white
     },
     plan: {
         flex: 2,

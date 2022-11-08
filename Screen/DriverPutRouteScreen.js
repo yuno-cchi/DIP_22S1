@@ -6,6 +6,7 @@ import {
     Button,
     Platform,
     Dimensions,
+    Alert,
 } from "react-native";
 import BottomTab from "../Components/BottomTab";
 import AppButton from "../Components/AppButton";
@@ -36,7 +37,7 @@ const ANIMATE_SPEED = 1000;
 const ANIMATE_ZOOM = 1;
 const INITIAL_POINT = null;
 const STROKE_WIDTH = 5;
-const STROKE_COLOR = "blue";
+const STROKE_COLOR = color.stroke;
 const DATE_MODE = "datetime";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -211,6 +212,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                 style={styles.container}
                 showsPointsOfInterest={true}
                 showsUserLocation={true}
+                userInterfaceStyle='light'
             >
                 <MapViewDirections
                     origin={startLocation}
@@ -287,50 +289,18 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                     />
                 </View>
             </HeaderTab>
-            <BottomTab style={{ alignItems: "center", height: windowHeight * 0.17 }}>
-                <AppButton
-                    style={styles.showRoute}
-                    title="Drive"
-                    onPress={() => {
-                        console.log(
-                            "Driver info:",
-                            startLocation,
-                            endLocation,
-                            selectedDate
-                        );
 
-                        navigation.navigate("ReccommendedRouteScreen", {
-                            startName: startLocationName,
-                            endName: endLocationName,
-                            startLocation: startLocation,
-                            endLocation: endLocation,
-                            selectedDate: selectedDate.toISOString(),
-                            centroid: {
-                                latitude: (startLocation.latitude + endLocation.latitude) / 2,
-                                longitude:
-                                    (startLocation.longitude + endLocation.longitude) / 2,
-                            },
-                        });
-                    }}
-                />
-
+            <BottomTab>
                 <View style={styles.timeContainer}>
-<<<<<<< HEAD
                     <View style={styles.flextime}>
-                        <DateTimePicker
+                        {/* <DateTimePicker
                             value={selectedDate}
                             mode={DATE_MODE}
                             onChange={(event, selectedDate1) => {
-                                console.log("ios rider:", selectedDate1);
-
-                                const tempDate1 = new Date(selectedDate1)
-
-                                tempDate1.setDate(tempDate1.getDate() + 1)
-                                console.log("Selected date1 is", tempDate1)
+                                console.log("ios rider");
                                 const currentDate = selectedDate1 || selecteddate;
                                 setSelectedDate(currentDate);
-                                setTrueSelectedDate(selectedDate1);
-                                console.log("True Selected date is", trueSelectedDate);
+                                console.log(selectedDate);
                                 let tempDate = new Date(currentDate);
                                 let fDate =
                                     tempDate.getFullYear() +
@@ -357,7 +327,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                                 height: 100,
                                 transform: [{ scale: 1.4 }],
                             }}
-                        />
+                        /> */}
                     </View>
 
                     <AppButton
@@ -377,7 +347,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                                     endName: endLocationName,
                                     startLocation: startLocation,
                                     endLocation: endLocation,
-                                    selectedDate: trueSelectedDate.toISOString(),
+                                    selectedDate: selectedDate.toISOString(),
                                     centroid: {
                                         latitude: (startLocation.latitude + endLocation.latitude) / 2,
                                         longitude:
@@ -402,67 +372,10 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                                     })
                             }
 
-=======
-                    <DateTimePicker
-                        value={selectedDate}
-                        mode={DATE_MODE}
-                        onChange={(event, selectedDate1) => {
-                            console.log("ios");
-                            const currentDate = selectedDate1 || selecteddate;
-                            setSelectedDate(currentDate);
-                            console.log(selectedDate);
-                            let tempDate = new Date(currentDate);
-                            let fDate =
-                                tempDate.getFullYear() +
-                                "/" +
-                                (tempDate.getMonth() + 1) +
-                                "/" +
-                                tempDate.getDay();
-                            let fTime =
-                                "Hours: " +
-                                tempDate.getHours() +
-                                " | Minutes: " +
-                                tempDate.getMinutes();
-                            setText(fDate + "\n" + fTime);
-                            console.log(fDate + " || " + fTime);
-                        }}
-                        minimumDate={new Date()}
-                        accentColor={color.red}
-                        textColor={color.medium}
-                        display="default"
-                        style={{
-                            width: 200,
-                            transform: [{ scale: 1.5 }],
->>>>>>> parent of 3355065 (Merge branch 'copy_main' of https://github.com/yuno-cchi/DIP_22S1 into copy_main)
                         }}
                     />
+
                 </View>
-
-                {/* <View style={styles.flexbtn}>
-          <AppButton
-            style={styles.showRoute}
-            title="Go"
-            onPress={() => {
-              console.log(
-                "Driver info:",
-                startLocation,
-                endLocation,
-                selectedDate
-              );
-
-              navigation.navigate("ReccommendedRouteScreen", {
-                startLocation: startLocation,
-                endLocation: endLocation,
-                selectedDate: selectedDate.toISOString(),
-                centroid: {
-                  latitude: (startLocation.latitude + endLocation.latitude) / 2,
-                  longitude:
-                    (startLocation.longitude + endLocation.longitude) / 2,
-                },
-              });
-            }}
-          />
-        </View> */}
             </BottomTab>
         </View >
     );
@@ -472,53 +385,30 @@ const styles = StyleSheet.create({
     container: {
         ...StyleSheet.absoluteFill,
     },
-    showRoute: {
+    searchBar: {
         position: "absolute",
-        bottom: 40,
-        width: 100,
+        marginTop: 60,
         right: 20,
-        height: 80,
     },
-    showLoc: {
+    dashButton: {
         position: "absolute",
-        bottom: 40,
-        width: 200,
-        left: 20,
+        width: 40,
+        height: 40,
+        left: 30,
+        marginTop: 60,
     },
     tab: {
         position: "absolute",
         backgroundColor: color.lightGray,
         width: "100%",
-        height: 200,
+        height: 500,
         bottom: 0,
     },
-    searchBar: {
-        height: "5%",
-        width: "60%",
-        borderRadius: 20,
-        backgroundColor: color.lightGray,
-        borderColor: color.black,
-        borderWidth: 2,
-        padding: 15,
-    },
-    confirmButtonStyle: {
-        position: "absolute",
-        backgroundColor: color.primary,
-        color: color.primary,
-        height: 40,
-        width: 80,
-        borderRadius: 15,
-        padding: 5,
-        right: 10,
-        top: 130,
-    },
-    textInput: {
-        backgroundColor: color.white,
-        width: 250,
-        height: 40,
-        borderRadius: 10,
-        margin: 4,
-        padding: 5,
+    sendButton: {
+        width: 200,
+        height: 70,
+        borderRadius: 90
+
     },
     locationTextBoxContainer: {
         top: 50,
@@ -534,6 +424,15 @@ const styles = StyleSheet.create({
             top: 0,
             left: 40,
         },
+        textInput: {
+            backgroundColor: color.lightGray,
+            height: 44,
+            borderRadius: 20,
+            paddingVertical: 5,
+            paddingHorizontal: 10,
+            fontSize: 15,
+            flex: 1,
+        },
     },
     endTextBox: {
         container: {
@@ -544,30 +443,35 @@ const styles = StyleSheet.create({
             top: 60,
             left: 40,
         },
-    },
-    textboxContainer: {
-        width: "100%",
-        height: 400,
-        backgroundColor: color.lightGray,
-        justifyContent: "center",
-        alignItems: "center",
+
+        textInput: {
+            backgroundColor: color.lightGray,
+            height: 44,
+            borderRadius: 20,
+            paddingVertical: 5,
+            paddingHorizontal: 10,
+            fontSize: 15,
+            flex: 1,
+        },
     },
     timeContainer: {
-        position: "absolute",
-        left: 0,
-        top: 10,
-        width: 300,
-        height: 100,
-        justifyContent: "center",
-        alignItems: "center",
+        flexDirection: "row",
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 150,
+
     },
-    androidTimeContainer: {
-        position: "absolute",
-        left: 0,
-        top: 10,
-        width: 100,
-        height: 100,
-        justifyContent: "center",
+    flextime: {
         alignItems: "center",
+        justifyContent: "center",
+        alignContent: 'center',
+        marginLeft: 0
+        //alignItems: "center",
+    },
+    flexbtn: {
+        flex: 1,
+        //justifyContent: "center",
+        alignItems: "center",
+        //alignItems: "right",
     },
 });

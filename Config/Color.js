@@ -9,5 +9,7 @@ export const color = StyleSheet.create({
     red: '#fc5c65',
     green: '#4ECDC4',
     lightGray: '#f8f4f4',
-    danger: '#ed8094'
+    danger: '#ed8094',
+    selected: '#52f7dc',
+    stroke: '#c92800'
 });

@@ -221,14 +221,15 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
         for (let i = 0; i < inputArray.length; i++) {
             tempArray.push({
                 routeId: inputArray[i][0].routeId,
-                routeName: inputArray[i][0].routeName,
+                routeName: inputArray[i][0].routeName, //Route rider id
                 routeDescription: inputArray[i][0].routeDescription,
                 date: inputArray[i][0].date,
                 start: { latitude: inputArray[i][0].start.latitude, longitude: inputArray[i][0].start.longitude },
                 destination: { latitude: inputArray[i][0].destination.latitude, longitude: inputArray[i][0].destination.longitude },
                 centroid: { latitude: inputArray[i][0].centroid.latitude, longitude: inputArray[i][0].centroid.longitude },
                 selected: inputArray[i][0].selected,
-                bestRouteKey: inputArray[i][0].bestRouteKey
+                bestRouteKey: inputArray[i][0].bestRouteKey,
+                routeRider: inputArray[i][0].routeRider
             }
             )
         }
@@ -293,13 +294,13 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
     const sortedRoutes = getBestRoutes(initialDummyRoute, route.params)
     //console.log("Route parrams", route.params.centroid)
 
-    if (loading){
-        return (
-            <View>
-                <ActivityIndicator size="large" />
-            </View>
-        )
-    }
+    // if (loading){
+    //     return (
+    //         <View>
+    //             <ActivityIndicator size="large" />
+    //         </View>
+    //     )
+    // }
 
     return (
         <View
@@ -312,9 +313,10 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
                         <Card
                             title={item.routeName}
                             subTitle={item.routeDescription}
+                            subTitle2={" " + item.date.slice(0, 10)}
                             route={item}
                             driverRoute={route.params}
-                            style={item.selected ? { backgroundColor: color.primary } : { backgroundColor: color.white }}
+                            style={item.selected ? { backgroundColor: color.selected } : { backgroundColor: color.white }}
                             onPress={() => selectThisCard(item)} />}
                     refreshing={isRefrehing}
                     onRefresh={() => {
@@ -369,10 +371,15 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
 
                             // }
                             selectCount = 0;
-                            navigation.navigate('CalendarScreenTabNavigator_Driver')
+                            navigation.pop()
                         }
                     }
                 />
+                {/* <AppButton
+                    title={'test'}
+                    onPress={() => {
+                        console.log(clean2DArray(selectedRoute))
+                    }} /> */}
 
             </BottomTab>
         </View >
