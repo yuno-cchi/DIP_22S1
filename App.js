@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
   textboxContainer: {
     width: "100%",
     height: 400,
-    backgroundColor: color.lightGray,
+    backgroundColor: color.white,
     justifyContent: "center",
     alignItems: "center",
   },
