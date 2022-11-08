@@ -304,7 +304,7 @@ export default function FinalDriverRouteScreen({ navigation, route }) {
                     title={'Confirm'}
                     onPress={async () => {
                         await schedulePushNotification(getTimeString(route.params.selectedDate));
-                        navigation.navigate('CalendarScreenTabNavigator_Driver', { userId: route.params.userId })
+
                         console.log(routeWaypoints)
                         storeInDrive(
                             route.params.startLocation,
@@ -314,6 +314,7 @@ export default function FinalDriverRouteScreen({ navigation, route }) {
                             route.params.endName,
                             routeWaypoints
                         )
+                        navigation.navigate('CalendarScreenTabNavigator_Driver', { userID: route.params.userId })
                     }}
                 // navigation.navigate('CalendarScreenTabNavigator_Driver')
                 // routeUserID: userID, //routeUserID
@@ -330,6 +331,7 @@ export default function FinalDriverRouteScreen({ navigation, route }) {
                 <AppButton
                     title={'Back'}
                     onPress={async () => {
+                        //console.log(route.params.userId)
                         navigation.pop()
 
                     }}

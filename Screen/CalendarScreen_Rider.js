@@ -88,7 +88,9 @@ const CalendarScreenTabNavigator_Rider = ({ navigation, route }) => {
                         <FontAwesome5 name="calendar-alt" color={color} size={size} />
                     ),
 
-                }} />
+                }}
+                initialParams={route.params}
+            />
             <Tab.Screen
                 name="RiderMap"
                 component={Platform.OS === "ios" ? RiderMapScreen : RiderMapScreen_android}
@@ -98,6 +100,7 @@ const CalendarScreenTabNavigator_Rider = ({ navigation, route }) => {
                         <FontAwesome5 name="map-marked-alt" color={color} size={size} />
                     ),
                 }}
+                initialParams={route.params}
             >
             </Tab.Screen>
         </Tab.Navigator>

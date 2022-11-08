@@ -258,7 +258,7 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
 
         for (let i = 0; i < ridedata.length; i++) {
             //console.log("inside now")
-            if (ridedata[i].selected == false) {
+            if (ridedata[i].selected === false && ridedata[i].date.slice(0, 10) === route.params.selectedDate.slice(0, 10)) {
                 // if (ridedata[i].centroid.latitude <= centroid1.latitude + 0.5 && ridedata[i].centroid.latitude >= centroid1.latitude - 0.5) {
                 //     routeArray.push({centroid: ridedata[i].centroid, destination: ridedata[i].destination, routeDescription: ridedata[i].routeName, routeId: ridedata[i]._id, selected: false,
                 //     start: ridedata[i].start});
@@ -352,7 +352,8 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
                                 userId: route.params.userId,
                                 waypoints: tempSelectedRoute,
                                 startName: route.params.startName,
-                                endName: route.params.endName
+                                endName: route.params.endName,
+                                userId: route.params.userId
                             })
 
                         }
@@ -363,13 +364,8 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
                     style={styles.confirmButton}
                     onPress={
                         () => {
-                            // console.log("There are: ", selectedRoute.length, "routes")
-                            // console.log("Selected route: ", selectedRoute[0])
-                            // console.log("The selected route is/are")
-                            // for (let x = 0; x < selectedRoute.length; x++) {
-                            //     console.log(selectedRoute[x][0].routeId)
 
-                            // }
+                            // console.log(route.params.userId)
                             selectCount = 0;
                             navigation.pop()
                         }

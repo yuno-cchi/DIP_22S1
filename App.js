@@ -50,6 +50,7 @@ import CalendarScreenTabNavigator_Rider from "./Screen/CalendarScreen_Rider";
 import PushNotification from "./Screen/PushNotification";
 import DayPlan_test from "./Screen/DayPlan_test";
 import * as Notifications from "expo-notifications";
+import DayPlan_drive from "./Screen/DayPlan_drive";
 //navigator.geolocation = require('react-native-geolocation-service');
 
 export default function App() {
@@ -172,6 +173,7 @@ export default function App() {
           component={CalendarScreenTabNavigator_Rider}
         />
         <Stack.Screen name="DayPlan_test" component={DayPlan_test} />
+        <Stack.Screen name="DayPlan_drive" component={DayPlan_drive} />
       </Stack.Navigator>
     </NavigationContainer>
   );

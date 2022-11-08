@@ -28,6 +28,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import axios from "axios";
 import HeaderTab from "../Components/HeaderTab";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // DateTimePickerAndroid.open(params: AndroidNativeProps);
 // DateTimePickerAndroid.dismiss(model: AndroidNativeProps['mode']);
@@ -293,7 +294,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
             <BottomTab>
                 <View style={styles.timeContainer}>
                     <View style={styles.flextime}>
-                        {/* <DateTimePicker
+                        <DateTimePicker
                             value={selectedDate}
                             mode={DATE_MODE}
                             onChange={(event, selectedDate1) => {
@@ -327,7 +328,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                                 height: 100,
                                 transform: [{ scale: 1.4 }],
                             }}
-                        /> */}
+                        />
                     </View>
 
                     <AppButton
@@ -353,6 +354,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                                         longitude:
                                             (startLocation.longitude + endLocation.longitude) / 2,
                                     },
+                                    userId: route.params.userID
                                 });
                             } else {
                                 Alert.alert(
@@ -374,6 +376,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
 
                         }}
                     />
+                    <AppButton title={"help"} onPress={() => { console.log(route.params) }} />
 
                 </View>
             </BottomTab>
@@ -405,9 +408,10 @@ const styles = StyleSheet.create({
         bottom: 0,
     },
     sendButton: {
-        width: 200,
-        height: 70,
-        borderRadius: 90
+        width: 120,
+        height: 50,
+        borderRadius: 90,
+        marginLeft: 50
 
     },
     locationTextBoxContainer: {

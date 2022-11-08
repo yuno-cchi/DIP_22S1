@@ -34,37 +34,6 @@ var selectedday;
 let drivedata;
 var userParams = null;
 
-async function axiosTest(displayPlan, selectedday) {
-  await axios
-    .get("http://secret-caverns-21869.herokuapp.com/ride")
-    .then(function (response) {
-      for (let i = 0; i < dayDataLen; i++) {
-        let thisRoute = response.data[i];
-        console.log("selected date", Object.values(selectedday)[4]);
-        //has to use [4] to get date string
-        if (Object.values(selectedday)[4] == thisRoute.date.slice(0, 10)) {
-          console.log("display in loop ", thisRoute.routename);
-
-          displayPlan.push(
-            <View>
-              <PlanList
-                title={thisRoute.date}
-                key={thisRoute.routename}
-                user={thisRoute.routename}
-              //style={thisRoute.selected}
-              />
-            </View>
-          );
-        }
-
-        //console.log("in display", displayPlan);
-      }
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-}
-
 const CalendarScreenTabNavigator_Driver = ({ navigation, route }) => {
   const Tab = createBottomTabNavigator();
   userParams = route.params;
@@ -85,7 +54,9 @@ const CalendarScreenTabNavigator_Driver = ({ navigation, route }) => {
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="calendar-alt" color={color} size={size} />
           ),
+
         }}
+        initialParams={route.params}
       />
       <Tab.Screen
         name="DriverMap"
@@ -96,6 +67,7 @@ const CalendarScreenTabNavigator_Driver = ({ navigation, route }) => {
             <FontAwesome5 name="map-marked-alt" color={color} size={size} />
           ),
         }}
+        initialParams={route.params}
       />
     </Tab.Navigator>
   );
@@ -114,12 +86,12 @@ function CalendarScreen({ navigation, route }) {
     let returnRouteObjectArray = [];
     console.log("userID is ", userParams.userID);
     axios
-      .get("http://secret-caverns-21869.herokuapp.com/ride")
+      .get("http://secret-caverns-21869.herokuapp.com/drive")
       .then((response) => {
         //console.log("resp", response.data.length);
         for (let i = 0; i < response.data.length; i++) {
           let thisRoute = response.data[i];
-          if (response.data[i].driverID || response.data[i].routename === userParams.userID) {
+          if (response.data[i].routeUserID === userParams.userID) {
             dateColect.add(thisRoute.date.slice(0, 10));
           }
           //setDbDates()
@@ -209,7 +181,10 @@ function CalendarScreen({ navigation, route }) {
         onDayPress={(day) => {
           //setPickday(day);
           selectedday = day;
-          navigation.navigate("DayPlan_test", { selectedday: day });
+          navigation.navigate("DayPlan_drive", {
+            selectedday: day,
+            userID: userParams.userID
+          });
         }}
         onDayLongPress={(day) => {
           console.log("selected day", day);
