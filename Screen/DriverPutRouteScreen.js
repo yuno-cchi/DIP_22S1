@@ -376,7 +376,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
 
                         }}
                     />
-                    <AppButton title={"help"} onPress={() => { console.log(route.params) }} />
+                    {/* <AppButton title={"help"} onPress={() => { console.log(route.params) }} /> */}
 
                 </View>
             </BottomTab>
