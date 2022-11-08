@@ -23,6 +23,7 @@ export default function PlanList({
   user,
   style,
   onPress,
+  isDriver = false,
   ...otherProps
 }) {
   const [distance, setDistance] = useState(0);
@@ -84,7 +85,7 @@ export default function PlanList({
           <View style={styles.botcontainer}>
             <AppText style={styles.subTitle}>{user}</AppText>
             <AppText style={styles.subTitle2}>
-              {price}
+              {!isDriver && price}
               {/* Price calculation here */}
             </AppText>
           </View>

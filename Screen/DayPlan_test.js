@@ -64,6 +64,7 @@ export default function DayPlan_test({ navigation, route }) {
             // console.log("Compare date: ", tempDate.getUTCDate(), selectedDateObj.getUTCDate())
             // console.log("Compage month: ", tempDate.getMonth(), selectedDateObj.getMonth())
             // console.log("Compare year: ", tempDate.getFullYear(), selectedDateObj.getFullYear())
+            console.log("Compare userID", response.data[i].routeUserID, "with", route.params.userID)
             if (tempDate.getUTCDate() === selectedDateObj.getUTCDate() && tempDate.getMonth() === selectedDateObj.getMonth()
               && tempDate.getFullYear() === selectedDateObj.getFullYear() && response.data[i].routename === route.params.userID) {
               routeArray.push({

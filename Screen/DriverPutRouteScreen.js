@@ -306,7 +306,7 @@ export default function DriverPutRouteScreen({ navigation, route }) {
                                 console.log("Selected date1 is", tempDate1)
                                 const currentDate = selectedDate1 || selecteddate;
                                 setSelectedDate(currentDate);
-                                setTrueSelectedDate(tempDate1);
+                                setTrueSelectedDate(selectedDate1);
                                 console.log("True Selected date is", trueSelectedDate);
                                 let tempDate = new Date(currentDate);
                                 let fDate =

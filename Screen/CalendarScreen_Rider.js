@@ -173,6 +173,7 @@ function CalendarScreen({ navigation, route }) {
                 let addedarr = [];
 
                 setGetDates(obj);
+                setLoading(false);
             });
         return () => {
             Notifications.removeNotificationSubscription(notificationListener.current);
