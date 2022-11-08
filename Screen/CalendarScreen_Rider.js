@@ -22,7 +22,6 @@ import DriverPutRouteScreen from "./DriverPutRouteScreen";
 import DriverPutRouteScreen_Android from "./DriverPutRouteScreen_Android";
 import RiderMapScreen_android from "./RiderMapScreen_android";
 import * as Notifications from "expo-notifications";
-import AppButton from "../Components/AppButton";
 import { FontAwesome5 } from '@expo/vector-icons';
 
 //import drivedata from "./GetDriveData";
@@ -249,7 +248,7 @@ const CalendarScreenTabNavigator_Rider = ({ navigation, route }) => {
             />
             <Tab.Screen
                 name="RiderMap"
-                component={Platform.OS === "ios" ? RiderMapScreen : RiderMapScreen_android}
+                component={RiderMapScreen}
                 options={{
                     tabBarLabel: 'RiderMap',
                     tabBarIcon: ({ color, size }) => (
@@ -335,17 +334,6 @@ function CalendarScreen({ navigation, route }) {
 
     return (
         <View style={styles.container}>
-            <AppButton style={{
-                position: 'absolute',
-                top: 20,
-                left: 10,
-                width: 45
-            }}
-                onPress={() => {
-                    console.log("Logging out")
-                    /*CheeHean!*/
-                }}
-            />
             <Calendar
                 //minDate={today}
                 //maxDate={tryPlanning}

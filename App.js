@@ -126,7 +126,7 @@ export default function App() {
       <Stack.Navigator
         initialRouteName={"Login"}
         screenOptions={{
-          headerShown: false,
+          headerShown: true,
         }}
       >
         <Stack.Screen name="Login" component={Login} />
