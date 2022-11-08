@@ -23,6 +23,7 @@ export default function PlanList({
   user,
   style,
   onPress,
+  isDriver = false,
   ...otherProps
 }) {
   const [distance, setDistance] = useState(0);
@@ -32,7 +33,7 @@ export default function PlanList({
   const getPrice = (distance, duration) => {
     //Calculate price based on ditance and time
     var fare = 0;
-    const distFactor = 50 / distance;
+    const distFactor = distance / 5;
     const timeFactor = duration / 30;
     fare = distFactor * timeFactor;
     return fare;
@@ -84,7 +85,7 @@ export default function PlanList({
           <View style={styles.botcontainer}>
             <AppText style={styles.subTitle}>{user}</AppText>
             <AppText style={styles.subTitle2}>
-              {price}
+              {!isDriver && price}
               {/* Price calculation here */}
             </AppText>
           </View>
