@@ -9,7 +9,6 @@ import {
 import { color } from "../Config/Color";
 import Icon from "./Icon";
 
-
 export default function AppButton({
   title,
   onPress,
@@ -18,7 +17,7 @@ export default function AppButton({
   textSize = 20,
 }) {
   return (
-    <TouchableOpacity style={[[styles.button, style]]} onPress={onPress} >
+    <TouchableOpacity style={[[styles.button, style]]} onPress={onPress}>
       {iconName && <Icon name={iconName} />}
       <Text style={[styles.title, { fontSize: textSize }]}>{title}</Text>
     </TouchableOpacity>

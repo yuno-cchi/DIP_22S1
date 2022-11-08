@@ -17,7 +17,7 @@ const GOOGLE_MAPS_APIKEY = 'AIzaSyBYDEKY12RzWyP0ACQEpgsr4up2w3CjH88';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-export default function Card({ title, subTitle, subTitle2, onPress, driverRoute, route, style, ...otherProps }) {
+export default function Card({ title, subTitle, onPress, driverRoute, route, style, ...otherProps }) {
 
 
 
@@ -43,7 +43,7 @@ export default function Card({ title, subTitle, subTitle2, onPress, driverRoute,
                         strokeWidth={3}
                         apikey={GOOGLE_MAPS_APIKEY}
                         optimizeWaypoints={true}
-                        strokeColor={color.primary}
+                        strokeColor="red"
                     >
 
                     </MapViewDirections>
@@ -51,20 +51,16 @@ export default function Card({ title, subTitle, subTitle2, onPress, driverRoute,
                     <MapViewDirections
                         origin={driverRoute.startLocation}
                         destination={driverRoute.endLocation}
-                        strokeWidth={3}
+                        strokeWidth={5}
                         apikey={GOOGLE_MAPS_APIKEY}
                         optimizeWaypoints={true}
-                        strokeColor={color.selected}
+                        strokeColor="blue"
                     >
 
                     </MapViewDirections>
                 </MapView>
-                <View>
-                    <AppText style={styles.title}>{title}</AppText>
-                    <AppText style={styles.subTitle}>{subTitle}</AppText>
-                    <AppText style={styles.subTitle2}>{subTitle2}</AppText>
-                </View>
-
+                <AppText style={styles.title}>{title}</AppText>
+                <AppText style={styles.subTitle}>{subTitle}</AppText>
 
             </View>
         </TouchableOpacity>
@@ -75,7 +71,7 @@ const styles = StyleSheet.create({
     card: {
         backgroundColor: color.lightGray,
         width: windowWidth * 0.96,
-        height: windowHeight * 0.35,
+        height: windowHeight * 0.3,
         marginTop: 15,
         borderRadius: 10,
         overflow: 'hidden'
@@ -95,14 +91,8 @@ const styles = StyleSheet.create({
         marginTop: 2,
         marginLeft: 5
     },
-    subTitle: {
-        color: color.green,
-        fontWeight: "150",
-        marginTop: 2,
-        marginLeft: 5
-    },
     mapStyle: {
-        height: '50%',
+        height: '70%',
         width: '100%',
     },
     deleteButton: {

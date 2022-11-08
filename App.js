@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
   textboxContainer: {
     width: "100%",
     height: 400,
-    backgroundColor: color.white,
+    backgroundColor: color.lightGray,
     justifyContent: "center",
     alignItems: "center",
   },

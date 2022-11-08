@@ -1,18 +1,11 @@
 import React, { ReactNode, SyntheticEvent, useEffect, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  Dimensions
-} from "react-native";
+import { View, StyleSheet, Text, ScrollView } from "react-native";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 import data from "./calendarData.json";
 import mydata from "./dayTripData.json";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PlanList from "../Components/PlanList";
 import { FlatList } from "react-native";
 import { color } from "../Config/Color";
@@ -23,28 +16,22 @@ import DriverPutRouteScreen from "./DriverPutRouteScreen";
 import DriverPutRouteScreen_Android from "./DriverPutRouteScreen_Android";
 import RiderMapScreen_android from "./RiderMapScreen_android";
 import MapViewDirections from "react-native-maps-directions";
-import { FontAwesome5 } from "@expo/vector-icons";
-
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 
 export default function DayPlan_test({ navigation, route }) {
-  let displayPlan = [];
-  let routeArray = [];
-  const [forDisplay, setForDisplay] = useState();
-  const [isLoading, setLoading] = useState(false);
-  const [getDates, setGetDates] = useState([]);
-  const [plan, setPlan] = useState([]);
 
-  //axiosTest(displayPlan, selectedday);
-  console.log("can i get my dates?", mydates);
+    let displayPlan = [];
+    const [forDisplay, setForDisplay] = useState();
+    const [isLoading, setLoading] = useState(false);
+    const [getDates, setGetDates] = useState([]);
 
-  var selectedday = route.params.selectedday;
-  var dist;
-  //set to store date no duplicate
+    //axiosTest(displayPlan, selectedday);
+    console.log("can i get my dates?", mydates);
 
-  //object array for post process
+    var selectedday = route.params.selectedday;
+    var dist;
+    //set to store date no duplicate
 
+<<<<<<< HEAD
   useEffect(() => {
     let dateColect = new Set();
     let returnRouteObjectArray = [];
@@ -78,119 +65,124 @@ export default function DayPlan_test({ navigation, route }) {
                 selected: response.data[i].selected,
                 date: response.data[i].date,
                 key: i
+=======
+>>>>>>> parent of 3355065 (Merge branch 'copy_main' of https://github.com/yuno-cchi/DIP_22S1 into copy_main)
 
-              })
-            }
+    //object array for post process
 
-          }
-          setPlan(routeArray)
 
-        });
-    } catch (error) { }
-  }, []);
+    useEffect(() => {
 
-  if (isLoading) {
-    return (
-      <View
-        style={{
-          flexDirection: "row",
-          height: "100%",
-          padding: 30,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Text>Loading...</Text>
-      </View>
-    );
-  } else {
-    console.log("can display?", forDisplay);
-    return (
-      <View>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "flex-start",
-            width: "100%",
-            marginBottom: 40,
-          }}
-        >
-          <TouchableOpacity
-            style={{
-              marginTop: 40,
-              top: 20,
-              left: 10,
-              width: 40,
-              height: 40,
-              backgroundColor: color.primary,
-              borderRadius: 10,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-            onPress={() => {
-              navigation.pop();
-            }}
-          >
-            <FontAwesome5 name={"backward"} size={24} color={"white"} />
-          </TouchableOpacity>
-        </View>
+        let dateColect = new Set();
+        let returnRouteObjectArray = [];
+        try {
+            axios
+                .get("http://secret-caverns-21869.herokuapp.com/ride")
+                .then((response) => {
+                    //console.log("resp", response.data.length);
+                    for (let i = 0; i < response.data.length; i++) {
+                        let thisRoute = response.data[i];
 
-        <View style={{ height: windowHeight * 0.75, width: windowWidth, alignItems: 'center' }}>
-          <FlatList
-            data={plan}
-            keyExtractor={item => item.key}
-            renderItem={({ item }) =>
+                        dateColect.add(thisRoute.date.slice(0, 10));
 
-              <PlanList
-                start={item.startName}
-                destination={item.destinationName}
-                key={item.key}
-                user={item.routename}
-                style={
-                  item.selected
-                    ? {
-                      backgroundColor: color.selected,
+                        //setDbDates()
+                        //has to use [4] to get date string
+                        console.log("this date?", response.data[i]);
+                        if (Object.values(selectedday)[4] === thisRoute.date.slice(0, 10)) {
+                            console.log("select", Object.values(selectedday)[4]);
+                            console.log("route ", thisRoute.date.slice(0, 10));
+                            displayPlan.push(
+                                <View style={{
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}>
+
+
+                                    <PlanList
+                                        start={thisRoute.startName}
+                                        destination={thisRoute.destinationName}
+                                        key={thisRoute._id}
+                                        user={thisRoute.routename}
+                                        //Price is removed, the calculated is done inside the JSX
+                                        style={
+                                            thisRoute.selected
+                                                ? {
+                                                    backgroundColor: color.primary,
+                                                }
+                                                : {
+                                                    backgroundColor: color.white,
+                                                }
+                                        }
+                                    />
+                                </View>
+                            );
+                        }
+
+                        console.log("in display", displayPlan);
+                        setForDisplay(displayPlan);
+                        console.log("for display?", forDisplay);
+
+                        setTimeout(() => {
+                            setLoading(false);
+                        }, 300);
                     }
-                    : {
-                      backgroundColor: color.white,
-                    }
-                }
-                onPress={() => {
-                  navigation.navigate("DrivingNavigationScreen", {
-                    start: item.start,
-                    destination: item.destination,
-                    user: item.routename,
-                    centroid: item.centroid
-                  })
+
+                    let arr = Array.from(dateColect);
+                    arr = arr.map(i => i + ": { 'marked': true, 'selectedColor': 'blue'}")
+
+                    console.log(JSON.stringify(arr));
+
+                    setGetDates(JSON.stringify(arr));
+
+                });
+        } catch (error) {
+
+        }
+    }, []);
+
+    if (isLoading) {
+        return (
+            <View
+                style={{
+                    flexDirection: "row",
+                    height: "100%",
+                    padding: 30,
+                    justifyContent: "center",
+                    alignItems: "center",
                 }}
-              />
-            }
+            >
+                <Text>Loading...</Text>
+            </View>
+        );
+    } else {
+        console.log("can display?", forDisplay);
+        return (
+            <View style={styles.plan}>
+                {/* <Text>done</Text> */}
+                <View style={styles.component}>{forDisplay}</View>
+            </View>
+        );
+    }
 
-          />
-          {/* <View style={styles.component}>{forDisplay}</View> */}
-        </View>
-      </View>
-    );
-  }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    backgroundColor: "white",
-  },
-  plan: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  component: {
-    fontSize: 10,
-    height: "15%",
-    backgroundColor: "powerblue",
-  },
-  noplan: {},
-});
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        backgroundColor: 'white'
+    },
+    plan: {
+        flex: 1,
+        justifyContent: "start",
+        alignItems: "center",
+        marginTop: 10,
+        marginBottm: 10
+    },
+    component: {
+        fontSize: 10,
+        height: "15%",
+        backgroundColor: "powerblue",
+    },
+    noplan: {},
+})

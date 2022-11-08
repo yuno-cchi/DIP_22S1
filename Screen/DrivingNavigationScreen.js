@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import MapView, { Marker, Overlay } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import * as Location from 'expo-location';
@@ -57,17 +57,10 @@ export default function DrivingNavigationScreen({ navigation, route }) {
     let dataObj = route.params
     const [myLocation, setMyLocation] = useState();
     const [myHeading, setMyHeading] = useState();
-    const [location, setLocation] = useState(null);
-    const [errorMsg, setErrorMsg] = useState(null);
     // const routeDestination = route.params.endLocation;
     // const routeWaypoints = route.params.waypoints;
-    const animateToLocation = (coordinates) => {
-        mapViewRef.animateToRegion(coordinates, ANIMATE_SPEED);
-    };
 
     useEffect(() => {
-        console.log("Route pararms:", route.params)
-        getLiveLocation()
         setQuickLocation()
 
         // const interval = setInterval(() => {
@@ -85,25 +78,6 @@ export default function DrivingNavigationScreen({ navigation, route }) {
 
     }, [])
 
-    async function getLiveLocation() {
-        console.log("getting location");
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== "granted") {
-            setErrorMsg("Permission to access location was denied");
-            return;
-        }
-
-        let location = await Location.getCurrentPositionAsync();
-        setLocation(location);
-
-
-        const userCoordinate = {
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-        };
-        console.log("User coordinates:", userCoordinate);
-    }
-
     const setQuickLocation = async () => {
         let location = await Location.getLastKnownPositionAsync()
         let heading = await Location.getHeadingAsync()
@@ -117,8 +91,8 @@ export default function DrivingNavigationScreen({ navigation, route }) {
         <View style={styles.container}>
             <MapView
                 provider={null}
-                showsUserLocation={false}
-                ref={thisObj => mapViewRef = thisObj}
+                showsUserLocation={true}
+                ref={thisObj => mapView = thisObj}
                 style={{ ...StyleSheet.absoluteFill }}
                 showsBuildings={true}
                 showsTraffic={true}
@@ -126,52 +100,72 @@ export default function DrivingNavigationScreen({ navigation, route }) {
                 showsPointsOfInterest={true}
                 showsCompass={true}
                 userLocationPriority={'high'}
-                userInterfaceStyle="light"
-                onMapReady={() => {
-                    console.log("Console route params", route.params)
-                    mapViewRef.animateToRegion(route.params.centroid)
+                //followsUserLocation={true}
+                onUserLocationChange={() => {
+                    setQuickLocation()
+                    mapView.setCamera({
+                        center: myLocation,
+                        pitch: 40,
+                        heading: myHeading,
+                        altitude: 1000
+                    })
                 }}
+            // onMapReady={() => {
+            //     mapView.setCamera({
+            //         center: myLocation,
+            //         pitch: 40,
+            //         heading: myHeading,
+            //         altitude: 1000
+            //     })
+            // }}
+
 
             >
-                <Marker
-                    coordinate={route.params.start}
-                    title="Start"
-                />
-                <Marker
-                    coordinate={route.params.destination}
-                    title="End"
-                />
+                {/* {myLocation && <Marker
+                    coordinate={myLocation}
+                    //image={require("../assets/img/navigation_arrow.png")}
+                    flat={true}
 
-
+                />} */}
                 <MapViewDirections
-                    origin={route.params.start}
-                    destination={route.params.destination}
+                    origin={myLocation}
+                    destination={{ latitude: 1.3644, longitude: 103.9915 }}
                     apikey={GOOGLE_API_KEY}
                     strokeWidth={10}
                     strokeColor={color.danger}
                     mode={'DRIVING'}
                     resetOnChange={true}
-
                 />
 
+                <BottomTab>
+                    <AppButton
+                        title={"Location"}
+                        style={styles.button}
+                        onPress={() => {
 
+                            try {
+                                setQuickLocation()
+
+                            } catch (error) {
+
+                            }
+                            let camera = {
+                                center: myLocation,
+                                pitch: 40,
+                                heading: myHeading,
+                                altitude: 1000
+                            }
+                            mapView.setCamera(camera)
+
+                            //console.log("User location: ", myLocation, "Heading: ", myHeading)
+                            //mapView.animateCamera(userLocation, {duration: 100 })
+                        }
+                        }
+                    />
+
+
+                </BottomTab>
             </MapView>
-            <BottomTab style={{ height: 100, justifyContent: 'center', alignItems: 'center' }}>
-
-                <AppButton
-                    title={"Backs"}
-                    style={styles.button}
-                    onPress={() => {
-                        //mapViewRef.animateToRegion(route.params.centroid)
-                        navigation.pop()
-
-                    }}
-                />
-
-
-
-
-            </BottomTab>
         </View >
     );
 }
@@ -181,8 +175,6 @@ const styles = StyleSheet.create({
         flex: 1
     },
     button: {
-        width: '80%',
-        position: 'relative',
         justifyContent: 'center',
         alignItems: 'center'
     }

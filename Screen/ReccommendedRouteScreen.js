@@ -221,15 +221,14 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
         for (let i = 0; i < inputArray.length; i++) {
             tempArray.push({
                 routeId: inputArray[i][0].routeId,
-                routeName: inputArray[i][0].routeName, //Route rider id
+                routeName: inputArray[i][0].routeName,
                 routeDescription: inputArray[i][0].routeDescription,
                 date: inputArray[i][0].date,
                 start: { latitude: inputArray[i][0].start.latitude, longitude: inputArray[i][0].start.longitude },
                 destination: { latitude: inputArray[i][0].destination.latitude, longitude: inputArray[i][0].destination.longitude },
                 centroid: { latitude: inputArray[i][0].centroid.latitude, longitude: inputArray[i][0].centroid.longitude },
                 selected: inputArray[i][0].selected,
-                bestRouteKey: inputArray[i][0].bestRouteKey,
-                routeRider: inputArray[i][0].routeRider
+                bestRouteKey: inputArray[i][0].bestRouteKey
             }
             )
         }
@@ -251,15 +250,14 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
 
         let routeArray = [];
         const resp = await axios.get('http://secret-caverns-21869.herokuapp.com/ride');
-        const ridedata = resp.data;
+        ridedata = resp.data;
 
 
         // console.log(ridedata);
-        console.log("RouteParams: ", route.params.selectedDate)
+
         for (let i = 0; i < ridedata.length; i++) {
             //console.log("inside now")
-            console.log("Compare:", ridedata[i].date.slice(0, 10), " with ", route.params.selectedDate.slice(0, 10));
-            if (ridedata[i].selected === false && ridedata[i].date.slice(0, 10) === route.params.selectedDate.slice(0, 10)) {
+            if (ridedata[i].selected == false) {
                 // if (ridedata[i].centroid.latitude <= centroid1.latitude + 0.5 && ridedata[i].centroid.latitude >= centroid1.latitude - 0.5) {
                 //     routeArray.push({centroid: ridedata[i].centroid, destination: ridedata[i].destination, routeDescription: ridedata[i].routeName, routeId: ridedata[i]._id, selected: false,
                 //     start: ridedata[i].start});
@@ -314,10 +312,9 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
                         <Card
                             title={item.routeName}
                             subTitle={item.routeDescription}
-                            subTitle2={" " + item.date.slice(0, 10)}
                             route={item}
                             driverRoute={route.params}
-                            style={item.selected ? { backgroundColor: color.selected } : { backgroundColor: color.white }}
+                            style={item.selected ? { backgroundColor: color.primary } : { backgroundColor: color.white }}
                             onPress={() => selectThisCard(item)} />}
                     refreshing={isRefrehing}
                     onRefresh={() => {
@@ -372,15 +369,10 @@ export default function ReccommendedRouteScreen({ navigation, route }) {
 
                             // }
                             selectCount = 0;
-                            navigation.pop()
+                            navigation.navigate('CalendarScreenTabNavigator_Driver')
                         }
                     }
                 />
-                {/* <AppButton
-                    title={'test'}
-                    onPress={() => {
-                        console.log(clean2DArray(selectedRoute))
-                    }} /> */}
 
             </BottomTab>
         </View >

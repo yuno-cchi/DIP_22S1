@@ -9,7 +9,7 @@ export default function HeaderTab({ children, style }) {
 const styles = StyleSheet.create({
     tab: {
         position: "absolute",
-        backgroundColor: color.white,
+        backgroundColor: color.lightGray,
         width: "100%",
         height: 180,
         top: 0,

@@ -26,6 +26,8 @@ export default function PlanList({
   isDriver = false,
   ...otherProps
 }) {
+
+
   const [distance, setDistance] = useState(0);
   const [duration, setDuration] = useState(0);
   const [price, setPrice] = useState(0);
@@ -33,44 +35,39 @@ export default function PlanList({
   const getPrice = (distance, duration) => {
     //Calculate price based on ditance and time
     var fare = 0;
-    const distFactor = 50 / distance;
-    const timeFactor = duration / 30;
+    const distFactor = (50 / distance)
+    const timeFactor = (duration / 30)
     fare = distFactor * timeFactor;
     return fare;
-  };
+  }
 
   return (
-    <TouchableOpacity style={{ marginVertical: 5 }} onPress={onPress}>
+    <TouchableOpacity onPress={onPress}>
       <MapViewDirections
         style={{ flex: 0 }}
         origin={start}
         destination={destination}
         apikey={GOOGLE_API_KEY}
-        onReady={(result) => {
-          console.log(`Distance: ${result.distance} km`);
-          console.log(`Duration: ${result.duration} min.`);
-          setDistance(result.distance);
-          setDuration(result.duration);
-          setPrice(
-            "$" + Math.round(getPrice(result.distance, result.duration))
-          );
+        onReady={result => {
+          console.log(`Distance: ${result.distance} km`)
+          console.log(`Duration: ${result.duration} min.`)
+          setDistance(result.distance)
+          setDuration(result.duration)
+          setPrice("$" + Math.round(getPrice(result.distance, result.duration)))
           dist = result.distance;
-          console.log("distance is ", dist);
+          console.log("distance is ", dist)
         }}
       />
       <View style={[styles.card, style]} {...otherProps}>
         <View style={styles.wraptext}>
           <View style={styles.topcontainer}>
-
-            <Image source={require("./pic/Arrow.png")} style={{ marginTop: 25, marginLeft: 0 }} />
-
+            <View style={styles.image}>
+              {/* <Image source={require("./pic/pulse.png")} /> */}
+              {/* <Image source={require("./pic/Arrow.png")} /> */}
+            </View>
             <View style={styles.mylocation}>
-              <AppText style={styles.title}>
-                {String.fromCodePoint(128663) + start}
-              </AppText>
-              <AppText style={styles.title}>
-                {String.fromCodePoint(128665) + destination}
-              </AppText>
+              <AppText style={styles.title}>{start}</AppText>
+              <AppText style={styles.title}>{destination}</AppText>
             </View>
           </View>
           {/* </View> */}
@@ -78,15 +75,19 @@ export default function PlanList({
             style={{
               borderBottomColor: "black",
               borderBottomWidth: 1,
-              marginBottom: 5,
             }}
           />
 
           <View style={styles.botcontainer}>
             <AppText style={styles.subTitle}>{user}</AppText>
+<<<<<<< HEAD
             <AppText style={styles.subTitle2}>
               {!isDriver && price}
               {/* Price calculation here */}
+=======
+            <AppText style={styles.subTitle}>
+              {price}{/* Price calculation here */}
+>>>>>>> parent of 3355065 (Merge branch 'copy_main' of https://github.com/yuno-cchi/DIP_22S1 into copy_main)
             </AppText>
           </View>
         </View>
@@ -98,57 +99,57 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: color.lightGray,
     width: windowWidth * 0.9,
-    height: "auto",
-    marginTop: 2,
+    height: windowHeight * 0.18,
+    marginTop: 15,
     borderRadius: 10,
   },
   image: {
-    width: 50,
-    height: 100
+    width: "100%",
+    height: "75%",
   },
   title: {
-    fontWeight: "100",
+    fontWeight: "200",
     marginTop: 5,
     marginLeft: 5,
-    fontSize: 18,
   },
   subTitle: {
-    color: color.primary,
+    color: color.green,
     fontWeight: "120",
     marginTop: 2,
     marginLeft: 5,
-  },
-  subTitle2: {
-    color: 'white',
-    fontWeight: "120",
-    marginVertical: 5,
-    marginLeft: 5,
-    fontWeight: '900'
   },
   mapStyle: {
     height: "70%",
     width: "100%",
   },
+  deleteButton: {
+    height: 30,
+    width: 30,
+    position: "absolute",
+    right: 10,
+    top: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   wraptext: {
-    paddingHorizontal: "4%",
-
+    padding: "5%",
   },
   topcontainer: {
-    flexDirection: "row",
-    marginHorizontal: 2
+    height: "80%",
   },
   botcontainer: {
-    //flexDirection: "row",
-    //height: "20%",
+    flexDirection: "row",
+    height: "20%",
   },
   mylocation: {
-    width: "100%",
+    width: "85%",
     //flexDirection: "row",
-    marginHorizontal: 3,
-    marginBottom: windowHeight * 0.02,
-
+    marginLeft: "auto",
   },
   image: {
+    //flex: 1,
+    width: 20,
+    height: 20,
     resizeMode: "contain",
   },
 });

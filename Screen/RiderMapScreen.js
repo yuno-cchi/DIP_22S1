@@ -20,7 +20,7 @@ import MapViewDirections from "react-native-maps-directions";
 const GOOGLE_API_KEY = "AIzaSyBYDEKY12RzWyP0ACQEpgsr4up2w3CjH88";
 const ANIMATE_SPEED = 1000;
 const STROKE_WIDTH = 5;
-const STROKE_COLOR = color.stroke;
+const STROKE_COLOR = color.danger;
 const DATE_MODE = "datetime";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -114,7 +114,6 @@ export default function RiderMapScreen({ route, navigation }) {
         style={{ ...StyleSheet.absoluteFill }}
         showsUserLocation={true}
         showsPointsOfInterest={true}
-        userInterfaceStyle='light'
       >
         <MapViewDirections
           origin={startLocation}
@@ -224,22 +223,17 @@ export default function RiderMapScreen({ route, navigation }) {
               textColor={color.medium}
               display="default"
               style={{
-                justifyContent: 'center',
-                alignContent: 'center',
-                alignItems: 'center',
                 width: 200,
-                height: 100,
-                transform: [{ scale: 1.4 }],
+                transform: [{ scale: 1.5 }],
               }}
             />
           </View>
-
-          <AppButton
-            style={styles.sendButton}
-            thisColor={color.danger}
-            title="Ride"
-            onPress={() => {
-              if (startLocation !== undefined && endLocation !== undefined) {
+          <View style={styles.flexbtn}>
+            <AppButton
+              style={styles.sendButton}
+              thisColor={color.danger}
+              title="Ride"
+              onPress={() => {
                 storeInDatabase(
                   startLocation,
                   endLocation,
@@ -250,27 +244,9 @@ export default function RiderMapScreen({ route, navigation }) {
                 navigation.navigate(
                   "Calendar"
                 )
-              } else {
-                Alert.alert(
-                  "Empty destination fields!",
-                  "Please enter the destination",
-                  [
-                    {
-                      text: "Ok",
-                      onPress: () => {
-
-                      },
-                      style: "default",
-                    },
-                  ],
-                  {
-                    cancelable: false,
-                  })
-              }
-
-            }}
-          />
-
+              }}
+            />
+          </View>
         </View>
       </BottomTab>
     </View>
@@ -280,7 +256,6 @@ export default function RiderMapScreen({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFill,
-    backgroundColor: color.white
   },
   searchBar: {
     position: "absolute",
@@ -302,9 +277,12 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   sendButton: {
-    width: 130,
-    marginLeft: 50
-
+    position: "absolute",
+    bottom: 40,
+    width: 100,
+    right: 20,
+    height: 80,
+    top: 20
   },
   locationTextBoxContainer: {
     top: 50,
@@ -319,19 +297,7 @@ const styles = StyleSheet.create({
       height: 200,
       top: 0,
       left: 40,
-
     },
-    textInput: {
-      backgroundColor: color.lightGray,
-      height: 44,
-      borderRadius: 20,
-      paddingVertical: 5,
-      paddingHorizontal: 10,
-      fontSize: 15,
-      flex: 1,
-    },
-
-
   },
   endTextBox: {
     container: {
@@ -342,28 +308,22 @@ const styles = StyleSheet.create({
       top: 60,
       left: 40,
     },
-    textInput: {
-      backgroundColor: color.lightGray,
-      height: 44,
-      borderRadius: 20,
-      paddingVertical: 5,
-      paddingHorizontal: 10,
-      fontSize: 15,
-      flex: 1,
-    },
   },
   timeContainer: {
     flexDirection: "row",
-    justifyContent: 'center',
-    alignItems: 'center',
+    //position: "absolute",
+    // left: 0,
+    // top: 10,
+    //width: 300,
     height: 150,
-
+    //justifyContent: "center",
+    //alignItems: "center",
   },
   flextime: {
+    flex: 2,
     alignItems: "center",
     justifyContent: "center",
-    alignContent: 'center',
-    marginLeft: 0
+
     //alignItems: "center",
   },
   flexbtn: {
