@@ -12,3 +12,9 @@ The app requires the NPM package `expo` to run, which can be installed via the c
 ```
 npm install expo
 ```
+
+# API keys
+The screen that require the use of map navigation should insert your own Google api in a const named GOOGLE_API 
+```
+GOOGLE_API = "Your API key"
+```
