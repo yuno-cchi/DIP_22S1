@@ -3,7 +3,7 @@
 
 ![](https://cdn.discordapp.com/attachments/770296022089728072/1039797823534813274/logo.png)
 
-> *"Why ride alone, when **together** is an option"*
+> *"Why ride alone, when **together** is an option?"*
 
 NyMe is a ride-hitching app we developed in React Native for NTU's Design and Innovation Project module IM3080.
 
